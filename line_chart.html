@@ -346,6 +346,7 @@
             console.log("testtest");
 
 
+
             g.append("path")
                 .datum(data)
                 .attr("fill","none")
@@ -354,7 +355,17 @@
                 .attr("stroke-linecap","round")
                 .attr("stroke-width",0)
                 .attr("d",line)
-                
+                .on("mouseout",function(e){
+                    rect_info
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("width",0)
+                        .attr("height",0);
+                    rect_info_text
+                        .attr("font-size","0px");
+                    rect_info_text_span
+                        .attr("font-size","0px");     
+                })
         });
 
         }
