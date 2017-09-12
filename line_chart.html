@@ -88,12 +88,14 @@
             y.domain(d3.extent(data, function(d) { return d.price; }));
                         
             g.append("g")
+                .attr("class","path")
                 .attr("transform","translate(0,500)")
                 .call(d3.axisBottom(x))
                 .select(".domain")
                 .remove();
                 
             g.append("g")
+                .attr("class","path")
                 .call(d3.axisLeft(y))
                 .append("text")
                 .attr("fill","#000")
@@ -104,6 +106,7 @@
                 .text("Price($)");
 
             g.append("g")
+                .attr("class","path")
                 .call(d3.axisLeft(y).ticks(10).tickFormat("").tickSize(-960,0))
                 .attr("fill","none")
                 .attr("stroke","rgba(0,0,0,.1)")
@@ -253,16 +256,40 @@
             return d;
         },function(error,data){
             if(error){throw error;}
+
+            
             
             g.selectAll("path").remove();
-
+            g.selectAll("rect.path").remove();
+            g.selectAll("text.path").remove();
+            g.selectAll("circle.path").remove();
+            g.selectAll("line.path").remove();
 
             x.domain(d3.extent(data, function(d) { return d.date; }));
             y.domain(d3.extent(data, function(d) { return d.price; }));
 
+
+            g.append("g")
+                .attr("class","path")
+                .attr("transform","translate(0,500)")
+                .call(d3.axisBottom(x))
+                .select(".domain")
+                .remove();
+                
+
+            g.append("g")
+                .attr("class","path")
+                .call(d3.axisLeft(y).ticks(10).tickFormat("").tickSize(-960,0))
+                .attr("fill","none")
+                .attr("stroke","rgba(0,0,0,.1)")
+                .attr("opacity",0.3)
+                .attr("transform","translate(0,0)")
+                .style("pointer-events","none");
+
             console.log("testtest");
 
             var rect_info = g.append("rect")
+                    .attr("class","path")
                         .attr("x",0)
                         .attr("y",0)
                         .attr("width",0)
@@ -273,6 +300,7 @@
                         .attr("fill","gray");
             
             var rect_info_text = g.append("text")
+                .attr("class","path")
                 .attr("fill","black")
                 .attr("y",0)
                 .attr("x",0)
@@ -281,6 +309,7 @@
                 .attr("text-anchor","middle"); 
             
             var rect_info_text_span =  rect_info_text.selectAll("tspan")
+                .attr("class","path")
                 .data("12")
                 .enter()
                 .append("tspan")
@@ -288,6 +317,7 @@
                 .attr("dy","1em");
 
             var circle_mouse = g.append("circle")
+                .attr("class","path")
                 .data(data)
                 .attr("r",5)
                 .attr("fill","steelblue")
@@ -295,6 +325,7 @@
                 .attr("cy",0);
             
             var check_line = g.append("line")
+                .attr("class","path")
                 .attr("x1",0)
                 .attr("y1",0)
                 .attr("x2",960)
@@ -303,6 +334,7 @@
                 .attr("stroke-width",0.5);
             
             var check_line_1 = g.append("line")
+                .attr("class","path")
                 .attr("x1",0)
                 .attr("y1",0)
                 .attr("x2",0)
@@ -346,15 +378,16 @@
 
             console.log("testtest");
 
-
+            
 
             g.append("path")
                 .datum(data)
+                .attr("class","path")
                 .attr("fill","none")
                 .attr("stroke","steelblue")
                 .attr("stroke-linejoin","round")
                 .attr("stroke-linecap","round")
-                .attr("stroke-width",0)
+                .attr("stroke-width",1.5)
                 .attr("d",line)
                 .on("mouseout",function(e){
                     rect_info
