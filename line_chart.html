@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html>
+    <meta charset="utf-8">
+    <script src = "http://d3js.org/d3.v4.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script type="text/javascript" src="re.js"></script>
+    <body>
+        <button id = 'test' onclick="retest()">test</button>
+    <script>
+
+        var bar_chart_data = 'data1.json';
+
+        /*document.getElementById("test").onclick = function(){
+            console.log("click");
+            $(function(){
+                $.ajax({
+                    type:'GET',
+                    url:'re.js',
+                    data:'data2.json',
+                    success:function(data){  
+                        re(data);            
+                    }
+                })
+            })
+        }*/
+
+        
+
+        
+
+        var svg = d3.select("body").append("svg")
+            .attr("width",960)
+            .attr("height",550);
+        var g = svg.append("g").attr("transform","translate(50,20)");
+
+        var parseTime = d3.timeParse("%d-%b-%y");//d3的時間格式%d=日,%b=月,%y=年
+        var time_format = d3.timeFormat("%Y-%m-%d");
+        var dig_format = d3.format(".0f");
+
+        var colorScale = d3.scaleLinear()
+            .domain([0,60])
+            .range(["gray","black"]);
+
+        var bisectDate = d3.bisector(function(d){return d.date;}).left;
+
+        ///////////////////////////////折線圖的範圍
+        var x = d3.scaleTime()
+            .rangeRound([0,960]);
+
+        var y = d3.scaleLinear()
+            .rangeRound([500,0]);
+        
+        var line = d3.line()
+            .x(function(d){return x(d.date);})
+            .y(function(d){return y(d.price);})
+
+
+        var bars = g.selectAll("rect");
+        var bar_scale = d3.scaleLinear()
+                .domain([0,60])
+                .range([0,300]);
+        ///////////////////////////////
+        d3.json("data1.json",function(dataArray){
+
+            bars
+            .data(dataArray)
+            .enter()
+            .append("rect")
+            .attr("class","bars")
+            .attr("height",function(d){return bar_scale(d.age);})
+            .attr("width","30")
+            .attr("fill",function(d){return colorScale(d.age);})
+            .attr("x",function(d,i){return i*50;})
+            .attr("y",function(d){return 500-bar_scale(d.age)});
+            console.log(bars.data(dataArray));
+        })
+
+        d3.tsv("hon.tsv",function(d){//折線圖的資料輸入
+            
+            d.date = parseTime(d.date);
+            d.price = +d.price;
+            return d;
+        },function(error,data){
+            if(error){throw error;}
+            
+            x.domain(d3.extent(data, function(d) { return d.date; }));
+            y.domain(d3.extent(data, function(d) { return d.price; }));
+                        
+            g.append("g")
+                .attr("transform","translate(0,500)")
+                .call(d3.axisBottom(x))
+                .select(".domain")
+                .remove();
+                
+            g.append("g")
+                .call(d3.axisLeft(y))
+                .append("text")
+                .attr("fill","#000")
+                .attr("transform","rotate(-90)")
+                .attr("y",6)
+                .attr("dy","0.71em")
+                .attr("text-anchor","end")
+                .text("Price($)");
+
+            g.append("g")
+                .call(d3.axisLeft(y).ticks(10).tickFormat("").tickSize(-960,0))
+                .attr("fill","none")
+                .attr("stroke","rgba(0,0,0,.1)")
+                .attr("opacity",0.3)
+                .attr("transform","translate(0,0)")
+                .style("pointer-events","none");
+            
+            var rect_info = g.append("rect")
+                .attr("class","path")
+                .attr("x",0)
+                .attr("y",0)
+                .attr("width",0)
+                .attr("height",0)
+                .attr("rx",10)//圓弧
+                .attr("ry",10)
+                .attr("opacity",0.5)
+                .attr("fill","gray");
+            
+            var rect_info_text = g.append("text")
+                .attr("class","path")
+                .attr("fill","black")
+                .attr("y",0)
+                .attr("x",0)
+                .attr("dy","1em")
+                .attr("font-size","0px")
+                .attr("text-anchor","middle"); 
+            
+            var rect_info_text_span =  rect_info_text.selectAll("tspan")
+                .attr("class","path")
+                .data("12")
+                .enter()
+                .append("tspan")
+                .attr("font-size","0px")
+                .attr("dy","1em");
+
+            var circle_mouse = g.append("circle")
+                .attr("class","path")
+                .data(data)
+                .attr("r",5)
+                .attr("fill","steelblue")
+                .attr("cx",0)
+                .attr("cy",0);
+            
+            var check_line = g.append("line")
+                .attr("class","path")
+                .attr("x1",0)
+                .attr("y1",0)
+                .attr("x2",960)
+                .attr("y2",0)
+                .attr("stroke","black")
+                .attr("stroke-width",0.5);
+            
+            var check_line_1 = g.append("line")
+                .attr("class","path")
+                .attr("x1",0)
+                .attr("y1",0)
+                .attr("x2",0)
+                .attr("y2",500)
+                .attr("stroke","black")
+                .attr("stroke-width",0.5);
+
+            var date_data = d3.map(data,function(d){return d.date;})//可以將數據做轉換
+            
+            svg//隨著滑鼠照著折線圖移動
+                .on("mousemove",function(d){
+                
+                var date_x = bisectDate(data,x.invert(d3.event.x-50),1);//將座標轉換成x軸的資料的index，invert將座標轉換成x軸資料
+                var date_obj = data[date_x];//利用index拿到x軸座標的資料物件
+                
+                
+                circle_mouse
+                    .attr("cx",d3.event.x-50)
+                    .attr("cy",function(d,i){
+                        return y(date_obj.price)});//從data陣列中取出該座標對應的price的值
+                check_line
+                    .attr("y1",y(date_obj.price))
+                    .attr("y2",y(date_obj.price));
+                check_line_1
+                    .attr("x1",d3.event.x-52)
+                    .attr("x2",d3.event.x-52);
+                rect_info
+                    .attr("x",d3.event.x-58)
+                    .attr("y",y(date_obj.price))
+                    .attr("width",100)
+                    .attr("height",60);
+                rect_info_text
+                    .attr("y",y(date_obj.price)+15);
+                rect_info_text_span
+                    .attr("font-size","13px")
+                    .attr("x",d3.event.x)
+                    .text(function(d){return date_obj.date.toLocaleString().substr(0,10)+" "+date_obj.price;})
+            })
+
+            g.append("path")
+                .datum(data)
+                .attr("class","path")
+                .attr("fill","none")
+                .attr("stroke","steelblue")
+                .attr("stroke-linejoin","round")
+                .attr("stroke-linecap","round")
+                .attr("stroke-width",0)
+                .attr("d",line)
+                .on("mouseout",function(e){
+                    rect_info
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("width",0)
+                        .attr("height",0);
+                    rect_info_text
+                        .attr("font-size","0px");
+                    rect_info_text_span
+                        .attr("font-size","0px");     
+                })
+                .transition().duration(1000).delay(200).attr("stroke-width",1.5);
+        });
+
+
+        function retest(){
+            d3.json("data2.json",function(dataArray){
+                g.selectAll("rect.bars").remove();
+                
+                var sel = g.selectAll('.bars')
+                    .data(dataArray);
+                bar_scale = d3.scaleLinear()
+                    .domain([0,200])
+                    .range([0,300]);
+
+                var colorScale = d3.scaleLinear()
+                    .domain([50,200])
+                    .range(["gray","black"]);
+                        
+                sel.enter().append("rect")
+                .attr("height",function(d){return bar_scale(d.age);})
+                .attr("width","30")
+                .attr("fill",function(d){return colorScale(d.age);})
+                .attr("x",function(d,i){return i*50;})
+                .attr("y",function(d){return 500-bar_scale(d.age)});
+
+                d3.select("body").transition().duration(750);
+            });
+
+
+            d3.tsv("hon1.tsv",function(d){//折線圖的資料輸入
+            
+            d.date = parseTime(d.date);
+            d.price = +d.price;
+            return d;
+        },function(error,data){
+            if(error){throw error;}
+            
+            g.selectAll("path").remove();
+
+
+            x.domain(d3.extent(data, function(d) { return d.date; }));
+            y.domain(d3.extent(data, function(d) { return d.price; }));
+
+            console.log("testtest");
+
+            var rect_info = g.append("rect")
+                        .attr("x",0)
+                        .attr("y",0)
+                        .attr("width",0)
+                        .attr("height",0)
+                        .attr("rx",10)//圓弧
+                        .attr("ry",10)
+                        .attr("opacity",0.5)
+                        .attr("fill","gray");
+            
+            var rect_info_text = g.append("text")
+                .attr("fill","black")
+                .attr("y",0)
+                .attr("x",0)
+                .attr("dy","1em")
+                .attr("font-size","0px")
+                .attr("text-anchor","middle"); 
+            
+            var rect_info_text_span =  rect_info_text.selectAll("tspan")
+                .data("12")
+                .enter()
+                .append("tspan")
+                .attr("font-size","0px")
+                .attr("dy","1em");
+
+            var circle_mouse = g.append("circle")
+                .data(data)
+                .attr("r",5)
+                .attr("fill","steelblue")
+                .attr("cx",0)
+                .attr("cy",0);
+            
+            var check_line = g.append("line")
+                .attr("x1",0)
+                .attr("y1",0)
+                .attr("x2",960)
+                .attr("y2",0)
+                .attr("stroke","black")
+                .attr("stroke-width",0.5);
+            
+            var check_line_1 = g.append("line")
+                .attr("x1",0)
+                .attr("y1",0)
+                .attr("x2",0)
+                .attr("y2",500)
+                .attr("stroke","black")
+                .attr("stroke-width",0.5);
+
+            var date_data = d3.map(data,function(d){return d.date;})//可以將數據做轉換
+            
+            console.log("testtest");
+
+            svg//隨著滑鼠照著折線圖移動
+                .on("mousemove",function(d){
+                
+                var date_x = bisectDate(data,x.invert(d3.event.x-50),1);//將座標轉換成x軸的資料的index，invert將座標轉換成x軸資料
+                var date_obj = data[date_x];//利用index拿到x軸座標的資料物件
+                
+                
+                circle_mouse
+                    .attr("cx",d3.event.x-50)
+                    .attr("cy",function(d,i){
+                        return y(date_obj.price)});//從data陣列中取出該座標對應的price的值
+                check_line
+                    .attr("y1",y(date_obj.price))
+                    .attr("y2",y(date_obj.price));
+                check_line_1
+                    .attr("x1",d3.event.x-52)
+                    .attr("x2",d3.event.x-52);
+                rect_info
+                    .attr("x",d3.event.x-58)
+                    .attr("y",y(date_obj.price))
+                    .attr("width",100)
+                    .attr("height",60);
+                rect_info_text
+                    .attr("y",y(date_obj.price)+15);
+                rect_info_text_span
+                    .attr("font-size","13px")
+                    .attr("x",d3.event.x)
+                    .text(function(d){return date_obj.date.toLocaleString().substr(0,10)+" "+date_obj.price;})
+            })
+
+            console.log("testtest");
+
+
+            g.append("path")
+                .datum(data)
+                .attr("fill","none")
+                .attr("stroke","steelblue")
+                .attr("stroke-linejoin","round")
+                .attr("stroke-linecap","round")
+                .attr("stroke-width",0)
+                .attr("d",line)
+                
+        });
+
+        }
+    </script>
+    </body>
+</html>
