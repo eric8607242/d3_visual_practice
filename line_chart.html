@@ -5,6 +5,7 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 <script type="text/javascript" src="re.js"></script>
 <script type="text/javascript" src="d3.js"></script>
+<script type="text/javascript" src="drag.js"></script>
 
 <body>
     <button id='test' onclick="retest()">test</button>
@@ -25,10 +26,9 @@
             })
         }*/
 
-
         var svg = d3.select("body").append("svg")
             .attr("width", 960)
-            .attr("height", 550);
+            .attr("height", 650);
         var g = svg.append("g").attr("transform", "translate(50,20)");
 
         var parseTime = d3.timeParse("%d-%b-%y");//d3的時間格式%d=日,%b=月,%y=年
@@ -55,33 +55,54 @@
         var bar_scale = d3.scaleLinear()
             .domain([0, 60])
             .range([0, 300]);
+        ///////////////////////////////lower chart
+        var lower_x = d3.scaleTime()
+            .rangeRound([0, 960]);
+
+        var lower_y = d3.scaleLinear()
+            .rangeRound([630, 530]);
+
+        var lower_line = d3.line()
+            .x(function (d) { return lower_x(d.date); })
+            .y(function (d) { return lower_y(d.price); });
+
+        var lower_data = d3.area()
+            .x(function(d){return lower_x(d.date);})
+            .y0(630)
+            .y1(function(d){return lower_y(d.price);});
+
+        
         ///////////////////////////////
         d3.json("data1.json", function (dataArray) {
 
-            var bars = 
-                g.selectAll("rect")
-                .data(dataArray)
-                .enter()
-                .append("rect")
-                .attr("class", "bars")
-                .attr("height", function (d) { return bar_scale(d.age); })
-                .attr("width", "30")
-                .attr("fill", function (d) { return colorScale(d.age); })
-                .attr("x", function (d, i) { return i * 50; })
-                .attr("y", function (d) { return 500 - bar_scale(d.age) });
+            var bars =
+                g.attr("class", "bars")
+                    .selectAll("rect")
+                    .data(dataArray)
+                    .enter()
+                    .append("rect") 
+                    .attr("height", function (d) { return bar_scale(d.age); })
+                    .attr("width", "30")
+                    .attr("fill", function (d) { return colorScale(d.age); })
+                    .attr("x", function (d, i) { return i * 50; })
+                    .attr("y", function (d) { return 500 - bar_scale(d.age) });
             console.log(bars.data(dataArray));
         })
 
-        d3.tsv("hon.tsv", function (d) {//折線圖的資料輸入
+        d3.csv("106_1.csv", function (d) {//折線圖的資料輸入
 
-            d.date = parseTime(d.date);
-            d.price = +d.price;
+            d.date = new Date(d.date);
+            d.price = +parseInt(d.price);
             return d;
         }, function (error, data) {
             if (error) { throw error; }
 
             x.domain(d3.extent(data, function (d) { return d.date; }));
             y.domain(d3.extent(data, function (d) { return d.price; }));
+
+            lower_x.domain(d3.extent(data, function (d) { return d.date; }));
+            lower_y.domain(d3.extent(data, function (d) { return d.price; }));
+
 
             g.append("g")
                 .attr("class", "path")
@@ -185,7 +206,7 @@
                         .attr("y", y(date_obj.price) + 15)
                         .attr("font-size", "13px")
                         .attr("x", d3.event.x)
-                        .text(function (d) { return date_obj.date.toLocaleString().substr(0, 10) + " " + date_obj.price; })
+                        .text(function (d) { return date_obj.date.toLocaleString().substr(0, 8) + " " + date_obj.price; })
                 })
 
             g.append("path")
@@ -198,18 +219,44 @@
                 .attr("stroke-width", 0)
                 .attr("d", line(data))
                 .on("mouseout", function (e) {
-                    rect_info
-                        .attr("x", 0)
-                        .attr("y", 0)
-                        .attr("width", 0)
-                        .attr("height", 0);
-                    rect_info_text
-                        .attr("font-size", "0px");
-                    rect_info_text_span
-                        .attr("font-size", "0px");
                 })
                 .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
+
+
+            /*var viewport = g.attr("class","brush")
+                            .call(d3.brush().on("brush",function(){
+                                lower_x.domain(viewport.empty() ? lower_x.domain() : viewport.extent());
+                                redrawChart();                               
+                            }))*/
+          
+            
+            var lower_chart = g.append("path")
+                .datum(data)
+                .attr("class", "line")
+                .attr("fill", "none")
+                .attr("stroke", "darkgray")
+                .attr("stroke-linejoin", "round")
+                .attr("stroke-linecap", "round")
+                .attr("stroke-width", 1.5)
+                .attr("d", lower_line(data))
+                .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
+        
+            g.append("path")
+                .datum(data)
+                .attr("fill","lightgray")
+                .attr("d",lower_data(data));
+
+            g.attr("class","viewport")
+                .call(d3.brushX().on("brush",function(){
+                                /*lower_x.domain(brushX.empty() ? lower_x.domain() : brushX.extent());
+                                redrawChart();*/}))
+                .append("rect")
+                .attr("height",100);
+                            
         });
+        function redrawChart() {
+
+        }
     </script>
 </body>
 
