@@ -1,0 +1,14 @@
+
+#rect_illu{
+    position: absolute;
+    left:40%;
+    top:40%;
+    opacity: 0.7;
+    border-radius: 10px;
+    background-color:lightgray;
+    width: 20%;
+    height: 20%;
+    z-index: 50;
+    float: right;
+    overflow: auto;
+}
