@@ -54,23 +54,23 @@ function retest() {
                 var date_x = bisectDate(data, x.invert(d3.event.x - 50), 1);//將座標轉換成x軸的資料的index，invert將座標轉換成x軸資料
                 var date_obj = data[date_x];//利用index拿到x軸座標的資料物件 
 
-                g.select(".check_circle_mouse")
+                chart.select(".check_circle_mouse")
                     .attr("cx", d3.event.x - 50)
                     .attr("cy", function (d, i) {
                         return y(date_obj.price)
                     });//從data陣列中取出該座標對應的price的值
-                g.select(".check_check_line")
+                chart.select(".check_check_line")
                     .attr("y1", y(date_obj.price))
                     .attr("y2", y(date_obj.price));
-                g.select(".check_check_line_1")
+                chart.select(".check_check_line_1")
                     .attr("x1", d3.event.x - 52)
                     .attr("x2", d3.event.x - 52);
-                g.select(".check_rect_info")
+                chart.select(".check_rect_info")
                     .attr("x", d3.event.x - 58)
                     .attr("y", y(date_obj.price))
                     .attr("width", 100)
                     .attr("height", 60);
-                g.select(".check_rect_info_text")
+                chart.select(".check_rect_info_text")
                     .attr("y", y(date_obj.price) + 15)
                     .attr("font-size", "13px")
                     .attr("x", d3.event.x)
@@ -81,7 +81,7 @@ function retest() {
         console.log("testtest");
 
 
-        g.select(".line")
+        chart.select(".line")
             .transition().duration(1000)
             .attr("d", line(data));
     });
