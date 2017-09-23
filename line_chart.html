@@ -9,13 +9,18 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 
 <body>
+    <div id = 'rect_know'>確定</div>
     <div id = 'rect_illu'></div>
+    
     <button id='test' onclick="retest()">test</button>
     <script>
         var width = 960;
         var height = 650;
         var lower_width = 960;
         var lower_height = 100;
+
+
+        var check_happen_text = 0;
 
         var rect_news = d3.select('body').append("div")
                             .style({
@@ -25,11 +30,18 @@
                                 'color':'red',
                                 'z-index':50
                                 });
+         
+        var zoom = d3.zoom()
+            .scaleExtent([1,Infinity])
+            .translateExtent([0,0],[width,height])
+            .extent([0,0],[width,height])
+            .on("zoom",zoomed)
 
         var svg = d3.select("body").append("svg")
             .attr("width", 960)
-            .attr("height", 650);
-        var g = svg.append("g").attr("transform", "translate(50,20)");
+            .attr("height", 650).call(zoom);
+        var g = svg.append("g")
+            .attr("transform", "translate(50,20)");
         
         var parseTime = d3.timeParse("%d-%b-%y");//d3的時間格式%d=日,%b=月,%y=年
         var time_format = d3.timeFormat("%Y-%m-%d");
@@ -40,18 +52,19 @@
             .range(["gray", "black"]);
 
         var bisectDate = d3.bisector(function (d) { return d.date; }).left;
-
+        //////////////////////////////
+       
         ///////////////////////////////
 
-        var chart = svg.append("g");//main chart
+        var chart = svg.append("g")
+            .attr("class","charts");//main chart
 
         var lower_chart = svg.append("g")
-            .attr("width",lower_width)
-            .attr("height",lower_height)
+           .attr("transform", "translate(0,550)");//height - lower_height
 
         ///////////////////////////////折線圖的範圍
         var x = d3.scaleTime()
-            .rangeRound([0, 960]);
+            .range([0, 960]);
 
         var y = d3.scaleLinear()
             .rangeRound([500, 0]);
@@ -68,7 +81,7 @@
             .rangeRound([0, 960]);
 
         var lower_y = d3.scaleLinear()
-            .rangeRound([630, 530]);
+            .rangeRound([100, 0]);
 
         var lower_line = d3.line()
             .x(function (d) { return lower_x(d.date); })
@@ -85,15 +98,10 @@
         var yAxis = d3.axisLeft(y);
         ///////////////////////////////brush and zoom
 
-        /*var brush = d3.brushX()
-                .extent(x)
-                .on("brush end",brushed);
+        var brush = d3.brushX()
+            .extent([[0, 0], [lower_width,lower_height]])
+            .on("brush end",brushed);
 
-        var zoom = d3.zoom()
-                .scaleExtent([1,Infinity])
-                .translateExtent([0,0],[width,height])
-                .extent([0,0],[width,height])
-                .on("zoom",zoomed)*/
 
         ///////////////////////////////
         d3.json("data1.json", function (dataArray) {
@@ -234,11 +242,25 @@
                             .attr("x", d3.event.x)
                             .text(function (d) { return date_obj.date.toLocaleString().substr(0, 8) + " " + date_obj.price; });
 
-                        /*console.log("1//  "+Date.parse(date_obj.date.toDateString()));
-                        console.log("2//  "+Date.parse(new Date(happen_data[0].date).toDateString()));*/
-                        if(Date.parse(date_obj.date.toDateString()).valueOf(3) == Date.parse(new Date(happen_data[0].date).toDateString()).valueOf(3)){
+                        if(Date.parse(date_obj.date.toDateString()).valueOf(3) == Date.parse(new Date(happen_data[0].date).toDateString()).valueOf(3) && check_happen_text === 0){
                             console.log("true");
-                            //d3.select('#rect_illu').style("background-color","red");
+                            d3.select('#rect_illu')
+                                .style("width","20%")
+                                .style("height","200px");
+                            d3.select('#rect_know')
+                                .style("width","4%")
+                                .style("height","40px")
+                                .on("click",function(){
+                                    d3.select('#rect_illu').select("text").remove();
+
+                                    d3.select('#rect_illu')
+                                        .style("width","0")
+                                        .style("height","0");
+                                    d3.select(this)
+                                        .style("width","0")
+                                        .style("height","0")
+                                    check_happen_text = 0;
+                                });
                             d3.select('#rect_illu').append('text')
                                 .attr("fill", "black")
                                 .attr("y", 0)
@@ -247,9 +269,9 @@
                                 .attr("font-size", "10px")
                                 .attr("text-anchor", "middle")
                                 .text(happen_data[0].web)
-                                .on("click",function(){window.open(happen_data[0].web)})
+                                .on("click",function(){window.open(happen_data[0].web)});
 
-                           
+                            check_happen_text = 1;
                         }
                     })
 
@@ -283,9 +305,7 @@
                     .attr("fill","lightgray")
                     .attr("d",lower_data(data));
 
-                
-
-            svg.append("rect")
+            /*svg.append("rect")
                     .attr("class","room")
                     .attr("cursor","move")
                     .attr("pointer-events","all")
@@ -293,25 +313,29 @@
                     .attr("opacity",0.2)
                     .attr("width",20)
                     .attr("height",lower_height)
-                    .attr("transform","translate(0,530)");
-                    //.call(zoom);
+                    .attr("transform","translate(0,530)");*/
                 
-                /* lower_chart.append("g")
-                                .attr("class","brush")
-                                .call(brush)
-                                .call(brush.move,x.range());*/
+            lower_chart.append("g")
+                    .attr("class","brush")
+                    .call(brush)
+                    .call(brush.move,x.range());
             
             });
         });
         ///////////////////////////////////////////////
-        /*function zoomed(){
+        function zoomed(){
             if(d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")return;
+            /*svg.selectAll(".charts")
+                .attr("transform",d3.event.transform);
+            console.log(d3.event.transform);    
+            d3.selectAll(".line").style("stroke-width", 2/d3.event.transform.k);*/
+
             var t = d3.event.transform;
-            console.log(d3.event);
+            console.log(d3.event.transform);
             x.domain(t.rescaleX(lower_x).domain());
             chart.select(".line").attr("d",line);
             chart.select(".axis_x").call(xAxis);
-            lower_chart.select(".brush").call(brush.move,x.range().map(t.invertX,t));
+            d3.select(".brush").call(brush.move,x.range().map(t.invertX,t));
 
         }
         function brushed(){
@@ -324,7 +348,7 @@
             svg.select(".zoom").call(zoom.transform,d3.zoomIdentity
                 .scale(width/(s[1]-s[0]))
                 .translate(-s[0],0));
-        }*/
+        }
     </script>
 </body>
 
