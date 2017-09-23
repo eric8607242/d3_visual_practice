@@ -14,9 +14,9 @@
     
     <button id='test' onclick="retest()">test</button>
     <script>
-        var width = 960;
-        var height = 650;
-        var lower_width = 960;
+        var width = 910;
+        var height = 530;
+        var lower_width = 910;
         var lower_height = 100;
 
 
@@ -32,9 +32,9 @@
                                 });
          
         var zoom = d3.zoom()
-            .scaleExtent([1,Infinity])
-            .translateExtent([0,0],[width,height])
-            .extent([0,0],[width,height])
+            .scaleExtent([1, Infinity])
+            .translateExtent([[0, 0], [width, height]])
+            .extent([[0, 0], [width, height]])
             .on("zoom",zoomed)
 
         var svg = d3.select("body").append("svg")
@@ -53,9 +53,6 @@
 
         var bisectDate = d3.bisector(function (d) { return d.date; }).left;
         //////////////////////////////
-       
-        ///////////////////////////////
-
         var chart = svg.append("g")
             .attr("class","charts");//main chart
 
@@ -64,10 +61,10 @@
 
         ///////////////////////////////折線圖的範圍
         var x = d3.scaleTime()
-            .range([0, 960]);
+            .range([0, width]);
 
         var y = d3.scaleLinear()
-            .rangeRound([500, 0]);
+            .rangeRound([height, 0]);
 
         var line = d3.line()
             .x(function (d) { return x(d.date); })
@@ -78,10 +75,10 @@
             .range([0, 300]);
         ///////////////////////////////lower chart
         var lower_x = d3.scaleTime()
-            .rangeRound([0, 960]);
+            .rangeRound([0, lower_width]);
 
         var lower_y = d3.scaleLinear()
-            .rangeRound([100, 0]);
+            .rangeRound([lower_height, 0]);
 
         var lower_line = d3.line()
             .x(function (d) { return lower_x(d.date); })
@@ -304,16 +301,6 @@
                     .attr("class","line")
                     .attr("fill","lightgray")
                     .attr("d",lower_data(data));
-
-            /*svg.append("rect")
-                    .attr("class","room")
-                    .attr("cursor","move")
-                    .attr("pointer-events","all")
-                    .attr("fill","gray")
-                    .attr("opacity",0.2)
-                    .attr("width",20)
-                    .attr("height",lower_height)
-                    .attr("transform","translate(0,530)");*/
                 
             lower_chart.append("g")
                     .attr("class","brush")
@@ -325,11 +312,7 @@
         ///////////////////////////////////////////////
         function zoomed(){
             if(d3.event.sourceEvent && d3.event.sourceEvent.type === "brush")return;
-            /*svg.selectAll(".charts")
-                .attr("transform",d3.event.transform);
-            console.log(d3.event.transform);    
-            d3.selectAll(".line").style("stroke-width", 2/d3.event.transform.k);*/
-
+            
             var t = d3.event.transform;
             console.log(d3.event.transform);
             x.domain(t.rescaleX(lower_x).domain());
