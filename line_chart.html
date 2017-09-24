@@ -306,24 +306,9 @@
                     .attr("cx", function (d) { return x(new Date(d.date))})
                     .attr("cy", 100)
                     .on("mouseover",function(d){
-                        if(check_happen_text === 0){
                             d3.select('#rect_illu')
                             .style("width","20%")
                             .style("height","200px");
-                            d3.select('#rect_know')
-                                .style("width","4%")
-                                .style("height","40px")
-                                .on("click",function(){
-                                    d3.select('#rect_illu').select("text").remove();
-
-                                    d3.select('#rect_illu')
-                                        .style("width","0")
-                                        .style("height","0");
-                                    d3.select(this)
-                                        .style("width","0")
-                                        .style("height","0")
-                                    check_happen_text = 0;
-                                });
                             d3.select('#rect_illu').append('text')
                                 .attr("fill", "black")
                                 .attr("y", 0)
@@ -331,13 +316,18 @@
                                 .attr("dy", "1em")
                                 .attr("font-size", "10px")
                                 .attr("text-anchor", "middle")
-                                .text(d.web)
-                                .on("click",function(){window.open(d.web)});
-                            check_happen_text = 1;
-                        }
+                                .text(d.content);
+                            console.log(d.content);
+                    })
+                    .on("mouseout",function(d){
+                        d3.select('#rect_illu').select("text").remove();     
+                            d3.select('#rect_illu')
+                                .style("width","0")
+                                .style("height","0");
+                    })
+                    .on("click",function(d){
+                        window.open(d.web)
                     });
-
-
                 lower_chart.append("path")
                     .datum(data)
                     .attr("class","line")
