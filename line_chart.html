@@ -359,6 +359,7 @@
             var s = d3.event.selection || lower_x.range();
             console.log(s);
             x.domain(s.map(lower_x.invert,lower_x));
+            chart.selectAll(".bars").attr("cx", function (d) { return x(new Date(d.date))})
             chart.select(".line").attr("d",line);
             chart.select(".axis_x").call(xAxis);
             svg.select(".zoom").call(zoom.transform,d3.zoomIdentity
