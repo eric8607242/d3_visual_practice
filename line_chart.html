@@ -38,10 +38,10 @@
             .on("zoom",zoomed)
 
         var svg = d3.select("body").append("svg")
-            .attr("width", 960)
+            .attr("width", width)
             .attr("height", 650).call(zoom);
         var g = svg.append("g")
-            .attr("transform", "translate(50,20)");
+            .attr("transform", "translate(0,0)");
         
         var parseTime = d3.timeParse("%d-%b-%y");//d3的時間格式%d=日,%b=月,%y=年
         var time_format = d3.timeFormat("%Y-%m-%d");
@@ -238,38 +238,38 @@
                             .attr("font-size", "13px")
                             .attr("x", d3.event.x)
                             .text(function (d) { return date_obj.date.toLocaleString().substr(0, 8) + " " + date_obj.price; });
+                        
+                            /*if(Date.parse(date_obj.date.toDateString()).valueOf(3) == Date.parse(new Date(happen_data[1].date).toDateString()).valueOf(3) && check_happen_text === 0){
+                                console.log("true");
+                                d3.select('#rect_illu')
+                                    .style("width","20%")
+                                    .style("height","200px");
+                                d3.select('#rect_know')
+                                    .style("width","4%")
+                                    .style("height","40px")
+                                    .on("click",function(){
+                                        d3.select('#rect_illu').select("text").remove();
 
-                        if(Date.parse(date_obj.date.toDateString()).valueOf(3) == Date.parse(new Date(happen_data[0].date).toDateString()).valueOf(3) && check_happen_text === 0){
-                            console.log("true");
-                            d3.select('#rect_illu')
-                                .style("width","20%")
-                                .style("height","200px");
-                            d3.select('#rect_know')
-                                .style("width","4%")
-                                .style("height","40px")
-                                .on("click",function(){
-                                    d3.select('#rect_illu').select("text").remove();
+                                        d3.select('#rect_illu')
+                                            .style("width","0")
+                                            .style("height","0");
+                                        d3.select(this)
+                                            .style("width","0")
+                                            .style("height","0")
+                                        check_happen_text = 0;
+                                    });
+                                d3.select('#rect_illu').append('text')
+                                    .attr("fill", "black")
+                                    .attr("y", 0)
+                                    .attr("x", 0)
+                                    .attr("dy", "1em")
+                                    .attr("font-size", "10px")
+                                    .attr("text-anchor", "middle")
+                                    .text(happen_data[1].web)
+                                    .on("click",function(){window.open(happen_data[1].web)});
 
-                                    d3.select('#rect_illu')
-                                        .style("width","0")
-                                        .style("height","0");
-                                    d3.select(this)
-                                        .style("width","0")
-                                        .style("height","0")
-                                    check_happen_text = 0;
-                                });
-                            d3.select('#rect_illu').append('text')
-                                .attr("fill", "black")
-                                .attr("y", 0)
-                                .attr("x", 0)
-                                .attr("dy", "1em")
-                                .attr("font-size", "10px")
-                                .attr("text-anchor", "middle")
-                                .text(happen_data[0].web)
-                                .on("click",function(){window.open(happen_data[0].web)});
-
-                            check_happen_text = 1;
-                        }
+                                check_happen_text = 1;
+                            }*/
                     })
 
                 chart.append("path")
@@ -296,6 +296,51 @@
                     .attr("d", lower_line)
                     .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
             
+                chart.selectAll("rect.bars")   
+                    .data(happen_data)
+                    .enter()
+                    .append("rect") 
+                    .attr("class", "bars")
+                    .attr("height", "30")
+                    .attr("width", "30")
+                    .attr("rx", 5)//圓弧
+                    .attr("ry", 5)
+                    .attr("fill", "lightgray")
+                    .attr("x", function (d) { return x(new Date(d.date))})
+                    .attr("y", 100)
+                    .on("mouseover",function(d){
+                        if(check_happen_text === 0){
+                            d3.select('#rect_illu')
+                            .style("width","20%")
+                            .style("height","200px");
+                            d3.select('#rect_know')
+                                .style("width","4%")
+                                .style("height","40px")
+                                .on("click",function(){
+                                    d3.select('#rect_illu').select("text").remove();
+
+                                    d3.select('#rect_illu')
+                                        .style("width","0")
+                                        .style("height","0");
+                                    d3.select(this)
+                                        .style("width","0")
+                                        .style("height","0")
+                                    check_happen_text = 0;
+                                });
+                            d3.select('#rect_illu').append('text')
+                                .attr("fill", "black")
+                                .attr("y", 0)
+                                .attr("x", 0)
+                                .attr("dy", "1em")
+                                .attr("font-size", "10px")
+                                .attr("text-anchor", "middle")
+                                .text(d.web)
+                                .on("click",function(){window.open(d.web)});
+                            check_happen_text = 1;
+                        }
+                    });
+
+
                 lower_chart.append("path")
                     .datum(data)
                     .attr("class","line")
@@ -316,6 +361,7 @@
             var t = d3.event.transform;
             console.log(d3.event.transform);
             x.domain(t.rescaleX(lower_x).domain());
+            chart.selectAll(".bars").attr("x", function (d) { return x(new Date(d.date))})
             chart.select(".line").attr("d",line);
             chart.select(".axis_x").call(xAxis);
             d3.select(".brush").call(brush.move,x.range().map(t.invertX,t));
