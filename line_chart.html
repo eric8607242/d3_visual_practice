@@ -296,18 +296,15 @@
                     .attr("d", lower_line)
                     .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
             
-                chart.selectAll("rect.bars")   
+                chart.selectAll("circle.bars")   
                     .data(happen_data)
                     .enter()
-                    .append("rect") 
+                    .append("circle") 
                     .attr("class", "bars")
-                    .attr("height", "30")
-                    .attr("width", "30")
-                    .attr("rx", 5)//圓弧
-                    .attr("ry", 5)
+                    .attr("r", "10")
                     .attr("fill", "lightgray")
-                    .attr("x", function (d) { return x(new Date(d.date))})
-                    .attr("y", 100)
+                    .attr("cx", function (d) { return x(new Date(d.date))})
+                    .attr("cy", 100)
                     .on("mouseover",function(d){
                         if(check_happen_text === 0){
                             d3.select('#rect_illu')
@@ -361,7 +358,7 @@
             var t = d3.event.transform;
             console.log(d3.event.transform);
             x.domain(t.rescaleX(lower_x).domain());
-            chart.selectAll(".bars").attr("x", function (d) { return x(new Date(d.date))})
+            chart.selectAll(".bars").attr("cx", function (d) { return x(new Date(d.date))})
             chart.select(".line").attr("d",line);
             chart.select(".axis_x").call(xAxis);
             d3.select(".brush").call(brush.move,x.range().map(t.invertX,t));
