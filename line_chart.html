@@ -17,8 +17,7 @@
           
     <div id = 'rect_know'>確定</div>
     <div id = 'rect_illu'></div>
-    
-    <button id='test' onclick="retest()">test</button>
+    <!--<button id='test' onclick="retest()">test</button>-->
     <script>
         var width = 1050;
         var height = 530;
@@ -252,8 +251,44 @@
                     .attr("d", lower_line)
                     .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
             
-
-                var temp = chart.selectAll("circle.bars")   
+                
+                chart.selectAll("images")
+                    .data(happen_data)
+                    .enter()
+                    .append("image")
+                    .attr("class","images")
+                    .attr("xlink:href", "./pin.png")
+                    .attr("width", 50)
+                    .attr("height", 50)
+                    .style("cursor","pointer")
+                    .attr("x", function (d) { return x(new Date(d.date))-15})
+                    .attr("y",function (d) { return y(d.price)-40})
+                    .on("mouseover",function(d){                           
+                        d3.select('#rect_illu')
+                        .style("width","15%")
+                        .style("height","150px");
+                        d3.select('#rect_illu').append('text')
+                            .attr("fill", "black")
+                            .attr("y", 0)
+                            .attr("x", 0)
+                            .attr("dy", "1em")
+                            .attr("font-size", "10px")
+                            .attr("text-anchor", "middle")
+                            .text(d.content);
+                        console.log(y(d.price));
+                })
+                .on("mouseout",function(d){
+                   d3.select('#rect_illu').select("text").remove();     
+                        d3.select('#rect_illu')
+                            .style("width","0")
+                            .style("height","0");
+                })
+                .on("click",function(d){
+                    window.open(d.web)
+                });
+                   
+                
+                /*chart.selectAll("circle.bars")   
                     .data(happen_data)
                     .enter()
                     .append("circle") 
@@ -278,7 +313,7 @@
                                 .attr("font-size", "10px")
                                 .attr("text-anchor", "middle")
                                 .text(d.content);
-                            console.log(d.content);
+                            console.log(y(d.price));
                     })
                     .on("mouseout",function(d){
                         d3.select(this)
@@ -291,7 +326,7 @@
                     })
                     .on("click",function(d){
                         window.open(d.web)
-                    });
+                    });*/
                
                 lower_chart.append("path")
                     .datum(data)
@@ -315,6 +350,7 @@
             console.log(d3.event.transform);
             x.domain(t.rescaleX(lower_x).domain());
             chart.selectAll(".bars").attr("cx", function (d) { return x(new Date(d.date))})
+            chart.selectAll(".images").attr("x", function (d) { return x(new Date(d.date))-15})
             chart.select(".line").attr("d",line);
             chart.select(".axis_x").call(xAxis);
             d3.select(".brush").call(brush.move,x.range().map(t.invertX,t));
@@ -326,6 +362,7 @@
             console.log(s);
             x.domain(s.map(lower_x.invert,lower_x));
             chart.selectAll(".bars").attr("cx", function (d) { return x(new Date(d.date))})
+            chart.selectAll(".images").attr("x", function (d) { return x(new Date(d.date))-15})
             chart.select(".line").attr("d",line);
             chart.select(".axis_x").call(xAxis);
             svg.select(".zoom").call(zoom.transform,d3.zoomIdentity
