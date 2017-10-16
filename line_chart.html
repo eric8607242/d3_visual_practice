@@ -224,7 +224,7 @@
                             .attr("y", y(date_obj.price) + 15)
                             .attr("font-size", "13px")
                             .attr("x", d3.event.x-mouse_offset+50)
-                            .text(function (d) { return date_obj.date.toLocaleString().substr(0, 8) + " " + date_obj.price; });
+                            .text(function (d) { return date_obj.date.toLocaleString().substr(0, 9) + " " + date_obj.price; });
                     })
 
                 chart.append("path")
@@ -286,53 +286,12 @@
                 .on("click",function(d){
                     window.open(d.web)
                 });
-                   
-                
-                /*chart.selectAll("circle.bars")   
-                    .data(happen_data)
-                    .enter()
-                    .append("circle") 
-                    .attr("class", "bars")
-                    .attr("r", "5")
-                    .attr("fill", "orange")
-                    .style("cursor","pointer")
-                    .attr("cx", function (d) { return x(new Date(d.date))})
-                    .attr("cy", function (d) { return y(d.price)})
-                    .on("mouseover",function(d){ 
-                            d3.select(this)
-                            .attr("r","8")
-                            .attr("fill","yellow")                           
-                            d3.select('#rect_illu')
-                            .style("width","20%")
-                            .style("height","200px");
-                            d3.select('#rect_illu').append('text')
-                                .attr("fill", "black")
-                                .attr("y", 0)
-                                .attr("x", 0)
-                                .attr("dy", "1em")
-                                .attr("font-size", "10px")
-                                .attr("text-anchor", "middle")
-                                .text(d.content);
-                            console.log(y(d.price));
-                    })
-                    .on("mouseout",function(d){
-                        d3.select(this)
-                        .attr("r","5")
-                        .attr("fill","orange") 
-                       d3.select('#rect_illu').select("text").remove();     
-                            d3.select('#rect_illu')
-                                .style("width","0")
-                                .style("height","0");
-                    })
-                    .on("click",function(d){
-                        window.open(d.web)
-                    });*/
-               
-                lower_chart.append("path")
-                    .datum(data)
-                    .attr("class","line")
-                    .attr("fill","lightblue")
-                    .attr("d",lower_data(data));
+                  
+            lower_chart.append("path")
+                .datum(data)
+                .attr("class","line")
+                .attr("fill","lightblue")
+                .attr("d",lower_data(data));
                 
             lower_chart.append("g")
                     .attr("class","brush")

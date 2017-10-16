@@ -1,6 +1,6 @@
 [
   {
-    "date":"103/8/4",
+    "date":"103/8/04",
     "price":"9280.29",
     "web": "http://www.cw.com.tw/article/article.action?id=5070461",
     "content":"八月台股大震盪，嚇壞所有投資人，誰能救救邊緣化的台股"
@@ -9,5 +9,36 @@
     "price":"7719.63",
     "web": "https://buzzorange.com/2015/08/24/stock-market-2/",
     "content":"全球股災敲響經濟喪鐘，台股跌幅史上最慘，你還在怪證所稅嗎？"
+  }
+  ,{
+    "date":"102/12/09",
+    "price":"8439.76",
+    "web": "http://news.ltn.com.tw/news/business/paper/735259",
+    "content":"台股驚驚漲 紅包行情機率高"
+  },{
+    "date":"102/2/21",
+    "price":"8020.52",
+    "web": "http://news.ltn.com.tw/news/business/paper/660830",
+    "content":"台股站上8000點 金融股強勢攻堅"
+  },{
+    "date":"102/5/22",
+    "price":"8414.06",
+    "web": "http://news.ltn.com.tw/news/business/breakingnews/810280",
+    "content":"外資買超新興亞股量縮 台股連3週居冠"
+  },{
+    "date":"102/4/16",
+    "price":"7690.91",
+    "web": "http://news.ltn.com.tw/news/business/paper/671075",
+    "content":"上週外資賣超台股 亞股之最"
+  },{
+    "date":"103/10/13",
+    "price":"8767.42",
+    "web": "https://news.cnyes.com/news/id/1165899?exp=b",
+    "content":"台股盤中─黑色星期一 半導體重挫 大盤狂瀉200點摜破年線"
+  },{
+    "date":"104/4/27",
+    "price":"9941.18",
+    "web": "https://news.cnyes.com/news/id/512082?exp=b",
+    "content":"外資買台股創8年單周新高 資金活水助漲萬點行情"
   }
 ]
