@@ -103,166 +103,202 @@
             .extent([[0, 0], [lower_width,lower_height]])
             .on("brush end",brushed);
         ///////////////////////////////
-        d3.json("happen.json",function(happen_data){
-            d3.csv("temp_data.csv", function (d) {//折線圖的資料輸入
-                d.date = new Date(d.date);
-                d.price = +parseInt(d.price);
-                return d;
-            }, function (error, data) {
-                if (error) { throw error; }
+        d3.json("happen1.json",function(happen_data1){
+            d3.json("happen.json",function(happen_data){
+                d3.csv("temp_data.csv", function (d) {//折線圖的資料輸入
+                    d.date = new Date(d.date);
+                    d.price = +parseInt(d.price);
+                    return d;
+                }, function (error, data) {
+                    if (error) { throw error; }
 
-                console.log(data[bisectDate(data,happen_data[0].date,1)]);//發生的事轉日期和價格
+                    console.log(data[bisectDate(data,happen_data[0].date,1)]);//發生的事轉日期和價格
 
-                x.domain(d3.extent(data, function (d) { return d.date; }));
-                y.domain(d3.extent(data, function (d) { return d.price; }));
+                    x.domain(d3.extent(data, function (d) { return d.date; }));
+                    y.domain(d3.extent(data, function (d) { return d.price; }));
 
-                lower_x.domain(d3.extent(data, function (d) { return d.date; }));
-                lower_y.domain(d3.extent(data, function (d) { return d.price; }));
+                    lower_x.domain(d3.extent(data, function (d) { return d.date; }));
+                    lower_y.domain(d3.extent(data, function (d) { return d.price; }));
 
-                chart.append("g")
-                    .attr("class", "axis_x")
-                    .attr("transform", "translate(0,500)")
-                    .call(xAxis)
-                    .select(".domain")
-                    .remove();
+                    chart.append("g")
+                        .attr("class", "axis_x")
+                        .attr("transform", "translate(0,500)")
+                        .call(xAxis)
+                        .select(".domain")
+                        .remove();
 
-                chart.append("g")
-                    .attr("class", "axis_y")
-                    .call(yAxis)
-                    .append("text")
-                    .attr("fill", "#000")
-                    .attr("transform", "rotate(-90)")
-                    .attr("y", 6)
-                    .attr("dy", "0.71em")
-                    .attr("text-anchor", "end")
-                    .text("Price($)");
+                    chart.append("g")
+                        .attr("class", "axis_y")
+                        .call(yAxis)
+                        .append("text")
+                        .attr("fill", "#000")
+                        .attr("transform", "rotate(-90)")
+                        .attr("y", 6)
+                        .attr("dy", "0.71em")
+                        .attr("text-anchor", "end")
+                        .text("Price($)");
 
-                chart.append("g")
-                    .attr("class", "path")
-                    .call(yAxis.ticks(10).tickFormat("").tickSize(-1050, 0))
-                    .attr("fill", "none")
-                    .attr("stroke", "rgba(0,0,0,.1)")
-                    .attr("opacity", 0.3)
-                    .attr("transform", "translate(0,-30)")
-                    .style("pointer-events", "none");
+                    chart.append("g")
+                        .attr("class", "path")
+                        .call(yAxis.ticks(10).tickFormat("").tickSize(-1050, 0))
+                        .attr("fill", "none")
+                        .attr("stroke", "rgba(0,0,0,.1)")
+                        .attr("opacity", 0.3)
+                        .attr("transform", "translate(0,-30)")
+                        .style("pointer-events", "none");
 
-                var rect_info = chart.append("rect")
-                    .attr("class", "check_rect_info")
-                    .attr("x", 0)
-                    .attr("y", 0)
-                    .attr("width", 0)
-                    .attr("height", 0)
-                    .attr("rx", 10)//圓弧
-                    .attr("ry", 10)
-                    .attr("opacity", 0.5)
-                    .attr("fill", "gray");
+                    var rect_info = chart.append("rect")
+                        .attr("class", "check_rect_info")
+                        .attr("x", 0)
+                        .attr("y", 0)
+                        .attr("width", 0)
+                        .attr("height", 0)
+                        .attr("rx", 10)//圓弧
+                        .attr("ry", 10)
+                        .attr("opacity", 0.5)
+                        .attr("fill", "gray");
 
-                var rect_info_text = chart
-                    .append("text")
-                    .attr("class", "check_rect_info_text")
-                    .attr("fill", "black")
-                    .attr("y", 0)
-                    .attr("x", 0)
-                    .attr("dy", "1em")
-                    .attr("font-size", "0px")
-                    .attr("text-anchor", "middle");
+                    var rect_info_text = chart
+                        .append("text")
+                        .attr("class", "check_rect_info_text")
+                        .attr("fill", "black")
+                        .attr("y", 0)
+                        .attr("x", 0)
+                        .attr("dy", "1em")
+                        .attr("font-size", "0px")
+                        .attr("text-anchor", "middle");
 
-                var circle_mouse = chart.append("circle")
-                    .attr("class", "check_circle_mouse")
-                    .data(data)
-                    .attr("r", 5)
-                    .attr("fill", "steelblue")
-                    .attr("cx", 0)
-                    .attr("cy", 0);
+                    var circle_mouse = chart.append("circle")
+                        .attr("class", "check_circle_mouse")
+                        .data(data)
+                        .attr("r", 5)
+                        .attr("fill", "steelblue")
+                        .attr("cx", 0)
+                        .attr("cy", 0);
 
-                var check_line = chart.append("line")
-                    .attr("class", "check_check_line")
-                    .attr("x1", 0)
-                    .attr("y1", 0)
-                    .attr("x2", width)
-                    .attr("y2", 0)
-                    .attr("stroke", "black")
-                    .attr("stroke-width", 0.5);
+                    var check_line = chart.append("line")
+                        .attr("class", "check_check_line")
+                        .attr("x1", 0)
+                        .attr("y1", 0)
+                        .attr("x2", width)
+                        .attr("y2", 0)
+                        .attr("stroke", "black")
+                        .attr("stroke-width", 0.5);
 
-                var check_line_1 = chart.append("line")
-                    .attr("class", "check_check_line_1")
-                    .attr("x1", 0)
-                    .attr("y1", 0)
-                    .attr("x2", 0)
-                    .attr("y2",500  )
-                    .attr("stroke", "black")
-                    .attr("stroke-width", 0.5);
+                    var check_line_1 = chart.append("line")
+                        .attr("class", "check_check_line_1")
+                        .attr("x1", 0)
+                        .attr("y1", 0)
+                        .attr("x2", 0)
+                        .attr("y2",500  )
+                        .attr("stroke", "black")
+                        .attr("stroke-width", 0.5);
 
-                var date_data = d3.map(data, function (d) { return d.date; })//可以將數據做轉換
+                    var date_data = d3.map(data, function (d) { return d.date; })//可以將數據做轉換
 
-                var mouse_offset = 250;
+                    var mouse_offset = 250;
 
-                svg//隨著滑鼠照著折線圖移動
-                    .on("mousemove", function (d) {
+                    svg//隨著滑鼠照著折線圖移動
+                        .on("mousemove", function (d) {
 
-                        var date_x = bisectDate(data, x.invert(d3.event.x-mouse_offset), 1);//將座標轉換成x軸的資料的index，invert將座標轉換成x軸資料
-                        var date_obj = data[date_x];//利用index拿到x軸座標的資料物件
-                        var temp = data[bisectDate(data,happen_data[0].date,1)];
+                            var date_x = bisectDate(data, x.invert(d3.event.x-mouse_offset), 1);//將座標轉換成x軸的資料的index，invert將座標轉換成x軸資料
+                            var date_obj = data[date_x];//利用index拿到x軸座標的資料物件
+                            var temp = data[bisectDate(data,happen_data[0].date,1)];
 
-                        circle_mouse
-                            .attr("cx", d3.event.x-mouse_offset)
-                            .attr("cy", function (d, i) {
-                                return y(date_obj.price)
-                            });//從data陣列中取出該座標對應的price的值
-                        check_line
-                            .attr("y1", y(date_obj.price))
-                            .attr("y2", y(date_obj.price));
-                        check_line_1
-                            .attr("x1", d3.event.x-mouse_offset)
-                            .attr("x2", d3.event.x-mouse_offset);
-                        rect_info
-                            .attr("x", d3.event.x-mouse_offset)
-                            .attr("y", y(date_obj.price))
-                            .attr("width", 100)
-                            .attr("height", 60);
-                        rect_info_text
-                            .attr("y", y(date_obj.price) + 15)
-                            .attr("font-size", "13px")
-                            .attr("x", d3.event.x-mouse_offset+50)
-                            .text(function (d) { return date_obj.date.toLocaleString().substr(0, 9) + " " + date_obj.price; });
-                    })
+                            circle_mouse
+                                .attr("cx", d3.event.x-mouse_offset)
+                                .attr("cy", function (d, i) {
+                                    return y(date_obj.price)
+                                });//從data陣列中取出該座標對應的price的值
+                            check_line
+                                .attr("y1", y(date_obj.price))
+                                .attr("y2", y(date_obj.price));
+                            check_line_1
+                                .attr("x1", d3.event.x-mouse_offset)
+                                .attr("x2", d3.event.x-mouse_offset);
+                            rect_info
+                                .attr("x", d3.event.x-mouse_offset)
+                                .attr("y", y(date_obj.price))
+                                .attr("width", 100)
+                                .attr("height", 60);
+                            rect_info_text
+                                .attr("y", y(date_obj.price) + 15)
+                                .attr("font-size", "13px")
+                                .attr("x", d3.event.x-mouse_offset+50)
+                                .text(function (d) { return date_obj.date.toLocaleString().substr(0, 9) + " " + date_obj.price; });
+                        })
 
-                chart.append("path")
-                    .datum(data)
-                    .attr("class", "line")
-                    .attr("fill", "none")
-                    .attr("stroke", "steelblue")
-                    .attr("stroke-linejoin", "round")
-                    .attr("stroke-linecap", "round")
-                    .attr("stroke-width", 0)
-                    .attr("d", line)
-                    .on("mouseout", function (e) {
-                    })
-                    .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
+                    chart.append("path")
+                        .datum(data)
+                        .attr("class", "line")
+                        .attr("fill", "none")
+                        .attr("stroke", "steelblue")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
+                        .attr("stroke-width", 0)
+                        .attr("d", line)
+                        .on("mouseout", function (e) {
+                        })
+                        .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
+                    
+                    var lower_path = lower_chart.append("path")
+                        .datum(data)
+                        .attr("class", "line")
+                        .attr("fill", "none")
+                        .attr("stroke", "steelblue")
+                        .attr("stroke-linejoin", "round")
+                        .attr("stroke-linecap", "round")
+                        .attr("stroke-width", 1.5)
+                        .attr("d", lower_line)
+                        .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
                 
-                var lower_path = lower_chart.append("path")
-                    .datum(data)
-                    .attr("class", "line")
-                    .attr("fill", "none")
-                    .attr("stroke", "steelblue")
-                    .attr("stroke-linejoin", "round")
-                    .attr("stroke-linecap", "round")
-                    .attr("stroke-width", 1.5)
-                    .attr("d", lower_line)
-                    .transition().duration(1000).delay(200).attr("stroke-width", 1.5);
-            
-                
-                chart.selectAll("images")
-                    .data(happen_data)
+                    
+                    chart.selectAll("images")
+                        .data(happen_data)
+                        .enter()
+                        .append("image")
+                        .attr("class","images")
+                        .attr("xlink:href", "./green.png")
+                        .attr("width", 40)
+                        .attr("height", 40)
+                        .style("cursor","pointer")
+                        .attr("x", function (d) { return (x(new Date(d.date)))})
+                        .attr("y",function (d) { return y(d.price)-35})
+                        .on("mouseover",function(d){                           
+                            d3.select('#rect_illu')
+                            .style("width","15%")
+                            .style("height","150px");
+                            d3.select('#rect_illu').append('text')
+                                .attr("fill", "black")
+                                .attr("y", 0)
+                                .attr("x", 0)
+                                .attr("dy", "1em")
+                                .attr("font-size", "10px")
+                                .attr("text-anchor", "middle")
+                                .text(d.content);
+                            console.log(y(d.price));
+                        })
+                        .on("mouseout",function(d){
+                            d3.select('#rect_illu').select("text").remove();     
+                                d3.select('#rect_illu')
+                                    .style("width","0")
+                                    .style("height","0");
+                        })
+                        .on("click",function(d){
+                            window.open(d.web)
+                        });
+
+                    chart.selectAll("images")
+                    .data(happen_data1)
                     .enter()
                     .append("image")
                     .attr("class","images")
-                    .attr("xlink:href", "./pin.png")
-                    .attr("width", 50)
-                    .attr("height", 50)
+                    .attr("xlink:href", "./blue.png")
+                    .attr("width", 40)
+                    .attr("height", 40)
                     .style("cursor","pointer")
-                    .attr("x", function (d) { return x(new Date(d.date))-15})
-                    .attr("y",function (d) { return y(d.price)-40})
+                    .attr("x", function (d) { return (x(new Date(d.date)))})
+                    .attr("y",function (d) { return y(d.price)-35})
                     .on("mouseover",function(d){                           
                         d3.select('#rect_illu')
                         .style("width","15%")
@@ -276,28 +312,29 @@
                             .attr("text-anchor", "middle")
                             .text(d.content);
                         console.log(y(d.price));
-                })
-                .on("mouseout",function(d){
-                   d3.select('#rect_illu').select("text").remove();     
-                        d3.select('#rect_illu')
-                            .style("width","0")
-                            .style("height","0");
-                })
-                .on("click",function(d){
-                    window.open(d.web)
-                });
-                  
-            lower_chart.append("path")
-                .datum(data)
-                .attr("class","line")
-                .attr("fill","lightblue")
-                .attr("d",lower_data(data));
+                    })
+                    .on("mouseout",function(d){
+                    d3.select('#rect_illu').select("text").remove();     
+                            d3.select('#rect_illu')
+                                .style("width","0")
+                                .style("height","0");
+                    })
+                    .on("click",function(d){
+                        window.open(d.web)
+                    });
+                    
+                lower_chart.append("path")
+                    .datum(data)
+                    .attr("class","line")
+                    .attr("fill","lightblue")
+                    .attr("d",lower_data(data));
+                    
+                lower_chart.append("g")
+                        .attr("class","brush")
+                        .call(brush)
+                        .call(brush.move,x.range());
                 
-            lower_chart.append("g")
-                    .attr("class","brush")
-                    .call(brush)
-                    .call(brush.move,x.range());
-            
+                });
             });
         });
 
