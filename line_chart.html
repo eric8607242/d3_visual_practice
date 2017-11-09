@@ -3,9 +3,9 @@
 <meta charset="utf-8">
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script type="text/javascript" src="re.js"></script>
-<script type="text/javascript" src="d3.js"></script>
-<script type="text/javascript" src="drag.js"></script>
+<script type="text/javascript" src="./javascript/re.js"></script>
+<script type="text/javascript" src="./javascript/d3.js"></script>
+<script type="text/javascript" src="./javascript/drag.js"></script>
 <link rel="stylesheet" type="text/css" href="style.css">
 
 <body>
@@ -103,9 +103,9 @@
             .extent([[0, 0], [lower_width,lower_height]])
             .on("brush end",brushed);
         ///////////////////////////////
-        d3.json("happen1.json",function(happen_data1){
-            d3.json("happen.json",function(happen_data){
-                d3.csv("temp_data.csv", function (d) {//折線圖的資料輸入
+        d3.json("./data/happen1.json",function(happen_data1){
+            d3.json("./data/happen.json",function(happen_data){
+                d3.csv("./data/temp_data.csv", function (d) {//折線圖的資料輸入
                     d.date = new Date(d.date);
                     d.price = +parseInt(d.price);
                     return d;
@@ -258,7 +258,7 @@
                         .enter()
                         .append("image")
                         .attr("class","images")
-                        .attr("xlink:href", "./green.png")
+                        .attr("xlink:href", "./pic/green.png")
                         .attr("width", 40)
                         .attr("height", 40)
                         .style("cursor","pointer")
@@ -293,7 +293,7 @@
                     .enter()
                     .append("image")
                     .attr("class","images")
-                    .attr("xlink:href", "./blue.png")
+                    .attr("xlink:href", "./pic/pin.png")
                     .attr("width", 40)
                     .attr("height", 40)
                     .style("cursor","pointer")
