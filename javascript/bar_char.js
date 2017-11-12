@@ -14,7 +14,7 @@ var bar_g = bar_svg.append("g").attr("transform", "translate(" + margin.left + "
 var bar_x = d3.scaleBand().range([0, width]),
     bar_y = d3.scaleLinear().range([height, 0]);
 
-d3.csv("../data/his_ele_cate.csv",function (d, i, columns) {
+d3.csv("./data/his_ele_cate.csv",function (d, i, columns) {
     return {
         year: +d.year,
         energy: columns.slice(1).map(function (key) {
