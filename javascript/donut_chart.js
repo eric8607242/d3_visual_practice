@@ -23,7 +23,7 @@ var water_svg = d3.select("body").append("svg")
     .attr("width", width)
     .attr("height", height)
     .append("g")
-    .attr("transform", "translate("+ width / 2 + "," + height / 2 + ")");
+    .attr("transform", "translate(" + width / 2 + "," + height / 2 + ")");
 
 var wind_svg = d3.select("body").append("svg")
     .attr("width", width)
@@ -49,20 +49,32 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
     console.log(data[1].pers);
     console.log(pie(data[1].pers));
     sun_svg.selectAll(".arc")
+        .attr("class", "arc")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("path")
+        .attr("class", "sun_path")
         .attr("d", arc)
-        .style("fill", function (d) { return color(d.data.name) });
-
-    sun_svg.append("text")
-        .attr("transform","translate("+-(radius-70)/2+",0)")
-        .attr("text_anchor","middle")
-        .attr("font-size","4em")
-        .attr("y",20)
-        .text("123");
-
-
-
+        .style("fill", function (d) { return color(d.data.name) })
+        .on("mouseenter", function (data) {
+            sun_svg.append('circle')
+                .attr("class", 'toolCircle')
+                .attr('r', radius - 75)
+                .attr("opacity", "0.35")
+                .style("fill", "blue");
+            sun_svg.append("text")
+                .attr("class", 'toolCircle')
+                .attr("transform", "translate(" + -(radius - 70) / 2 + ",0)")
+                .attr("text_anchor", "middle")
+                .attr("font-size", "2em")
+                .attr("y", 0)
+                .text(function (d) {
+                    console.log(data.value);
+                    return data.value
+                });
+        })
+        .on("mouseout", function (d) {
+            d3.selectAll(".toolCircle").remove();
+        });
 })
 
 d3.csv("./data/water.csv", function (d, i, columns) {
@@ -83,10 +95,32 @@ d3.csv("./data/water.csv", function (d, i, columns) {
     console.log(data[1].pers);
     console.log(pie(data[1].pers));
     water_svg.selectAll(".arc")
+        .attr("class", "arc")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("path")
         .attr("d", arc)
-        .style("fill", function (d) { return color(d.data.name) });
+        .style("fill", function (d) { return color(d.data.name) })
+        .on("mouseenter", function (data) {
+            console.log("111")
+            water_svg.append('circle')
+                .attr("class", 'toolCircle')
+                .attr('r', radius - 75)
+                .attr("opacity", "0.35")
+                .style("fill", "blue")
+            water_svg.append("text")
+                .attr("class", 'toolCircle')
+                .attr("transform", "translate(" + -(radius - 70) / 2 + ",0)")
+                .attr("text_anchor", "middle")
+                .attr("font-size", "2em")
+                .attr("y", 0)
+                .text(function (d) {
+                    console.log(data.value);
+                    return data.value
+                });
+        })
+        .on("mouseout", function (d) {
+            d3.selectAll(".toolCircle").remove();
+        });
 
 
 
@@ -109,11 +143,33 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
 
     console.log(pie(data[1].pers));
     wind_svg.selectAll(".arc")
+        .attr("class", "test")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("path")
         .attr("d", arc)
-        .style("fill", function (d) { return color(d.data.name) });
-
-
+        .style("fill", function (d) { return color(d.data.name) })
+        .on("mouseenter", function (data) {
+            console.log("111")
+            wind_svg.append('circle')
+                .attr("class", 'toolCircle')
+                .attr('r', radius - 75)
+                .attr("opacity", "0.35")
+                .style("fill", "blue")
+            wind_svg.append("text")
+                .attr("class", 'toolCircle')
+                .attr("transform", "translate(" + -(radius - 70) / 2 + ",0)")
+                .attr("text_anchor", "middle")
+                .attr("font-size", "2em")
+                .attr("y", 0)
+                .text(function (d) {
+                    console.log(data.value);
+                    return data.value
+                });
+        })
+        .on("mouseout", function (d) {
+            d3.selectAll(".toolCircle").remove();
+        });
 
 })
+
+

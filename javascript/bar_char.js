@@ -7,7 +7,8 @@ var bar_svg = d3.select("body")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
+var bar_color = d3.scaleOrdinal()
+                .range(["#FF5511","#FFFF33","#5599FF","	#00AA00"]);
 
 var bar_g = bar_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -30,6 +31,7 @@ d3.csv("../data/his_ele_cate.csv",function (d, i, columns) {
     console.log(data[30]);
     bar_x.domain(data[30].energy.map(function(d) { return d.name; }));
     bar_y.domain([0, d3.max(data[30].energy, function (d) {return d.percent;})]);
+    color.domain(data[30].energy.map(function(d) { return d.name; }));
 
     bar_g.append("g")
         .attr("transform","translate(0,"+height+")")
@@ -50,5 +52,6 @@ d3.csv("../data/his_ele_cate.csv",function (d, i, columns) {
         .attr("y",function(d){return bar_y(d.percent);})
         .attr("width","30")
         .attr("height",function(d){return height - bar_y(d.percent);})
-        .attr("fill",function (d) { return color(d.name)});
+        .attr("opacity","0.75")
+        .attr("fill",function (d) { return bar_color(d.name)});
 });
