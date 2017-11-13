@@ -15,7 +15,7 @@ var bar_g = bar_svg.append("g").attr("transform", "translate(" + margin.left + "
 var bar_x = d3.scaleBand().range([0, width]),
     bar_y = d3.scaleLinear().range([height, 0]);
 
-d3.csv("../data/his_ele_cate.csv",function (d, i, columns) {
+d3.csv("./data/his_ele_cate.csv",function (d, i, columns) {
     return {
         year: +d.year,
         energy: columns.slice(1).map(function (key) {
@@ -52,6 +52,10 @@ d3.csv("../data/his_ele_cate.csv",function (d, i, columns) {
         .attr("y",function(d){return bar_y(d.percent);})
         .attr("width","30")
         .attr("height",function(d){return height - bar_y(d.percent);})
+<<<<<<< HEAD
         .attr("opacity","0.75")
         .attr("fill",function (d) { return bar_color(d.name)});
+=======
+        .attr("fill",function (d) { return color(d.name)});
+>>>>>>> 6aeb1ec5abf8d90904a8d4c7d72aba0279def4f7
 });

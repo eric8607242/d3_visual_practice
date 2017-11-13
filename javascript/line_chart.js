@@ -34,7 +34,7 @@ var renewable_line = d3.line()
 
 
 
-d3.csv("../data/his_ele_cate.csv", function (d) {
+d3.csv("./data/his_ele_cate.csv", function (d) {
     d.year = +d.year;
     d.fire = +d.fire;
     d.nuclear = +d.nuclear;
