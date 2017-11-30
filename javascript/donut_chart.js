@@ -20,18 +20,24 @@ var pie = d3.pie()
 var sun_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
+    .attr("transform", "translate(" + donut_width / 2 + ",0)")
+    //.style("background-color","#FFFACD")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var water_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
+    .attr("transform", "translate(" + donut_width / 2 + ",0)")
+    //.style("background-color","#F0F8FF")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var wind_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
+    .attr("transform", "translate(" + donut_width / 2 + ",0)")
+    //.style("background-color","	#F0FFF0")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 

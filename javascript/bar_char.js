@@ -4,8 +4,10 @@ var margin = { top: 20, right: 80, bottom: 30, left: 50 },
 
 var bar_svg = d3.select("#bar")
     .append("svg")
+    .attr("transform", "translate(600,0)")
     .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom);
+    .attr("height", height + margin.top + margin.bottom)
+    
 
 var bar_color = d3.scaleOrdinal()
     .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00"]);
