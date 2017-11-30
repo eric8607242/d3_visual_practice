@@ -37,9 +37,9 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         }
     }
     console.log(max)
-    bar_x.domain(data[30].energy.map(function (d) { return d.name; }));
+    bar_x.domain(data[0].energy.map(function (d) { return d.name; }));
     bar_y.domain([0, max]);
-    color.domain(data[30].energy.map(function (d) { return d.name; }));
+    bar_color.domain(data[0].energy.map(function (d) { return d.name; }));
 
     bar_g.append("g")
         .attr("transform", "translate(0," + height + ")")
@@ -53,7 +53,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
 
 
     bar = bar_g.selectAll("rect")
-        .data(data[30].energy)
+        .data(data[0].energy)
         .enter()
     bar.append("rect")
         .attr("x", function (d) { return bar_x(d.name) + 15; })

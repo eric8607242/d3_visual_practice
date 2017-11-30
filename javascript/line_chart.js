@@ -132,18 +132,8 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
 })
 
 function chart_change(index) {
-    for (i = 0; i < sun_data.length; i++) {
-        if (sun_data[i].year) {
-            if (index === sun_data[i].year) {
-                console.log(pie(sun_data[i].pers))
-                sun.data(function (d) { return pie(sun_data[i].pers); })
-                    .enter()
-                sun.select("path")
-                    .attr("d", arc)
-                /*console.log("sunchange")
-                console.log(sun.data())*/
-            }
-        }
+    console.log(wind_data)
+    for (i = 0; i < wind_data.length; i++) {
         if (wind_data[i].year) {
             if (index === wind_data[i].year) {
                 wind.data(function (d) { return pie(wind_data[i].pers); })
@@ -153,6 +143,8 @@ function chart_change(index) {
                 //console.log(wind.data())
             }
         }
+    }
+    for (i = 0; i < water_data.length; i++) {
         if (water_data[i].year) {
             if (index === water_data[i].year) {
                 water.data(function (d) { return pie(water_data[i].pers); })
@@ -160,6 +152,19 @@ function chart_change(index) {
                 water.select("path")
                     .attr("d", arc)
                 //console.log(water.data())
+            }
+        }
+    }
+    for (i = 0; i < sun_data.length; i++) {
+        if (sun_data[i].year) {
+            if (index === sun_data[i].year) {
+                //console.log(pie(sun_data[i].pers))
+                sun.data(function (d) { return pie(sun_data[i].pers); })
+                    .enter()
+                sun.select("path")
+                    .attr("d", arc)
+                /*console.log("sunchange")
+                console.log(sun.data())*/
             }
         }
     }
@@ -172,11 +177,7 @@ function chart_change(index) {
                 .transition().duration(500)
                 .attr("y", function (d) { return bar_y(d.percent); })
                 .attr("height", function (d) { return height - bar_y(d.percent); })
-            console.log(bar.data())
+            //console.log(bar.data())
         }
     }
-}
-
-function bar_chart_change(index) {
-
 }

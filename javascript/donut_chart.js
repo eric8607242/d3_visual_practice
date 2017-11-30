@@ -1,14 +1,18 @@
 var margin = { top: 20, right: 50, bottom: 30, left: 50 },
-    donut_width =screen.availWidth * 0.3- margin.left - margin.right,
+    donut_width = screen.availWidth * 0.3 - margin.left - margin.right,
     donut_height = screen.availWidth * 0.2 - margin.top - margin.bottom,
     radius = Math.min(donut_width, donut_height) / 2;
 
 var arc = d3.arc()
     .outerRadius(radius - 30)
-    .innerRadius(radius - 70);
+    .innerRadius(radius - 80);
 
-var color = d3.scaleOrdinal(d3.schemeCategory10);
-
+var water_color = d3.scaleOrdinal()
+    .range(["#87CEFA", "#4169E1"]);
+var wind_color = d3.scaleOrdinal()
+    .range(["#32CD32", "#3CB371"]);
+var sun_color = d3.scaleOrdinal()
+    .range(["#FFDD55", "#FFBB00"]);
 var pie = d3.pie()
     .sort(null)
     .value(function (d) { return d.percent });
@@ -17,13 +21,13 @@ var sun_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
     .append("g")
-    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height/ 2 + ")");
+    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var water_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
     .append("g")
-    .attr("transform", "translate(" + donut_width / 2 + "," +donut_height / 2 + ")");
+    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var wind_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
@@ -53,34 +57,47 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
     sun_data = data;
     if (error) throw error;
 
-    color.domain(data.columns.slice(1));
-    console.log(data);
+    sun_color.domain(data[1].pers.map(function (d) { return d.name; }));
+    console.log(sun_color.range()[0]);
 
     sun = sun_svg.selectAll(".arc")
-        .data(function (d) { console.log(pie(data[1].pers));return pie(data[1].pers); })
+        .data(function (d) { return pie(data[1].pers); })
         .enter().append("g")
     sun_circle = sun.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", radius - 75)
+        .attr("r", radius - 85)
         .attr("fill", "white")
+    var sun_text = sun.append("text")
+        .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
+        .attr("dy", "0em")
+        .attr("font-size", "1em")
+        .style("text-anchor", "middle")
+        .style("fill", "black")
+        .text("")
     sun.append("path")
         .attr("d", arc)
-        .style("fill", function (d) { console.log(d);return color(d.data.name) })
+        .style("fill", function (d) { return sun_color(d.data.name) })
         .on("mouseenter", function (data) {
-            var select_value = d3.select(this).data()[0].data.name;
+            var select_name = d3.select(this).data()[0].data.name;
+            console.log(select_name)
+
             sun_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    return color(select_value)
+                    if (select_name === "台電") { return sun_color.range()[0]; }
+                    else { return sun_color.range()[1] }
                 })
-            console.log(select_value);
+            var select_value = d3.select(this).data()[0].value;
+            sun_text.text(select_value + "百萬度")
+            console.log(d3.select(this).data()[0].value);
+            //console.log(select_value);
         })
         .on("mouseout", function (d) {
             sun_circle.attr("opacity", 0)
         });
-        /*console.log("sun")
-        console.log(sun.data());*/
+    /*console.log("sun")
+    console.log(sun.data());*/
 
 
 })
@@ -99,30 +116,38 @@ d3.csv("./data/water.csv", function (d, i, columns) {
     water_data = data;
     if (error) throw error;
 
-    color.domain(data.columns.slice(1));
+    water_color.domain(data[1].pers.map(function (d) { return d.name; }));
 
     console.log(data[1].pers);
     console.log(pie(data[1].pers));
     water = water_svg.selectAll(".arc")
-        .attr("class", "arc")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("g")
+    var water_text = water.append("text")
+        .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
+        .attr("dy", "0em")
+        .attr("font-size", "1em")
+        .style("text-anchor", "middle")
+        .style("fill", "black")
+        .text("")
     water_circle = water.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", radius - 75)
+        .attr("r", radius - 85)
         .attr("fill", "white")
     water.append("path")
         .attr("d", arc)
-        .style("fill", function (d) { return color(d.data.name) })
+        .style("fill", function (d) { return water_color(d.data.name) })
         .on("mouseenter", function (data) {
-            var select_value = d3.select(this).data()[0].data.name;
+            var select_name = d3.select(this).data()[0].data.name;
             water_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    return color(select_value)
+                    if (select_name === "台電") { return water_color.range()[0]; }
+                    else { return water_color.range()[1] }
                 })
-            console.log(select_value);
+            var select_value = d3.select(this).data()[0].value;
+            water_text.text(select_value + "百萬度")
         })
         .on("mouseout", function (d) {
             water_circle.attr("opacity", 0)
@@ -145,61 +170,43 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
     wind_data = data;
     if (error) throw error;
 
-    color.domain(data.columns.slice(1));
+    wind_color.domain(data[1].pers.map(function (d) { return d.name; }));
 
 
     wind = wind_svg.selectAll(".arc")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("g")
+    var wind_text = wind.append("text")
+        .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
+        .attr("dy", "0em")
+        .attr("font-size", "1em")
+        .style("text-anchor", "middle")
+        .style("fill", "black")
+        .text("")
     wind_circle = wind.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", radius - 75)
+        .attr("r", radius - 85)
         .attr("fill", "white")
     wind.append("path")
         .attr("d", arc)
-        .style("fill", function (d) { return color(d.data.name) })
+        .style("fill", function (d) { return wind_color(d.data.name) })
         .on("mouseenter", function (data) {
-            var select_value = d3.select(this).data()[0].data.name;
+            var select_name = d3.select(this).data()[0].data.name;
             wind_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    return color(select_value)
+                    if (select_name === "台電") { return wind_color.range()[0]; }
+                    else { return wind_color.range()[1] }
                 })
-            console.log(select_value);
+            var select_value = d3.select(this).data()[0].value;
+            wind_text.text(select_value + "百萬度")
+            //console.log(select_value);
         })
         .on("mouseout", function (d) {
             wind_circle.attr("opacity", 0)
         });
-    console.log("wind")
-    console.log(wind.data())
+    //console.log("wind")
+    //console.log(wind.data())
 
 })
-
-function update_donut() {
-    console.log("enter function")
-    d3.csv("./data/sun.csv", function (d, i, columns) {
-        return {
-            year: +d.year,
-            pers: columns.slice(1).map(function (key) {
-                return {
-                    name: key,
-                    percent: +d[key]
-                };
-            })
-        };
-    }, function (error, data) {
-        console.log(pie(data[2].pers));
-        sun.data(function (d) { return pie(data[2].pers); })
-            .transition().duration(750).attrTween("d", arcTween);
-
-        function arcTween(d) {
-            var i = d3.interpolate(this._current, d);
-            this._current = i(0);
-            return function (t) {
-                return arc(i(t))
-            }
-        }
-    })
-
-}
