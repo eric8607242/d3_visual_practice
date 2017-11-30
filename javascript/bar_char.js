@@ -2,7 +2,7 @@ var margin = { top: 20, right: 80, bottom: 30, left: 50 },
     width = 400 - margin.left - margin.right,
     height = 360 - margin.top - margin.bottom;
 
-var bar_svg = d3.select("body")
+var bar_svg = d3.select("#bar")
     .append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom);
@@ -52,10 +52,5 @@ d3.csv("./data/his_ele_cate.csv",function (d, i, columns) {
         .attr("y",function(d){return bar_y(d.percent);})
         .attr("width","30")
         .attr("height",function(d){return height - bar_y(d.percent);})
-<<<<<<< HEAD
-        .attr("opacity","0.75")
         .attr("fill",function (d) { return bar_color(d.name)});
-=======
-        .attr("fill",function (d) { return color(d.name)});
->>>>>>> 6aeb1ec5abf8d90904a8d4c7d72aba0279def4f7
 });
