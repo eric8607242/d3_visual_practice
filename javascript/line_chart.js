@@ -144,7 +144,7 @@ function chart_change(index) {
                 console.log(sun.data())*/
             }
         }
-        if(wind_data[i].year){
+        if (wind_data[i].year) {
             if (index === wind_data[i].year) {
                 wind.data(function (d) { return pie(wind_data[i].pers); })
                     .enter()
@@ -153,7 +153,7 @@ function chart_change(index) {
                 //console.log(wind.data())
             }
         }
-        if(water_data[i].year){
+        if (water_data[i].year) {
             if (index === water_data[i].year) {
                 water.data(function (d) { return pie(water_data[i].pers); })
                     .enter()
@@ -163,10 +163,20 @@ function chart_change(index) {
             }
         }
     }
+    for (i = 0; i < bar_data.length; i++) {
+        //console.log(bar_data[i].year)
+        if (index === bar_data[i].year) {
+            bar.selectAll("rect").data(bar_data[i].energy)
+                .enter()
+            bar.selectAll("rect")
+                .transition().duration(500)
+                .attr("y", function (d) { return bar_y(d.percent); })
+                .attr("height", function (d) { return height - bar_y(d.percent); })
+            console.log(bar.data())
+        }
+    }
 }
 
-function bar_chart_change(index){
-    for (i = 0; i < bar_data.length; i++) {
-       console.log("test")
-    }
+function bar_chart_change(index) {
+
 }

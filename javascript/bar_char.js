@@ -30,10 +30,15 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
 }, function (error, data) {
     bar_data = data;
     console.log("bar")
-    console.log(bar_data)
-    //console.log(data[30]);
+    var max = 0;
+    for (i = 0; i < bar_data.length; i++) {
+        if (bar_data[i].energy[0].percent > max) {
+            max = bar_data[i].energy[0].percent;
+        }
+    }
+    console.log(max)
     bar_x.domain(data[30].energy.map(function (d) { return d.name; }));
-    bar_y.domain([0, d3.max(data[30].energy, function (d) { return d.percent; })]);
+    bar_y.domain([0, max]);
     color.domain(data[30].energy.map(function (d) { return d.name; }));
 
     bar_g.append("g")
@@ -51,7 +56,6 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .data(data[30].energy)
         .enter()
     bar.append("rect")
-        .attr("class", "bar")
         .attr("x", function (d) { return bar_x(d.name) + 15; })
         .attr("y", function (d) { return bar_y(d.percent); })
         .attr("width", "30")
