@@ -65,7 +65,6 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .attr("r", radius - 75)
         .attr("fill", "white")
     sun.append("path")
-        .attr("class", "sun_path")
         .attr("d", arc)
         .style("fill", function (d) { console.log(d);return color(d.data.name) })
         .on("mouseenter", function (data) {
@@ -80,6 +79,8 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .on("mouseout", function (d) {
             sun_circle.attr("opacity", 0)
         });
+        /*console.log("sun")
+        console.log(sun.data());*/
 
 
 })
@@ -148,7 +149,6 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
 
 
     wind = wind_svg.selectAll(".arc")
-        .attr("class", "test")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("g")
     wind_circle = wind.append("circle")
@@ -171,6 +171,8 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .on("mouseout", function (d) {
             wind_circle.attr("opacity", 0)
         });
+    console.log("wind")
+    console.log(wind.data())
 
 })
 

@@ -129,33 +129,44 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         line_move
             .attr("opacity", 0.5)
     }
-
-
 })
 
 function chart_change(index) {
-    //console.log(sun._groups["0"]["0"].__data__.data)
     for (i = 0; i < sun_data.length; i++) {
         if (sun_data[i].year) {
             if (index === sun_data[i].year) {
-
                 console.log(pie(sun_data[i].pers))
                 sun.data(function (d) { return pie(sun_data[i].pers); })
                     .enter()
-                    //.style("fill", function (d) { console.log(d.data.name)})
-                    sun.selectAll(".sun_path").attr("d", arc)
-                    .style("fill", function (d) { return color(d.data.name) });
-
+                sun.select("path")
+                    .attr("d", arc)
+                /*console.log("sunchange")
+                console.log(sun.data())*/
+            }
+        }
+        if(wind_data[i].year){
+            if (index === wind_data[i].year) {
+                wind.data(function (d) { return pie(wind_data[i].pers); })
+                    .enter()
+                wind.select("path")
+                    .attr("d", arc)
+                //console.log(wind.data())
+            }
+        }
+        if(water_data[i].year){
+            if (index === water_data[i].year) {
+                water.data(function (d) { return pie(water_data[i].pers); })
+                    .enter()
+                water.select("path")
+                    .attr("d", arc)
+                //console.log(water.data())
             }
         }
     }
+}
 
-
-    function arcTween(d) {
-        var i = d3.interpolate(this._current, d);
-        this._current = i(0);
-        return function (t) {
-            return arc(i(t))
-        }
+function bar_chart_change(index){
+    for (i = 0; i < bar_data.length; i++) {
+       console.log("test")
     }
 }
