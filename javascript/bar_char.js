@@ -31,7 +31,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
 
 }, function (error, data) {
     bar_data = data;
-    console.log("bar")
+    console.log(bar_data[0])
     var max = 0;
     for (i = 0; i < bar_data.length; i++) {
         if (bar_data[i].energy[0].percent > max) {

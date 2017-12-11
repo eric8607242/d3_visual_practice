@@ -63,12 +63,15 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
     sun_data = data;
     if (error) throw error;
 
+    console.log(sun_data[0].pers);
+
     sun_color.domain(data[1].pers.map(function (d) { return d.name; }));
     console.log(sun_color.range()[0]);
 
     sun = sun_svg.selectAll(".arc")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("g")
+    console.log(sun);
     sun_circle = sun.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
