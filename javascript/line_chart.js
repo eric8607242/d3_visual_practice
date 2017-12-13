@@ -14,24 +14,24 @@ var x = d3.scaleTime().range([0, line_width]),
     y = d3.scaleLinear().range([line_height, 0]);
 
 var fire_line = d3.line()
-    .curve(d3.curveBasis)
+    //.curve(d3.curveBasis)
     .x(function (d) { return x(d.year); })
     .y(function (d) { return y(d.fire); });
 
 var nuclear_line = d3.line()
-    .curve(d3.curveBasis)
+    //.curve(d3.curveBasis)
     .x(function (d) { return x(d.year); })
     .y(function (d) { return y(d.nuclear); });
 
 var water_line = d3.line()
-    .curve(d3.curveBasis)
+    //.curve(d3.curveBasis)
     .x(function (d) { return x(d.year); })
     .y(function (d) { return y(d.water); });
 
 var bisectDate = d3.bisector(function (d) { return d.year; }).left;
 
 var renewable_line = d3.line()
-    .curve(d3.curveBasis)
+    //.curve(d3.curveBasis)
     .x(function (d) { return x(d.year); })
     .y(function (d) { return y(d.renewable); });
 
@@ -63,7 +63,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     x.domain(d3.extent(data, function (d) { return d.year; }));
     console.log(x.domain());
     y.domain([0, d3.max(data, function (d) {
-        return Math.max(/*d.fire,*/ d.nuclear, d.water, d.renewable);
+        return Math.max(d.fire, d.nuclear, d.water, d.renewable);
     })]);
 
     line_g.append("g")
@@ -83,15 +83,23 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "red")
+        .attr("stroke", "#FFFF33")
         .attr("stroke-width", 2.5)
         .attr("d", nuclear_line);
+
+    var fire = line_g.append("path")
+        .datum(data)
+        .attr("fill", "none")
+        .attr("class", "line")
+        .attr("stroke", "#FF5511")
+        .attr("stroke-width", 2.5)
+        .attr("d", fire_line);
 
     line_g.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "orange")
+        .attr("stroke", "#5599FF")
         .attr("stroke-width", 2.5)
         .attr("d", water_line);
 
@@ -99,9 +107,34 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "green")
+        .attr("stroke", "#00AA00")
         .attr("stroke-width", 2.5)
         .attr("d", renewable_line);
+
+    var circle = line_g.selectAll("line-circle")
+        .data(data)
+        .enter();
+
+    circle.append("circle")
+        .attr("r", 5)
+        .attr("cx", function (d) { return x(d.year); })
+        .attr("cy", function (d) { return y(d.water); });
+
+    circle.append("circle")
+        .attr("r", 5)
+        .attr("cx", function (d) { return x(d.year); })
+        .attr("cy", function (d) { return y(d.fire); });
+
+    circle.append("circle")
+        .attr("r", 5)
+        .attr("cx", function (d) { return x(d.year); })
+        .attr("cy", function (d) { return y(d.nuclear); });
+
+    circle.append("circle")
+        .attr("r", 5)
+        .attr("cx", function (d) { return x(d.year); })
+        .attr("cy", function (d) { return y(d.renewable); });
+
     cir_move
         .call(d3.drag()
             .on("start", function (d) { line_move.attr("opacity", 1); })
@@ -132,7 +165,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
 })
 
 function chart_change(index) {
-    console.log(wind_data)
+    //console.log(wind_data)
     for (i = 0; i < wind_data.length; i++) {
         if (wind_data[i].year) {
             if (index === wind_data[i].year) {
@@ -180,4 +213,19 @@ function chart_change(index) {
             //console.log(bar.data())
         }
     }
+    for (i = 0; i < scale_data.length; i++) {
+        if (index === scale_data[i].year) {
+            scale_total = 0;
+            for (j = 0; j < scale_data[i].energy.length; j++) {
+                scale_total = scale_data[i].energy[j].percent + scale_total;
+
+            }
+            console.log(scale_total);
+            scale.data(function (d) { return scale_pie(scale_data[i].energy); })
+                .enter();
+            scale.select("path")
+                .attr("d", scale_arc);
+        }
+    }
+    
 }
