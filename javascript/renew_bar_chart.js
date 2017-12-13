@@ -1,5 +1,5 @@
 var renew_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    renew_width = 1000 - renew_margin.left - renew_margin.right,
+    renew_width = screen.availWidth*0.5 - renew_margin.left - renew_margin.right,
     renew_height = 200 - renew_margin.top - renew_margin.bottom;
 
 var renew_bar_svg = d3.select("#renew_bar")
@@ -93,10 +93,7 @@ d3.csv("./data/water.csv", function (d, i, columns) {
 
     renew_bar_svg.append("g")
         .attr("transform", "translate(-1,0)")
-        .call(d3.axisLeft(renew_y))
-        .append("text")
-        .attr("dy", "em");
-
+        .call(d3.axisLeft(renew_y));
 
     renew.append("rect")
         .attr("x", function (d) { return /*renew_x(d.name)*/0; })

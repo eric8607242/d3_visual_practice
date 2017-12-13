@@ -6,7 +6,7 @@ var line_svg = d3.select("#line")
     .append("svg")
     .attr("width", line_width + margin.left + margin.right)
     .attr("height", line_height + margin.top + margin.bottom)
-    .attr("transform", "translate(" + line_width / 2 + ",0)");
+    .attr("transform", "translate(" + line_width*2 / 3 + ",0)");
 
 var line_g = line_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

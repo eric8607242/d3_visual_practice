@@ -1,5 +1,5 @@
 var scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    scale_width = 1600 - scale_margin.left - scale_margin.right,
+    scale_width = screen.availWidth - scale_margin.left - scale_margin.right,
     scale_height = 400 - scale_margin.top - scale_margin.bottom,
     scale_radius = Math.min(scale_width, scale_height) / 2;
 
@@ -7,8 +7,8 @@ var scale_svg = d3.select("#scale")
     .append("svg")
     .attr("width", scale_width + scale_margin.left + scale_margin.right)
     .attr("height", scale_height + scale_margin.top + scale_margin.bottom)
-    //.attr("transform", "translate(" + scale_width/8 + ",0)")
-    .append("g").attr("transform", "translate(" + scale_width / 2 + "," + scale_height / 2 + ")");
+    //.attr("transform", "translate（1000,0)")
+    .append("g").attr("transform", "translate(" + scale_width /2+ "," + scale_height / 2 + ")");
 
 var scale_color = d3.scaleOrdinal()
     .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00"]);
@@ -91,5 +91,20 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         })
         .on("mouseout", function (d) {
             scale_circle.attr("opacity", 0)
+        });
+        scale.append("text")
+        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+        //.attr("dy", "0.3em")
+        .attr("text-anchor", "middle")
+        .text(function (d) { 
+            if(d.data.name == "renewable"){
+                return "再生能源"
+            }else if(d.data.name == "nuclear"){
+                return "核能"
+            }else if(d.data.name == "fire"){
+                return "火力"
+            }else{
+                return "水力"
+            } 
         });
 })
