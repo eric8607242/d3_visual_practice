@@ -105,6 +105,11 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .on("mouseout", function (d) {
             sun_circle.attr("opacity", 0)
         });
+    sun.append("text")
+        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(function (d) { console.log(d); return d.data.name; });
     /*console.log("sun")
     console.log(sun.data());*/
 
@@ -161,6 +166,11 @@ d3.csv("./data/water.csv", function (d, i, columns) {
         .on("mouseout", function (d) {
             water_circle.attr("opacity", 0)
         });
+    water.append("text")
+        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(function (d) { console.log(d); return d.data.name; });
 
 
 
@@ -183,7 +193,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
 
 
     wind = wind_svg.selectAll(".arc")
-        .data(function (d) { return pie(data[1].pers); })
+        .data(function (d) { return pie(data[6].pers); })
         .enter().append("g")
     var wind_text = wind.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
@@ -215,6 +225,11 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .on("mouseout", function (d) {
             wind_circle.attr("opacity", 0)
         });
+    wind.append("text")
+        .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+        .attr("dy", ".35em")
+        .attr("text-anchor", "middle")
+        .text(function (d) { console.log(d); return d.data.name; });
     //console.log("wind")
     //console.log(wind.data())
 

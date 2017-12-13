@@ -169,10 +169,17 @@ function chart_change(index) {
     for (i = 0; i < wind_data.length; i++) {
         if (wind_data[i].year) {
             if (index === wind_data[i].year) {
+                wind.selectAll("text").remove();
                 wind.data(function (d) { return pie(wind_data[i].pers); })
                     .enter()
                 wind.select("path")
                     .attr("d", arc)
+                
+                wind.append("text")
+                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                    .attr("dy", ".35em")
+                    .attr("text-anchor", "middle")
+                    .text(function (d) { console.log(d); return d.data.name; });
                 //console.log(wind.data())
             }
         }
@@ -180,10 +187,16 @@ function chart_change(index) {
     for (i = 0; i < water_data.length; i++) {
         if (water_data[i].year) {
             if (index === water_data[i].year) {
+                water.selectAll("text").remove();
                 water.data(function (d) { return pie(water_data[i].pers); })
                     .enter()
                 water.select("path")
                     .attr("d", arc)
+                water.append("text")
+                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                    .attr("dy", ".35em")
+                    .attr("text-anchor", "middle")
+                    .text(function (d) { console.log(d); return d.data.name; });
                 //console.log(water.data())
             }
         }
@@ -192,10 +205,16 @@ function chart_change(index) {
         if (sun_data[i].year) {
             if (index === sun_data[i].year) {
                 //console.log(pie(sun_data[i].pers))
+                sun.selectAll("text").remove();
                 sun.data(function (d) { return pie(sun_data[i].pers); })
                     .enter()
                 sun.select("path")
                     .attr("d", arc)
+                sun.append("text")
+                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+                    .attr("dy", ".35em")
+                    .attr("text-anchor", "middle")
+                    .text(function (d) { console.log(d); return d.data.name; });
                 /*console.log("sunchange")
                 console.log(sun.data())*/
             }
@@ -227,5 +246,5 @@ function chart_change(index) {
                 .attr("d", scale_arc);
         }
     }
-    
+
 }

@@ -1,9 +1,10 @@
 var renew_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    renew_width = 400 - renew_margin.left - renew_margin.right,
-    renew_height = 360 - renew_margin.top - renew_margin.bottom;
+    renew_width = 1000 - renew_margin.left - renew_margin.right,
+    renew_height = 200 - renew_margin.top - renew_margin.bottom;
 
 var renew_bar_svg = d3.select("#renew_bar")
     .append("svg")
+    .attr("transform", "translate(400," + renew_margin.top + ")")
     //.attr("transform", "translate(600,0)")
     .attr("width", renew_width + renew_margin.left + renew_margin.right)
     .attr("height", renew_height + renew_margin.top + renew_margin.bottom)
@@ -12,7 +13,7 @@ var renew_bar_svg = d3.select("#renew_bar")
 //var renew_g = renew_bar_svg.append("g").attr("transform", "translate(" + renew_margin.left + "," + renew_margin.top + ")");
 
 var renew_color = d3.scaleOrdinal()
-    .range(["#FF5511", "#FFFF33", "#5599FF", "  #00AA00"]);
+    .range(["#3CB371", "#4169E1", "#FFBB00"]);
 
 var renew_x = d3.scaleLinear().range([0, renew_width]),
     renew_y = d3.scaleBand().range([renew_height, 0]);
@@ -61,15 +62,15 @@ d3.csv("./data/water.csv", function (d, i, columns) {
     var max = 0;
 
     for (i = 0; i < tota_arr.length; i++) {
-        if (tota_arr[i].values[2].total > max) {
-            max = tota_arr[i].values[2].total;
+        if (tota_arr[i].values[1].total > max) {
+            max = tota_arr[i].values[1].total;
         }
     }
-
+    //console.log(tota_arr[1].values[1]);
     console.log(max);
     console.log(tota_arr);
 
-    renew_y.domain(tota_arr[0].values.map(function (d) {console.log(d.name); return d.name }));
+    renew_y.domain(tota_arr[0].values.map(function (d) { console.log(d.name); return d.name }));
     renew_x.domain([0, max]);
 
     //renew_x.domain(tota_arr[0].values.map(function (d) { return d.name }));
@@ -80,19 +81,29 @@ d3.csv("./data/water.csv", function (d, i, columns) {
         .enter();
 
     renew_bar_svg.append("g")
-        .attr("transform","translate(0,"+renew_height+")")
+        .attr("transform", "translate(0," + renew_height + ")")
         .call(d3.axisBottom(renew_x))
+        .append("text")
+        .attr("y", 30)
+        .attr("x", renew_width)
+        .attr("dy", "-0.1em")
+        .style("fill", "black")
+        .text("百萬度");
+
 
     renew_bar_svg.append("g")
-        .call(d3.axisLeft(renew_y));
+        .attr("transform", "translate(-1,0)")
+        .call(d3.axisLeft(renew_y))
+        .append("text")
+        .attr("dy", "em");
 
 
     renew.append("rect")
-        .attr("x",function(d){return /*renew_x(d.name)*/0;})
-        .attr("y",function(d){console.log(d.name);return renew_y(d.name);})
-        .attr("width",/*"30"*/function(d){return renew_x(d.total); })
-        .attr("height",function(d){return /*renew_height-renew_y(d.total)*/30;})
-        .attr("fill",function(d){return renew_color(d.name)});
+        .attr("x", function (d) { return /*renew_x(d.name)*/0; })
+        .attr("y", function (d) { console.log(d.name); return renew_y(d.name) + 10; })
+        .attr("width",/*"30"*/function (d) { return renew_x(d.total); })
+        .attr("height", function (d) { return /*renew_height-renew_y(d.total)*/30; })
+        .attr("fill", function (d) { return renew_color(d.name) });
 
 })
 
