@@ -113,7 +113,7 @@ function data_anyl() {
     var temp_wind = 0;
     var j = 0;
     var arr_value = new Array;
-    for (i = 6; i < wind_tot_da.length - 1; i++) {
+    for (i = 0; i < wind_tot_da.length - 1; i++) {
 
         for (k = 0; k < water_tot_da[j].pers.length; k++) {
             temp_sun = temp_sun + sun_tot_da[j].pers[k].percent;
