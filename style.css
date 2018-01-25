@@ -2,6 +2,7 @@
 
 body{
     font-family: 'Noto Sans TC', sans-serif;
+    
 }
 
 #rect_illu{
@@ -40,6 +41,8 @@ body{
     background-color:lightgray;
     transform:translateX(20%);
     text-align:center;
+    
+    
 }
 #line{
     position:relative;
@@ -47,6 +50,7 @@ body{
     border-radius: 10px;
     background-color:lightgray;
     transform:translateX(55%);
+    text-align:center;
 }
 #scale{
     position:relative;
@@ -54,6 +58,7 @@ body{
     border-radius: 10px;
     background-color:lightgray;
     transform:translateX(5%);
+    text-align:center;
 }
 #sun_donut{
     position:relative;
@@ -61,6 +66,7 @@ body{
     border-radius: 10px;
     background-color:lightgray;
     transform:translateX(25%);
+    text-align:center;
 }
 .jumbotron{
     position: absolute;

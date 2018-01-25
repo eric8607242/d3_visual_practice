@@ -8,7 +8,7 @@ var scale_svg = d3.select("#scale")
     .attr("width", scale_width + scale_margin.left + scale_margin.right)
     .attr("height", scale_height + scale_margin.top + scale_margin.bottom)
     //.attr("transform", "translate（1000,0)")
-    .append("g").attr("transform", "translate(" + scale_width / 2 + "," + scale_height / 2 + ")");
+    .append("g").attr("transform", "translate(" + scale_width *1.1/ 2 + "," + scale_height / 2 + ")");
 
 var scale_color = d3.scaleOrdinal()
     .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00"]);
@@ -104,12 +104,10 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .style("fill", function (d) { return scale_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
-            //console.log(d3.select(this).data()[0].data)
-            // console.log("--------------------")
             scale_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    // console.log("--------------------")
+                    console.log("------------------")
                     if (select_name == "fire") { return scale_color.range()[0]; }
                     else if (select_name == "nuclear") { return scale_color.range()[1] }
                     else if (select_name == "water") { return scale_color.range()[2] }

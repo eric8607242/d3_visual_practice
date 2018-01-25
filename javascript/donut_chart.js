@@ -75,12 +75,12 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .attr("fill", "white")
     var sun_text = sun.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
-        .attr("dy", "0.5em")
-        .attr("font-size", "1em")
+        .attr("dy", "0.8em")
+        .attr("font-size", "1.3em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("")
-    var sun_text_name = sun.append("text")
+    var sun_text_type = sun.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-0.8em")
         .attr("font-size", "0.9em")
@@ -99,8 +99,6 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .style("fill", function (d) { return sun_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
-            console.log(select_name)
-
             sun_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
@@ -109,14 +107,10 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
                 })
             var select_value = d3.select(this).data()[0].value;
             sun_text_year.text("民國" + select_cir_year + "年")
-            sun_text_name.text(select_name + "發電量達")
-            sun_text.text(select_value + "百萬度")
-            console.log(d3.select(this).data()[0].value);
-
-            //console.log(select_value);
+            sun_text_type.text(select_name + "發電量達")
+            sun_text.text( select_value + "百萬度")
         })
         .on("mouseout", function (d) {
-            //sun_circle.attr("opacity", 0)
         });
     sun.append("text")
         .attr("class", "text_remove_sun")
@@ -124,8 +118,6 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
         .text(function (d) { console.log(d); return d.data.name; });
-    /*console.log("sun")
-    console.log(sun.data());*/
 
 
 })
@@ -146,19 +138,17 @@ d3.csv("./data/water.csv", function (d, i, columns) {
 
     water_color.domain(data[1].pers.map(function (d) { return d.name; }));
 
-    console.log(data[1].pers);
-    console.log(pie(data[1].pers));
     water = water_svg.selectAll(".arc")
         .data(function (d) { return pie(data[1].pers); })
         .enter().append("g")
     var water_text = water.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
-        .attr("dy", "0.5em")
-        .attr("font-size", "1em")
+        .attr("dy", "0.8em")
+        .attr("font-size", "1.3em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("")
-    var water_text_name = water.append("text")
+    var water_text_type = water.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-0.8em")
         .attr("font-size", "0.9em")
@@ -190,11 +180,10 @@ d3.csv("./data/water.csv", function (d, i, columns) {
                 })
             var select_value = d3.select(this).data()[0].value;
             water_text_year.text("民國" + select_cir_year + "年")
-            water_text_name.text(select_name + "發電量達")
-            water_text.text(select_value + "百萬度")
+            water_text_type.text(select_name + "發電量達")
+            water_text.text(Math.round(select_value) + "百萬度")
         })
         .on("mouseout", function (d) {
-            //water_circle.attr("opacity", 0)
         });
     water.append("text")
         .attr("class", "text_remove_water")
@@ -228,12 +217,12 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .enter().append("g")
     var wind_text = wind.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
-        .attr("dy", "0.5em")
-        .attr("font-size", "1em")
+        .attr("dy", "0.8em")
+        .attr("font-size", "1.3em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("")
-    var wind_text_name = wind.append("text")
+    var wind_text_type = wind.append("text")
         .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-0.8em")
         .attr("font-size", "0.9em")
@@ -266,12 +255,10 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
                 })
             var select_value = d3.select(this).data()[0].value;
             wind_text_year.text("民國" + select_cir_year + "年")
-            wind_text_name.text(select_name + "發電量達")
-            wind_text.text(select_value + "百萬度")
-            //console.log(select_value);
+            wind_text_type.text(select_name + "發電量達")
+            wind_text.text(Math.round(select_value) + "百萬度")
         })
         .on("mouseout", function (d) {
-            // wind_circle.attr("opacity", 0)
         });
     wind.append("text")
         .attr("class", "text_remove_wind")
@@ -279,7 +266,4 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
         .text(function (d) { console.log(d); return d.data.name; });
-    //console.log("wind")
-    //console.log(wind.data())
-
 })
