@@ -1,12 +1,12 @@
 var margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    line_width = screen.availWidth * 0.5 - margin.left - margin.right,
+    line_width = screen.availWidth * 0.48 - margin.left - margin.right,
     line_height = screen.availWidth * 0.15 - margin.top - margin.bottom;
 
-var line_svg = d3.select("#line")
+var line_svg = d3.select("#scale")
     .append("svg")
     .attr("width", line_width + margin.left + margin.right)
     .attr("height", line_height + margin.top + margin.bottom)
-    .attr("transform", "translate(0,0)");
+    .attr("transform", "translate(0,-100)");
 
 var line_g = line_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

@@ -42,6 +42,31 @@ var wind_svg = d3.select("#sun_donut").append("svg")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
+var sun_label_text = sun_svg.append("text")
+    .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
+    .attr("dy", "-5.5em")
+    .attr("font-size", "1.3em")
+    .style("text-anchor", "middle")
+    .style("fill", "black")
+    .text("太陽能發電")
+
+    var water_label_text = water_svg.append("text")
+    .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
+    .attr("dy", "-5.5em")
+    .attr("font-size", "1.3em")
+    .style("text-anchor", "middle")
+    .style("fill", "black")
+    .text("水力發電")
+    
+    var wind_label_text = wind_svg.append("text")
+    .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
+    .attr("dy", "-5.5em")
+    .attr("font-size", "1.3em")
+    .style("text-anchor", "middle")
+    .style("fill", "black")
+    .text("風力發電")
+    
+
 var sun;
 var water;
 var wind;
@@ -108,7 +133,7 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
             var select_value = d3.select(this).data()[0].value;
             sun_text_year.text("民國" + select_cir_year + "年")
             sun_text_type.text(select_name + "發電量達")
-            sun_text.text( select_value + "百萬度")
+            sun_text.text(select_value + "百萬度")
         })
         .on("mouseout", function (d) {
         });
