@@ -78,8 +78,6 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("")
-    /*console.log(scale);
-    console.log(pie(data[1].energy));*/
 
     var polyline = scale.append('polyline')
         .attr('points', calculatePoints)
@@ -93,25 +91,23 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
             console.log(select_name)
-
+            //console.log("--------------------")
             scale_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    if (select_name === "fire") { return scale_color.range()[0]; }
-                    else if (select_name === "nuclear") { return scale_color.range()[1] }
-                    else if (select_name === "water") { return scale_color.range()[2] }
-                    else if (select_name === "renewable") { return scale_color.range()[3] }
+                    console.log("--------------------")
+                    if (select_name == "fire") { return scale_color.range()[0]; }
+                    else if (select_name == "nuclear") { return scale_color.range()[1] }
+                    else if (select_name == "water") { return scale_color.range()[2] }
+                    else if (select_name == "renewable") { return scale_color.range()[3] }
                 })
             var select_value = d3.select(this).data()[0].value;
             var select_value_per = +((select_value / scale_total) * 100);
-            console.log(Math.round(select_value_per));
 
             scale_text.text(Math.round(select_value_per) + "%")
-            //console.log(d3.select(this).data()[0].value);
-            //console.log(select_value);
         })
         .on("mouseout", function (d) {
-            scale_circle.attr("opacity", 0)
+            //scale_circle.attr("opacity", 0)
         });
     scale.append("text")
         //.attr("transform", function (d) { return "translate(" + scale_text_arc.centroid(d) + ")"; })

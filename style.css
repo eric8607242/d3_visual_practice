@@ -33,7 +33,35 @@ body{
     text-anchor: middle;
     text-align: center;
 }
-
+#time{
+    position:relative;
+    width:fit-content;
+    border-radius: 10px;
+    background-color:lightgray;
+    transform:translateX(20%);
+    text-align:center;
+}
+#line{
+    position:relative;
+    width:fit-content;
+    border-radius: 10px;
+    background-color:lightgray;
+    transform:translateX(55%);
+}
+#scale{
+    position:relative;
+    width:fit-content;
+    border-radius: 10px;
+    background-color:lightgray;
+    transform:translateX(5%);
+}
+#sun_donut{
+    position:relative;
+    width:fit-content;
+    border-radius: 10px;
+    background-color:lightgray;
+    transform:translateX(25%);
+}
 .jumbotron{
     position: absolute;
     left: 15%;

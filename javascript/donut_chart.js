@@ -1,3 +1,4 @@
+
 var margin = { top: 20, right: 50, bottom: 30, left: 50 },
     donut_width = screen.availWidth * 0.3 - margin.left - margin.right,
     donut_height = screen.availWidth * 0.2 - margin.top - margin.bottom,
@@ -20,7 +21,7 @@ var pie = d3.pie()
 var sun_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
-    .attr("transform", "translate(" + donut_width / 2 + ",0)")
+    //.attr("transform", "translate(" + donut_width / 2 + ",0)")
     //.style("background-color","#FFFACD")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
@@ -28,7 +29,7 @@ var sun_svg = d3.select("#sun_donut").append("svg")
 var water_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
-    .attr("transform", "translate(" + donut_width / 2 + ",0)")
+    //.attr("transform", "translate(" + donut_width / 2 + ",0)")
     //.style("background-color","#F0F8FF")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
@@ -36,7 +37,7 @@ var water_svg = d3.select("#sun_donut").append("svg")
 var wind_svg = d3.select("#sun_donut").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
-    .attr("transform", "translate(" + donut_width / 2 + ",0)")
+    //.attr("transform", "translate(" + donut_width / 2 + ",0)")
     //.style("background-color","	#F0FFF0")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");

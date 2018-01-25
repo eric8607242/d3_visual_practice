@@ -46,6 +46,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         })
     };
 }, function (error, data) { wind_tot_da = data; })
+
 d3.csv("./data/water.csv", function (d, i, columns) {
     return {
         year: +d.year,

@@ -6,7 +6,7 @@ var line_svg = d3.select("#line")
     .append("svg")
     .attr("width", line_width + margin.left + margin.right)
     .attr("height", line_height + margin.top + margin.bottom)
-    .attr("transform", "translate(" + line_width*2 / 3 + ",0)");
+    .attr("transform", "translate(0,0)");
 
 var line_g = line_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 
@@ -39,17 +39,17 @@ var renewable_line = d3.line()
 var cir_move = line_g.append("circle")
     .attr("cx", 100)
     .attr("cy", 0)
-    .attr("r", 7)
+    .attr("r", 0)
     .attr("fill", "steelblue")
 
 
 var line_move = line_g.append("line")
-    .attr("x1", 100)
+    .attr("x1", 0)
     .attr("y1", 0)
-    .attr("x2", 100)
+    .attr("x2", 0)
     .attr("y2", line_height)
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 3);
+    .attr("stroke-width", 0);
 
 d3.csv("./data/his_ele_cate.csv", function (d) {
     d.year = +d.year;
@@ -165,6 +165,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
 })
 
 function chart_change(index) {
+    console.log(index)
     //console.log(wind_data)
     for (i = 0; i < wind_data.length; i++) {
         if (wind_data[i].year) {
@@ -179,7 +180,7 @@ function chart_change(index) {
                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
-                    .text(function (d) { console.log(d); return d.data.name; });
+                    .text(function (d) {  return d.data.name; });
                 //console.log(wind.data())
             }
         }
@@ -196,7 +197,7 @@ function chart_change(index) {
                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
-                    .text(function (d) { console.log(d); return d.data.name; });
+                    .text(function (d) { return d.data.name; });
                 //console.log(water.data())
             }
         }
@@ -214,7 +215,7 @@ function chart_change(index) {
                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
-                    .text(function (d) { console.log(d); return d.data.name; });
+                    .text(function (d) {  return d.data.name; });
                 /*console.log("sunchange")
                 console.log(sun.data())*/
             }
@@ -239,7 +240,7 @@ function chart_change(index) {
                 scale_total = scale_data[i].energy[j].percent + scale_total;
 
             }
-            console.log(scale_total);
+            //console.log(scale_total);
             scale.data(function (d) { return scale_pie(scale_data[i].energy); })
                 .enter();
             scale.select("path")
