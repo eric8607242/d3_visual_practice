@@ -1,5 +1,5 @@
 var scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    scale_width = screen.availWidth*0.5 - scale_margin.left - scale_margin.right,
+    scale_width = screen.availWidth * 0.5 - scale_margin.left - scale_margin.right,
     scale_height = 400 - scale_margin.top - scale_margin.bottom,
     scale_radius = Math.min(scale_width, scale_height) / 2;
 
@@ -8,7 +8,7 @@ var scale_svg = d3.select("#scale")
     .attr("width", scale_width + scale_margin.left + scale_margin.right)
     .attr("height", scale_height + scale_margin.top + scale_margin.bottom)
     //.attr("transform", "translate（1000,0)")
-    .append("g").attr("transform", "translate(" + scale_width *1.1/ 2 + "," + scale_height / 2 + ")");
+    .append("g").attr("transform", "translate(" + scale_width * 1.1 / 2 + "," + scale_height / 2 + ")");
 
 var scale_color = d3.scaleOrdinal()
     .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00"]);
@@ -99,7 +99,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .attr("stroke", "black")
         .attr("stroke-width", "2px");
 
-    scale.append("path")
+    var scale_donut = scale.append("path")
         .attr("d", scale_arc)
         .style("fill", function (d) { return scale_color(d.data.name) })
         .on("mouseenter", function (data) {
@@ -107,19 +107,29 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
             scale_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    console.log("------------------")
+                    // console.log("------------------")
                     if (select_name == "fire") { return scale_color.range()[0]; }
                     else if (select_name == "nuclear") { return scale_color.range()[1] }
                     else if (select_name == "water") { return scale_color.range()[2] }
                     else if (select_name == "renewable") { return scale_color.range()[3] }
                 })
+
+            var temp_scale_arc = d3.arc()
+                .outerRadius(scale_radius - 20)
+                .innerRadius(scale_radius - 80);
+
+            scale_donut.attr("d", scale_arc)
+            d3.select(this)
+                .attr("d", temp_scale_arc)
+
+
             var select_value = d3.select(this).data()[0].value;
             var select_value_per = +((select_value / scale_total) * 100);
-            if (select_name == "fire") {scale_text_name.text("火力發電比例達")}
-            else if (select_name == "nuclear") {scale_text_name.text("核能發電比例達")}
-            else if (select_name == "water") {scale_text_name.text("水力發電比例達")}
-            else if (select_name == "renewable") {scale_text_name.text("再生能源發電比例達")}
-            scale_text_year.text("民國"+select_cir_year+"年");
+            if (select_name == "fire") { scale_text_name.text("火力發電比例達") }
+            else if (select_name == "nuclear") { scale_text_name.text("核能發電比例達") }
+            else if (select_name == "water") { scale_text_name.text("水力發電比例達") }
+            else if (select_name == "renewable") { scale_text_name.text("再生能源發電比例達") }
+            scale_text_year.text("民國" + select_cir_year + "年");
             scale_text.text(Math.round(select_value_per) + "%")
         })
         .on("mouseout", function (d) {
