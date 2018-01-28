@@ -1,5 +1,5 @@
 var cate_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    cate_width = screen.availWidth * 0.5 - cate_margin.left - cate_margin.right,
+    cate_width = screen.availWidth * 0.48 - cate_margin.left - cate_margin.right,
     cate_height = 400 - cate_margin.top - cate_margin.bottom,
     cate_radius = Math.min(cate_width, cate_height) / 2;
 

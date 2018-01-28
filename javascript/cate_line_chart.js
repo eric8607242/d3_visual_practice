@@ -16,27 +16,27 @@ var cate_line_x = d3.scaleTime().range([0, cate_line_width]),
 var wind_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.wind/1000000); });
+    .y(function (d) { return cate_line_y(d.wind / 1000000); });
 
 var solar_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.solar/1000000); });
+    .y(function (d) { return cate_line_y(d.solar / 1000000); });
 
 var water_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.water/1000000); });
+    .y(function (d) { return cate_line_y(d.water / 1000000); });
 
 var bio_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.bio/1000000+30); });
+    .y(function (d) { return cate_line_y(d.bio / 1000000 + 30); });
 
 var gar_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.gar/1000000); });
+    .y(function (d) { return cate_line_y(d.gar / 1000000); });
 d3.csv("./data/energy_type.csv", function (d) {
     d.year = +d.year;
     d.wind = +d.wind;
@@ -48,7 +48,7 @@ d3.csv("./data/energy_type.csv", function (d) {
 }, function (error, data) {
     cate_line_x.domain(d3.extent(data, function (d) { return d.year; }));
     cate_line_y.domain([0, d3.max(data, function (d) {
-        return Math.max(d.water, d.solar, d.wind, d.bio, d.gar)/1000000;
+        return Math.max(d.water, d.solar, d.wind, d.bio, d.gar) / 1000000;
     })])
 
     cate_line_g.append("g")
@@ -99,4 +99,29 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr("stroke", "#AAFFEE")
         .attr("stroke-width", 2.5)
         .attr("d", gar_line);
+
+    cate_circle = cate_line_g.selectAll("cate-line-circle")
+        .data(data)
+        .enter();
+    cate_circle.append("circle")
+        .attr("r", 4)
+        .attr("cx", function (d) { return cate_line_x(d.year); })
+        .attr("cy", function (d) { return cate_line_y(d.solar / 1000000); });
+
+    cate_circle.append("circle")
+        .attr("r", 4)
+        .attr("cx", function (d) { return cate_line_x(d.year); })
+        .attr("cy", function (d) { return cate_line_y(d.water / 1000000); });
+    cate_circle.append("circle")
+        .attr("r", 4)
+        .attr("cx", function (d) { return cate_line_x(d.year); })
+        .attr("cy", function (d) { return cate_line_y(d.wind / 1000000); });
+    cate_circle.append("circle")
+        .attr("r", 4)
+        .attr("cx", function (d) { return cate_line_x(d.year); })
+        .attr("cy", function (d) { return cate_line_y(d.bio / 1000000); });
+    cate_circle.append("circle")
+        .attr("r", 4)
+        .attr("cx", function (d) { return cate_line_x(d.year); })
+        .attr("cy", function (d) { return cate_line_y(d.gar / 1000000); });
 })

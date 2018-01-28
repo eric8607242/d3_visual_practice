@@ -11,7 +11,7 @@ body{
     top:120px;
     opacity: 0.7;
     border-radius: 10px;
-    background-color:lightgray;
+    background-color:	#DCDCDC;
     width: 0%;
     height: 0%;
     z-index: 50;
@@ -24,7 +24,7 @@ body{
     top:410px;
     opacity: 0.7;
     border-radius: 10px;
-    background-color:lightgray;
+    background-color:	#DCDCDC;
     width: 0;
     height: 0;
     z-index: 50;
@@ -38,7 +38,7 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:lightgray;
+    background-color:	#DCDCDC;
     transform:translateX(15%);
     text-align:center;
     
@@ -48,7 +48,7 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:lightgray;
+    background-color:	#DCDCDC;
     transform:translateX(50%);
     text-align:center;
 }
@@ -56,15 +56,23 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:lightgray;
-    transform:translateX(0%);
+    background-color:	#DCDCDC;
+    transform:translateX(0.8%);
     text-align:center;
 }
 #scale{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:lightgray;
+    background-color:	#DCDCDC;
+    transform:translateX(0.8%);
+    text-align:center;
+}
+#scale_text{
+    position:relative;
+    width:100%;
+    border-radius: 10px;
+
     transform:translateX(0%);
     text-align:center;
 }
@@ -72,7 +80,7 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:lightgray;
+    background-color:	#DCDCDC;
     transform:translateX(20%);
     text-align:center;
 }

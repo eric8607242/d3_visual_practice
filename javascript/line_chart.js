@@ -119,22 +119,22 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .enter();
 
     temp = circle.append("circle")
-        .attr("r", 5)
+        .attr("r",4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.water); });
 
     circle.append("circle")
-        .attr("r", 5)
+        .attr("r",4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.fire); });
 
     circle.append("circle")
-        .attr("r", 5)
+        .attr("r",4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.nuclear); });
 
     circle.append("circle")
-        .attr("r", 5)
+        .attr("r",4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.renewable); });
 
