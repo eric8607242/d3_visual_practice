@@ -39,7 +39,7 @@ body{
     width:fit-content;
     border-radius: 10px;
     background-color:	#DCDCDC;
-    transform:translateX(15%);
+    transform:translateX(12%);
     text-align:center;
     
     
@@ -81,7 +81,7 @@ body{
     width:fit-content;
     border-radius: 10px;
     background-color:	#DCDCDC;
-    transform:translateX(20%);
+    transform:translateX(0.8%);
     text-align:center;
 }
 .jumbotron{
