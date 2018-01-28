@@ -60,10 +60,10 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         data[i].energy[2].percent = temp
     }
 
-    scale = scale_svg.selectAll(".arc")
+    scale = scale_svg.selectAll(".scalearc")
         .data(function (d) { return scale_pie(data[1].energy); })
         .enter().append("g")
-        .attr("class", "arc");
+        .attr("class", "scalearc");
 
     scale_circle = scale.append("circle")
         .attr("cx", "0")

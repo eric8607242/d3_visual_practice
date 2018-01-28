@@ -244,11 +244,20 @@ function chart_change(index) {
                 scale_total = scale_data[i].energy[j].percent + scale_total;
 
             }
-            //console.log(scale_total);
+            console.log(scale_total);
             scale.data(function (d) { return scale_pie(scale_data[i].energy); })
                 .enter();
             scale.select("path")
                 .attr("d", scale_arc);
+        }
+    }
+
+    for( i = 0 ; i < cate_data.length;i++){
+        if(index == cate_data[i].year){
+            cate.data(function(d){return cate_pie(cate_data[i].energy);})
+                .enter();
+            cate.select("path")
+                .attr("d",cate_arc);
         }
     }
 
