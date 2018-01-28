@@ -49,7 +49,7 @@ var line_move = line_g.append("line")
     .attr("x2", 0)
     .attr("y2", line_height)
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 0);
+    .attr("stroke-width", 2);
 
 var circle;
 var temp;
@@ -67,6 +67,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     y.domain([0, d3.max(data, function (d) {
         return Math.max(d.fire, d.nuclear, d.water, d.renewable);
     })]);
+
 
     line_g.append("g")
         .attr("transform", "translate(0," + line_height + ")")
@@ -143,18 +144,34 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
             .on("drag", dragged)
             .on("end", dragged_end))
 
+    line_g.append('rect')
+        .attr('width', line_width) // can't catch mouse events on a g element
+        .attr('height', line_height)
+        .attr('fill', 'none')
+        .attr('pointer-events', 'all')
+        .on("mouseover", function (d) {
+            console.log(d3.mouse(this)[0])
+            line_move
+                .attr("x1", d3.mouse(this)[0])
+                .attr("x2", d3.mouse(this)[0])
+        })
+        .on("mousemove", function (d) {
+            line_move
+                .attr("x1", d3.mouse(this)[0])
+                .attr("x2", d3.mouse(this)[0])
+        })
 
     function dragged() {
         var date_x;
         if (d3.mouse(this)[0] >= 0 && d3.mouse(this)[0] <= line_width + 2) {
-            date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
-            d3.select(this)
-                .attr("cx", d3.mouse(this)[0])
+            // date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
+            // d3.select(this)
+            //     .attr("cx", d3.mouse(this)[0])
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
             //console.log(data[date_x].year)
-            chart_change(data[date_x].year);
+            //chart_change(data[date_x].year);
         }
     }
 
@@ -252,12 +269,12 @@ function chart_change(index) {
         }
     }
 
-    for( i = 0 ; i < cate_data.length;i++){
-        if(index == cate_data[i].year){
-            cate.data(function(d){return cate_pie(cate_data[i].energy);})
+    for (i = 0; i < cate_data.length; i++) {
+        if (index == cate_data[i].year) {
+            cate.data(function (d) { return cate_pie(cate_data[i].energy); })
                 .enter();
             cate.select("path")
-                .attr("d",cate_arc);
+                .attr("d", cate_arc);
         }
     }
 
