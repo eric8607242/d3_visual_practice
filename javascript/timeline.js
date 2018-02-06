@@ -126,6 +126,7 @@ function chart_change(index) {
             }
         }
     }
+
     for (i = 0; i < scale_data.length; i++) {
         if (index === scale_data[i].year) {
             scale_total = 0;
@@ -134,6 +135,7 @@ function chart_change(index) {
 
             }
             console.log(scale_total);
+            console.log(scale_pie(scale_data[i].energy));
             scale.data(function (d) { return scale_pie(scale_data[i].energy); })
                 .enter();
             scale.select("path")
