@@ -134,6 +134,8 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             } else {
                 cate_value_per = +((select_value / cate_total) * 100);
             }
+            console.log(select_value)
+            console.log(cate_total)
             if (select_name == "wind") { cate_text_name.text("風力發電比例") }
             else if (select_name == "solar") { cate_text_name.text("太陽能發電比例") }
             else if (select_name == "water") { cate_text_name.text("水力發電比例") }

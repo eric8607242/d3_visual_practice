@@ -145,6 +145,21 @@ function chart_change(index) {
 
     for (i = 0; i < cate_data.length; i++) {
         if (index == cate_data[i].year) {
+            cate_total = 0;
+            for (j = 0; j < cate_data[i].energy.length; j++) {
+                if (cate_data[i].energy[j].name == "bio") {
+                    cate_total = cate_total + cate_data[i].energy[j].percent / 50;
+                } else if (cate_data[i].energy[j].name == "solar") {
+                    if (index == 97 || index == 98 || index == 99){
+                        cate_total = cate_total + cate_data[i].energy[j].percent / 10;
+                    }else{
+                        cate_total = cate_total + cate_data[i].energy[j].percent;
+                    }
+                    
+                } else {
+                    cate_total = cate_total + cate_data[i].energy[j].percent;
+                }
+            }
             cate.data(function (d) { return cate_pie(cate_data[i].energy); })
                 .enter();
             cate.select("path")
