@@ -1,5 +1,5 @@
 var cate_line_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    cate_line_width = screen.availWidth * 0.48 - cate_line_margin.left - cate_line_margin.right,
+    cate_line_width = screen.availWidth * 0.4 - cate_line_margin.left - cate_line_margin.right,
     cate_line_height = screen.availWidth * 0.15 - cate_line_margin.top - cate_line_margin.bottom;
 
 var cate_line_svg = d3.select("#cate")

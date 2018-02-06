@@ -1,6 +1,6 @@
 
 var margin = { top: 20, right: 50, bottom: 30, left: 50 },
-    donut_width = screen.availWidth * 0.383 - margin.left - margin.right,
+    donut_width = screen.availWidth * 0.3 - margin.left - margin.right,
     donut_height = screen.availWidth * 0.24 - margin.top - margin.bottom,
     radius = Math.min(donut_width, donut_height) / 2;
 

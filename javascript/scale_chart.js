@@ -1,5 +1,5 @@
 var scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    scale_width = screen.availWidth * 0.48 - scale_margin.left - scale_margin.right,
+    scale_width = screen.availWidth * 0.3 - scale_margin.left - scale_margin.right,
     scale_height = 400 - scale_margin.top - scale_margin.bottom,
     scale_radius = Math.min(scale_width, scale_height) / 2;
 

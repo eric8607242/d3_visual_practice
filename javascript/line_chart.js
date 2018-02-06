@@ -1,5 +1,5 @@
 var margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    line_width = screen.availWidth * 0.48 - margin.left - margin.right,
+    line_width = screen.availWidth * 0.4 - margin.left - margin.right,
     line_height = screen.availWidth * 0.15 - margin.top - margin.bottom;
 
 var line_svg = d3.select("#scale")

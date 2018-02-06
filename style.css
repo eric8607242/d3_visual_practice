@@ -39,7 +39,6 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:	#DCDCDC;
     transform:translateX(12%);
     text-align:center;
     
@@ -53,20 +52,22 @@ body{
     transform:translateX(50%);
     text-align:center;
 }
+#block{
+    position:relative;
+    height: 100px;
+}
 #cate{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:	#DCDCDC;
-    transform:translateX(0.8%);
+    transform:translateX(20%);
     text-align:center;
 }
 #scale{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:	#DCDCDC;
-    transform:translateX(0.8%);
+    transform:translateX(20%);
     text-align:center;
 }
 #scale_text{
@@ -81,8 +82,7 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    background-color:	#DCDCDC;
-    transform:translateX(0.8%);
+    transform:translateX(20%);
     text-align:center;
 }
 .jumbotron{
