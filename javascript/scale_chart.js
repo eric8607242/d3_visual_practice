@@ -15,7 +15,15 @@ var scale_color = d3.scaleOrdinal()
 
 
 var scale_arc = d3.arc()
-    .outerRadius(scale_radius - 30)
+    .outerRadius(function (d) {
+        console.log(d.data.name);
+        if (d.data.name == "renewable" || d.data.name == "water") {
+            return scale_radius - 20;
+        } else {
+            return scale_radius - 30;
+        }
+
+    })
     .innerRadius(scale_radius - 80);
 
 var scale_text_arc = d3.arc()
@@ -80,14 +88,14 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .text("")
     var scale_text_year = scale.append("text")
         .attr("transform", "translate(0,0)")
-        .attr("dy", "-2.0em")
+        .attr("dy", "0em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("")
+        .text("滑上以顯示更多")
     var scale_text_name = scale.append("text")
         .attr("transform", "translate(0,0)")
-        .attr("dy", "-1.0em")
+        .attr("dy", "0em")
         .attr("font-size", "1.0em")
         .style("text-anchor", "middle")
         .style("fill", "black")
@@ -102,6 +110,13 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     var scale_donut = scale.append("path")
         .attr("d", scale_arc)
         .style("fill", function (d) { return scale_color(d.data.name) })
+        .style("opacity", function (d) {
+            if (d.data.name == "renewable" || d.data.name == "water") {
+                return 1;
+            } else {
+                return 0.6;
+            }
+        })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
             scale_circle
@@ -118,14 +133,27 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                 .outerRadius(scale_radius - 20)
                 .innerRadius(scale_radius - 80);
 
-            scale_donut.attr("d", scale_arc)
+            scale_donut
+                .attr("d", scale_arc)
+                .style("opacity", function (d) {
+                    if (d.data.name == "renewable" || d.data.name == "water") {
+                        return 1;
+                    } else {
+                        return 0.6;
+                    }
+                })
             d3.select(this)
                 .attr("d", temp_scale_arc)
+                .style("opacity", 1)
 
 
             var select_value = d3.select(this).data()[0].value;
             var select_value_per = +((select_value / scale_total) * 100);
-            if (select_name == "fire") { scale_text_name.text("火力發電比例達") }
+            scale_text_name.attr("dy", "-1.0em");
+            scale_text_year.attr("dy", "-2.0em");
+            if (select_name == "fire") {
+                scale_text_name.text("火力發電比例達")
+            }
             else if (select_name == "nuclear") { scale_text_name.text("核能發電比例達") }
             else if (select_name == "water") { scale_text_name.text("水力發電比例達") }
             else if (select_name == "renewable") { scale_text_name.text("再生能源發電比例達") }

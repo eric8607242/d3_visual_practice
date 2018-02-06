@@ -183,99 +183,99 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     }
 })
 
-function chart_change(index) {
+// function chart_change(index) {
 
-    for (i = 0; i < wind_data.length; i++) {
-        if (wind_data[i].year) {
-            if (index === wind_data[i].year) {
-                wind.select(".text_remove_wind").remove();
-                wind.data(function (d) { return pie(wind_data[i].pers); })
-                    .enter()
-                wind.select("path")
-                    .attr("d", arc)
+//     for (i = 0; i < wind_data.length; i++) {
+//         if (wind_data[i].year) {
+//             if (index === wind_data[i].year) {
+//                 wind.select(".text_remove_wind").remove();
+//                 wind.data(function (d) { return pie(wind_data[i].pers); })
+//                     .enter()
+//                 wind.select("path")
+//                     .attr("d", arc)
 
-                wind.append("text")
-                    .attr("class", "text_remove_wind")
-                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-                    .attr("dy", ".35em")
-                    .attr("text-anchor", "middle")
-                    .text(function (d) { return d.data.name; });
-                //console.log(wind.data())
-            }
-        }
-    }
-    for (i = 0; i < water_data.length; i++) {
-        if (water_data[i].year) {
-            if (index === water_data[i].year) {
-                water.select(".text_remove_water").remove();
-                water.data(function (d) { return pie(water_data[i].pers); })
-                    .enter()
-                water.select("path")
-                    .attr("d", arc)
-                water.append("text")
-                    .attr("class", "text_remove_water")
-                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-                    .attr("dy", ".35em")
-                    .attr("text-anchor", "middle")
-                    .text(function (d) { return d.data.name; });
-                //console.log(water.data())
-            }
-        }
-    }
-    for (i = 0; i < sun_data.length; i++) {
-        if (sun_data[i].year) {
-            if (index === sun_data[i].year) {
-                //console.log(pie(sun_data[i].pers))
-                sun.select(".text_remove_sun").remove();
-                sun.data(function (d) { return pie(sun_data[i].pers); })
-                    .enter()
-                sun.select("path")
-                    .attr("d", arc)
-                sun.append("text")
-                    .attr("class", "text_remove_sun")
-                    .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-                    .attr("dy", ".35em")
-                    .attr("text-anchor", "middle")
-                    .text(function (d) { return d.data.name; });
-                /*console.log("sunchange")
-                console.log(sun.data())*/
-            }
-        }
-    }
-    for (i = 0; i < bar_data.length; i++) {
-        //console.log(bar_data[i].year)
-        if (index === bar_data[i].year) {
-            bar.selectAll("rect").data(bar_data[i].energy)
-                .enter()
-            bar.selectAll("rect")
-                .transition().duration(500)
-                .attr("y", function (d) { return bar_y(d.percent); })
-                .attr("height", function (d) { return height - bar_y(d.percent); })
-            //console.log(bar.data())
-        }
-    }
-    for (i = 0; i < scale_data.length; i++) {
-        if (index === scale_data[i].year) {
-            scale_total = 0;
-            for (j = 0; j < scale_data[i].energy.length; j++) {
-                scale_total = scale_data[i].energy[j].percent + scale_total;
+//                 wind.append("text")
+//                     .attr("class", "text_remove_wind")
+//                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+//                     .attr("dy", ".35em")
+//                     .attr("text-anchor", "middle")
+//                     .text(function (d) { return d.data.name; });
+//                 //console.log(wind.data())
+//             }
+//         }
+//     }
+//     for (i = 0; i < water_data.length; i++) {
+//         if (water_data[i].year) {
+//             if (index === water_data[i].year) {
+//                 water.select(".text_remove_water").remove();
+//                 water.data(function (d) { return pie(water_data[i].pers); })
+//                     .enter()
+//                 water.select("path")
+//                     .attr("d", arc)
+//                 water.append("text")
+//                     .attr("class", "text_remove_water")
+//                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+//                     .attr("dy", ".35em")
+//                     .attr("text-anchor", "middle")
+//                     .text(function (d) { return d.data.name; });
+//                 //console.log(water.data())
+//             }
+//         }
+//     }
+//     for (i = 0; i < sun_data.length; i++) {
+//         if (sun_data[i].year) {
+//             if (index === sun_data[i].year) {
+//                 //console.log(pie(sun_data[i].pers))
+//                 sun.select(".text_remove_sun").remove();
+//                 sun.data(function (d) { return pie(sun_data[i].pers); })
+//                     .enter()
+//                 sun.select("path")
+//                     .attr("d", arc)
+//                 sun.append("text")
+//                     .attr("class", "text_remove_sun")
+//                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
+//                     .attr("dy", ".35em")
+//                     .attr("text-anchor", "middle")
+//                     .text(function (d) { return d.data.name; });
+//                 /*console.log("sunchange")
+//                 console.log(sun.data())*/
+//             }
+//         }
+//     }
+//     for (i = 0; i < bar_data.length; i++) {
+//         //console.log(bar_data[i].year)
+//         if (index === bar_data[i].year) {
+//             bar.selectAll("rect").data(bar_data[i].energy)
+//                 .enter()
+//             bar.selectAll("rect")
+//                 .transition().duration(500)
+//                 .attr("y", function (d) { return bar_y(d.percent); })
+//                 .attr("height", function (d) { return height - bar_y(d.percent); })
+//             //console.log(bar.data())
+//         }
+//     }
+//     for (i = 0; i < scale_data.length; i++) {
+//         if (index === scale_data[i].year) {
+//             scale_total = 0;
+//             for (j = 0; j < scale_data[i].energy.length; j++) {
+//                 scale_total = scale_data[i].energy[j].percent + scale_total;
 
-            }
-            console.log(scale_total);
-            scale.data(function (d) { return scale_pie(scale_data[i].energy); })
-                .enter();
-            scale.select("path")
-                .attr("d", scale_arc);
-        }
-    }
+//             }
+//             console.log(scale_total);
+//             scale.data(function (d) { return scale_pie(scale_data[i].energy); })
+//                 .enter();
+//             scale.select("path")
+//                 .attr("d", scale_arc);
+//         }
+//     }
 
-    for (i = 0; i < cate_data.length; i++) {
-        if (index == cate_data[i].year) {
-            cate.data(function (d) { return cate_pie(cate_data[i].energy); })
-                .enter();
-            cate.select("path")
-                .attr("d", cate_arc);
-        }
-    }
+//     for (i = 0; i < cate_data.length; i++) {
+//         if (index == cate_data[i].year) {
+//             cate.data(function (d) { return cate_pie(cate_data[i].energy); })
+//                 .enter();
+//             cate.select("path")
+//                 .attr("d", cate_arc);
+//         }
+//     }
 
-}
+// }
