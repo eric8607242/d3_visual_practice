@@ -193,7 +193,7 @@ function calculatePoints(d) {
     // console.log(pos);
     // console.log(midAngle(d));
     // console.log(Math.PI);
-    pos[0] = scale_radius * 0.9 * (midAngle(d) < Math.PI ? 1 : -1);
+    pos[0] = scale_radius * 0.75 * (midAngle(d) < Math.PI ? 1 : -1);
     return [scale_arc.centroid(d), scale_text_arc.centroid(d), pos]
 }
 
@@ -203,7 +203,7 @@ function labelTransform(d) {
     var pos = scale_text_arc.centroid(d);
 
     // changes the point to be on left or right depending on where label is.
-    pos[0] = radius * 0.9 * (midAngle(d) < Math.PI ? 1 : -1);
+    pos[0] = radius * 0.8 * (midAngle(d) < Math.PI ? 1 : -1);
     return 'translate(' + pos + ')';
 }
 
