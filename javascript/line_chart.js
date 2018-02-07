@@ -1,6 +1,6 @@
 var margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    line_width = screen.availWidth * 0.4 - margin.left - margin.right,
-    line_height = screen.availWidth * 0.15 - margin.top - margin.bottom;
+    line_width = 600 - margin.left - margin.right,
+    line_height = 300 - margin.top - margin.bottom;
 
 var line_svg = d3.select("#scale")
     .append("svg")
@@ -23,10 +23,9 @@ var nuclear_line = d3.line()
     .x(function (d) { return x(d.year); })
     .y(function (d) { return y(d.nuclear); });
 
-var water_line = d3.line()
-    //.curve(d3.curveBasis)
-    .x(function (d) { return x(d.year); })
-    .y(function (d) { return y(d.water); });
+var scale_water_line = d3.line()
+    .x(function (d) { console.log(x(d.year)); return x(d.year); })
+    .y(function (d) { console.log(y(d.water)); return y(d.water); });
 
 var bisectDate = d3.bisector(function (d) { return d.year; }).left;
 
@@ -63,7 +62,6 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
 }, function (error, data) {
 
     x.domain(d3.extent(data, function (d) { return d.year; }));
-    console.log(x.domain());
     y.domain([0, d3.max(data, function (d) {
         return Math.max(d.fire, d.nuclear, d.water, d.renewable);
     })]);
@@ -86,7 +84,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "#FFFF33")
+        .attr("stroke", "#354872")
         .attr("stroke-width", 2.5)
         .attr("d", nuclear_line);
 
@@ -94,7 +92,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "#FF5511")
+        .attr("stroke", "#A51C1E")
         .attr("stroke-width", 2.5)
         .attr("d", fire_line);
 
@@ -102,15 +100,15 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "#5599FF")
+        .attr("stroke", "#EBAD30")
         .attr("stroke-width", 2.5)
-        .attr("d", water_line);
+        .attr("d", scale_water_line);
 
     line_g.append("path")
         .datum(data)
         .attr("fill", "none")
         .attr("class", "line")
-        .attr("stroke", "#00AA00")
+        .attr("stroke", "#568D4B")
         .attr("stroke-width", 2.5)
         .attr("d", renewable_line);
 
@@ -119,22 +117,22 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .enter();
 
     temp = circle.append("circle")
-        .attr("r",4)
+        .attr("r", 4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.water); });
 
     circle.append("circle")
-        .attr("r",4)
+        .attr("r", 4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.fire); });
 
     circle.append("circle")
-        .attr("r",4)
+        .attr("r", 4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.nuclear); });
 
     circle.append("circle")
-        .attr("r",4)
+        .attr("r", 4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.renewable); });
 
@@ -144,22 +142,30 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
             .on("drag", dragged)
             .on("end", dragged_end))
 
-    line_g.append('rect')
+
+
+    var touch_rect = line_g.append('rect')
         .attr('width', line_width) // can't catch mouse events on a g element
         .attr('height', line_height)
         .attr('fill', 'none')
         .attr('pointer-events', 'all')
         .on("mouseover", function (d) {
-            console.log(d3.mouse(this)[0])
+            date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
         })
         .on("mousemove", function (d) {
+            date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
+            console.log(data[date_x].year);
+            if (date_x > 3) {
+            } else {
+            }
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
         })
+    console.log(info_rect._groups["0"]["0"].attributes[5].value);
 
     function dragged() {
         var date_x;

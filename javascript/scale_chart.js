@@ -1,6 +1,6 @@
 var scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    scale_width = screen.availWidth * 0.3 - scale_margin.left - scale_margin.right,
-    scale_height = 400 - scale_margin.top - scale_margin.bottom,
+    scale_width = 500 - scale_margin.left - scale_margin.right,
+    scale_height = 500 - scale_margin.top - scale_margin.bottom,
     scale_radius = Math.min(scale_width, scale_height) / 2;
 
 var scale_svg = d3.select("#scale")
@@ -11,20 +11,20 @@ var scale_svg = d3.select("#scale")
     .append("g").attr("transform", "translate(" + scale_width * 1.1 / 2 + "," + scale_height / 2 + ")");
 
 var scale_color = d3.scaleOrdinal()
-    .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00"]);
+    .range(["#A51C1E", "#354872", "#EBAD30", "	#568D4B"]);
 
 
 var scale_arc = d3.arc()
     .outerRadius(function (d) {
         console.log(d.data.name);
         if (d.data.name == "renewable" || d.data.name == "water") {
-            return scale_radius - 20;
+            return scale_radius *0.85;
         } else {
-            return scale_radius - 30;
+            return scale_radius *0.8;
         }
 
     })
-    .innerRadius(scale_radius - 80);
+    .innerRadius(scale_radius*0.55);
 
 var scale_text_arc = d3.arc()
     .outerRadius(scale_radius * 0.9)
@@ -76,7 +76,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     scale_circle = scale.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", scale_radius - 85)
+        .attr("r", scale_radius*0.54)
         .attr("fill", "white");
 
     var scale_text = scale.append("text")
@@ -130,8 +130,8 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                 })
 
             var temp_scale_arc = d3.arc()
-                .outerRadius(scale_radius - 20)
-                .innerRadius(scale_radius - 80);
+                .outerRadius(scale_radius *0.85)
+                .innerRadius(scale_radius *0.55);
 
             scale_donut
                 .attr("d", scale_arc)
@@ -193,7 +193,7 @@ function calculatePoints(d) {
     // console.log(pos);
     // console.log(midAngle(d));
     // console.log(Math.PI);
-    pos[0] = scale_radius * 0.75 * (midAngle(d) < Math.PI ? 1 : -1);
+    pos[0] = scale_radius * 0.7 * (midAngle(d) < Math.PI ? 1 : -1);
     return [scale_arc.centroid(d), scale_text_arc.centroid(d), pos]
 }
 
@@ -203,7 +203,7 @@ function labelTransform(d) {
     var pos = scale_text_arc.centroid(d);
 
     // changes the point to be on left or right depending on where label is.
-    pos[0] = radius * 0.8 * (midAngle(d) < Math.PI ? 1 : -1);
+    pos[0] = radius * 0.75 * (midAngle(d) < Math.PI ? 1 : -1);
     return 'translate(' + pos + ')';
 }
 

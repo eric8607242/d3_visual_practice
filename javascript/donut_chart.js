@@ -1,12 +1,12 @@
 
 var margin = { top: 20, right: 50, bottom: 30, left: 50 },
-    donut_width = screen.availWidth * 0.3 - margin.left - margin.right,
-    donut_height = screen.availWidth * 0.24 - margin.top - margin.bottom,
+    donut_width = 470 - margin.left - margin.right,
+    donut_height = 400 - margin.top - margin.bottom,
     radius = Math.min(donut_width, donut_height) / 2;
 
 var arc = d3.arc()
-    .outerRadius(radius - 30)
-    .innerRadius(radius - 80);
+    .outerRadius(radius * 0.8)
+    .innerRadius(radius * 0.55);
 
 var water_color = d3.scaleOrdinal()
     .range(["#87CEFA", "#4169E1"]);
@@ -43,24 +43,24 @@ var wind_svg = d3.select("#sun_donut").append("svg")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var sun_label_text = sun_svg.append("text")
-    .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
-    .attr("dy", "-7em")
+    .attr("transform", "translate(0,0)")
+    .attr("dy", "-7.5em")
     .attr("font-size", "1.3em")
     .style("text-anchor", "middle")
     .style("fill", "black")
     .text("太陽能發電")
 
 var water_label_text = water_svg.append("text")
-    .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
-    .attr("dy", "-7em")
+    .attr("transform", "translate(0,0)")
+    .attr("dy", "-7.5em")
     .attr("font-size", "1.3em")
     .style("text-anchor", "middle")
     .style("fill", "black")
     .text("水力發電")
 
 var wind_label_text = wind_svg.append("text")
-    .attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
-    .attr("dy", "-7em")
+    .attr("transform", "translate(0,0)")
+    .attr("dy", "-7.5em")
     .attr("font-size", "1.3em")
     .style("text-anchor", "middle")
     .style("fill", "black")
@@ -96,7 +96,7 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
     sun_circle = sun.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", radius - 85)
+        .attr("r", radius*0.54)
         .attr("fill", "white")
     var sun_text = sun.append("text")
         //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
@@ -131,8 +131,8 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
                     else { return sun_color.range()[1] }
                 })
             var temp_arc = d3.arc()
-                .outerRadius(radius - 25)
-                .innerRadius(radius - 80);
+                .outerRadius(radius * 0.85)
+                .innerRadius(radius * 0.55);
 
             sun_donut.attr("d", arc)
             d3.select(this)
@@ -198,7 +198,7 @@ d3.csv("./data/water.csv", function (d, i, columns) {
     water_circle = water.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", radius - 85)
+        .attr("r", radius*0.54)
         .attr("fill", "white")
     var water_donut = water.append("path")
         .attr("d", arc)
@@ -212,8 +212,8 @@ d3.csv("./data/water.csv", function (d, i, columns) {
                     else { return water_color.range()[1] }
                 })
             var temp_arc = d3.arc()
-                .outerRadius(radius - 25)
-                .innerRadius(radius - 80);
+                .outerRadius(radius * 0.85)
+                .innerRadius(radius * 0.55);
 
             water_donut.attr("d", arc)
             d3.select(this)
@@ -258,7 +258,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
     var wind_text = wind.append("text")
         //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "0.8em")
-        .attr("font-size", "1.8em")
+        .attr("font-size", "180%")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("")
@@ -280,7 +280,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
     wind_circle = wind.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", radius - 85)
+        .attr("r", radius *0.54)
         .attr("fill", "white")
     var wind_donut = wind.append("path")
         .attr("d", arc)
@@ -294,8 +294,8 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
                     else { return wind_color.range()[1] }
                 })
             var temp_arc = d3.arc()
-                .outerRadius(radius - 25)
-                .innerRadius(radius - 80);
+                .outerRadius(radius * 0.85)
+                .innerRadius(radius * 0.55);
 
             wind_donut.attr("d", arc)
             d3.select(this)

@@ -35,11 +35,18 @@ body{
     text-anchor: middle;
     text-align: center;
 }
+
+#tit{
+    position:relative;
+    width: 1550px;
+    text-align:center;
+}
+
 #time{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    transform:translateX(12%);
+    transform:translateX(15%);
     text-align:center;
     
     

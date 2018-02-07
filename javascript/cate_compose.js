@@ -1,6 +1,6 @@
 var cate_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    cate_width = screen.availWidth * 0.3 - cate_margin.left - cate_margin.right,
-    cate_height = 400 - cate_margin.top - cate_margin.bottom,
+    cate_width = 500 - cate_margin.left - cate_margin.right,
+    cate_height = 500 - cate_margin.top - cate_margin.bottom,
     cate_radius = Math.min(cate_width, cate_height) / 2;
 
 var cate_svg = d3.select("#cate")
@@ -11,8 +11,8 @@ var cate_svg = d3.select("#cate")
     .append("g").attr("transform", "translate(" + cate_width * 1.2 / 2 + "," + cate_height / 2 + ")");
 
 var cate_arc = d3.arc()
-    .outerRadius(cate_radius - 30)
-    .innerRadius(cate_radius - 80);
+    .outerRadius(cate_radius *0.8)
+    .innerRadius(cate_radius *0.55);
 
 var cate_color = d3.scaleOrdinal()
     .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00", "#AAFFEE"]);
@@ -70,7 +70,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
     var cate_circle = cate.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", cate_radius - 85)
+        .attr("r", cate_radius *0.54)
         .attr("fill", "white");
 
     var cate_text = cate.append("text")
@@ -114,8 +114,8 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
                     else if (select_name == "gar") { return cate_color.range()[4] }
                 })
             var temp_cate_arc = d3.arc()
-                .outerRadius(cate_radius - 20)
-                .innerRadius(cate_radius - 80);
+                .outerRadius(cate_radius *0.85)
+                .innerRadius(cate_radius *0.55);
 
             cate_donut.attr("d", cate_arc)
             d3.select(this)

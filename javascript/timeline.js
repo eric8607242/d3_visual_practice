@@ -1,6 +1,6 @@
 var time_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    time_width = screen.availWidth * 0.8 - time_margin.left - time_margin.right,
-    time_height = screen.availWidth * 0.05 - time_margin.top - time_margin.bottom;
+    time_width = 1200 - time_margin.left - time_margin.right,
+    time_height = 100 - time_margin.top - time_margin.bottom;
 
 var time_svg = d3.select("#time")
     .append("svg")
