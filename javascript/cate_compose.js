@@ -11,8 +11,8 @@ var cate_svg = d3.select("#cate")
     .append("g").attr("transform", "translate(" + cate_width * 1.2 / 2 + "," + cate_height / 2 + ")");
 
 var cate_arc = d3.arc()
-    .outerRadius(cate_radius *0.8)
-    .innerRadius(cate_radius *0.55);
+    .outerRadius(cate_radius * 0.8)
+    .innerRadius(cate_radius * 0.55);
 
 var cate_color = d3.scaleOrdinal()
     .range(["#FF5511", "#FFFF33", "#5599FF", "	#00AA00", "#AAFFEE"]);
@@ -70,7 +70,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
     var cate_circle = cate.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
-        .attr("r", cate_radius *0.54)
+        .attr("r", cate_radius * 0.54)
         .attr("fill", "white");
 
     var cate_text = cate.append("text")
@@ -81,11 +81,11 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
         .text("")
     var cate_text_year = cate.append("text")
         .attr("transform", "translate(0,0)")
-        .attr("dy", "-2.0em")
+        .attr("dy", "0em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("")
+        .text("滑上以顯示更多")
     var cate_text_name = cate.append("text")
         .attr("transform", "translate(0,0)")
         .attr("dy", "-1.0em")
@@ -114,8 +114,8 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
                     else if (select_name == "gar") { return cate_color.range()[4] }
                 })
             var temp_cate_arc = d3.arc()
-                .outerRadius(cate_radius *0.85)
-                .innerRadius(cate_radius *0.55);
+                .outerRadius(cate_radius * 0.85)
+                .innerRadius(cate_radius * 0.55);
 
             cate_donut.attr("d", cate_arc)
             d3.select(this)
@@ -141,7 +141,8 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             else if (select_name == "water") { cate_text_name.text("水力發電比例") }
             else if (select_name == "bio") { cate_text_name.text("生質能發電比例") }
             else if (select_name == "gar") { cate_text_name.text("垃圾沼氣發電比例") }
-            cate_text_year.text("民國" + select_cir_year + "年");
+            cate_text_year.attr("dy", "-2em")
+                .text("民國" + select_cir_year + "年");
             cate_text.text(cate_value_per.toFixed(2) + "%")
 
         })

@@ -7,43 +7,83 @@
 <link rel="stylesheet" type="text/css" href="style.css">
 
 <head>
-    <title>Page Title</title>
+    <title>再生一個吧</title>
 </head>
 
 <body>
     <!--<button id = "next_data" onclick = "chart_change(104)">123</button>-->
-    <div id = "tit"><h1>再生能源知多少</h1></div>
-    
-    <div id = "time" >  
-        <h2>時間軸</h2>
+    <div id="tit">
+        <h1>再生一個吧</h1>
+    </div>
+
+    <div id="time">
+        <h2>時間</h2>
     </div>
     <!--<div id = 'bar'></div>-->
-    <div id = "scale"> 
-        <h2>這是你想像中的再生能源嗎</h2>
-        <div id = "block"></div>
-        <script  src="./javascript/line_chart.js"></script>
-        <script  src="./javascript/scale_chart.js"></script>
-        
-        <p>在這個科技進步的時代，</p>
-     </div>
-    <div id = "cate">
-        <h2>歷年再生能源結構</h2>
-        <div id = "block"></div>
-        <script  src="./javascript/cate_line_chart.js"></script>
-        <script  src="./javascript/cate_compose.js"></script>
-        <p>文字說明</p>
+    <div id="scale">
+        <h2>這是你想像中的模樣嗎</h2>
+        <div id="block"></div>
+        <script src="./javascript/scale_chart.js"></script>
+        <script src="./javascript/line_chart.js"></script>
+
+
+        <p>在這環保意識的時代，再生能源逐漸受到大家的重視，而再生能源為來自大自然的能源，
+            <br>例如太陽能、風力、潮汐能、地熱能等， 是取之不盡，用之不竭的能源，會自動再生，
+            <br>但
+            <br>你知道即使現在科技如此發達，
+            <br> 再生能源的發電率還是不及所有發電的百分之10嗎
+            <br>
+            <br>
+        </p>
     </div>
-    <div id = "wind_donut" class = 'donut'></div>
-    <div id = "sun_donut"class = 'donut'> 
-        <h2>歷年再生能源官方民間發電量結構</h2>
-        <script  src="./javascript/donut_chart.js"></script>
-        <p>文字說明</p>
+    <div id="cate">
+        <h2>你知道是什麼組成再生能源的嗎</h2>
+        <div id="block"></div>
+        <script src="./javascript/cate_compose.js"></script>
+        <script src="./javascript/cate_line_chart.js"></script>
+
+        <h3>水力發電</h3>
+        <p>在所有的再生能源中，水力是發電率最高的一個發電方式，通常利用水的勢能轉換成電能的發電方式，
+            <br> 例如從河流或水庫等高位水源引水流至較低位處，流的水流推動輪機使之旋轉，帶動發電機發電。
+        </p>
+        <h3>垃圾沼氣發電</h3>
+        <p>垃圾廚餘經過發酵分解後產生的沼氣如果不妥善處理會對溫室效應造成劇烈的影響，而由於沼氣的成份含有高濃度的甲烷，
+            <br> 所以將之拿來發電所減少的碳排放量以及經濟效益也是非常可觀
+        </p>
+        <h3>風力發電</h3>
+        <p>主要是藉由風轉動葉片來發電，受風吹之空氣動力作用繞軸旋轉，擷取風的動能，進而轉換成有用的電能。
+            <br> 近幾年隨著風場風力觀測技術進步而使風力發電量預估準確性提高，使得部份國家或地區的風力發電使用率快速增加。
+        </p>
+        <h3>太陽能發電</h3>
+        <p>太陽光是世界上最隨處可得的再生能源，也是目前許多國家努力投資的項目，
+            <br> 但是由於太陽能的各項技術都有高成本的缺點，所以目前還無法成為再生能源的主要發電來源
+        </p>
+        <h3>生質能發電</h3>
+        <p>生質能發電的原料通常是使用生活中的有機廢棄物例如廚餘、都市廢水污泥、農業廢棄物、養殖廢水等等，
+            <br> 經由燃燒或是發酵的方式產生電力。因此生質能發電除了產生電力之外，還附帶了處理廢棄物的好處。
+            <br>
+            <br>
+            <br>
+        </p>
     </div>
-    <div id = "water_donut"class = 'donut'></div>
-    <div id = "renew_bar"></div>
-   
-    <script  src="./javascript/timeline.js"></script>
-    
+    <div id="wind_donut" class='donut'></div>
+    <div id="sun_donut" class='donut'>
+        <h2>政府鼓勵再生一個嗎 <br> <br></h2>
+        <script src="./javascript/donut_chart.js"></script>
+        <p>對於太陽能發電，政府推動許多政策鼓勵一般民眾在自家的屋頂裝設太陽能板，
+            <br> 或是以比較高的價格收購民間太陽能的電力，而水力發電以及風力發電所建造的規模及金額叫龐大，
+            <br> 相較於太陽能一般民眾也可以裝設，大多由政府或是公司設立。
+            <br>
+            <br>
+            <br>
+            <br>
+        </p>
+    </div>
+    <div id="water_donut" class='donut'></div>
+    <div id="renew_bar"></div>
+
+    <script src="./javascript/timeline.js"></script>
+
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
         crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.11.0/umd/popper.min.js" integrity="sha384-b/U6ypiBEHpOf/4+1nzFpr53nxSS+GLCkfwBdFNTxtclqqenISfwAzpKaMNFNmj4"
