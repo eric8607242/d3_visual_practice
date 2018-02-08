@@ -2,6 +2,8 @@ var margin = { top: 20, right: 80, bottom: 30, left: 50 },
     line_width = 600 - margin.left - margin.right,
     line_height = 300 - margin.top - margin.bottom;
 
+
+
 var line_svg = d3.select("#scale")
     .append("svg")
     .attr("width", line_width + margin.left + margin.right)
@@ -49,6 +51,7 @@ var line_move = line_g.append("line")
     .attr("y2", line_height)
     .attr("stroke", "steelblue")
     .attr("stroke-width", 2);
+
 
 var circle;
 var temp;
@@ -112,6 +115,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .attr("stroke-width", 2.5)
         .attr("d", renewable_line);
 
+
     circle = line_g.selectAll("line-circle")
         .data(data)
         .enter();
@@ -151,6 +155,11 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .attr('pointer-events', 'all')
         .on("mouseover", function (d) {
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
+            for(i = 0 ; i < scale_stack_data.length;i++){
+                if(d3.mouse(this)[0] <x(97+i)+20&&d3.mouse(this)[0] >x(97+i)-20){
+                    scale_stack_change(i)
+                }
+            }
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
@@ -158,9 +167,12 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .on("mousemove", function (d) {
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
             console.log(data[date_x].year);
-            if (date_x > 3) {
-            } else {
+            for(i = 0 ; i < scale_stack_data.length;i++){
+                if(d3.mouse(this)[0] <x(97+i)+20&&d3.mouse(this)[0] >x(97+i)-20){
+                    scale_stack_change(i)
+                }
             }
+           
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
@@ -189,99 +201,56 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     }
 })
 
-// function chart_change(index) {
+function scale_stack_change(index) {
+    if (scale_stack_now_index != index) {
+        scale_stack_rect.data(scale_stack_data[index].energy).enter()
 
-//     for (i = 0; i < wind_data.length; i++) {
-//         if (wind_data[i].year) {
-//             if (index === wind_data[i].year) {
-//                 wind.select(".text_remove_wind").remove();
-//                 wind.data(function (d) { return pie(wind_data[i].pers); })
-//                     .enter()
-//                 wind.select("path")
-//                     .attr("d", arc)
+        scale_stack_rect.select("rect")
+            .attr("rx", 5)
+            .attr("ry", 5)
+            .attr("x", function (d) { return scale_stack_x(d.pre_per); })
+            .attr("y", 100)
+            .attr("height", 50)
+            .attr("width", function (d) { return scale_stack_x(d.percent); })
+        scale_stack_text_fire.text(function (d) {
 
-//                 wind.append("text")
-//                     .attr("class", "text_remove_wind")
-//                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-//                     .attr("dy", ".35em")
-//                     .attr("text-anchor", "middle")
-//                     .text(function (d) { return d.data.name; });
-//                 //console.log(wind.data())
-//             }
-//         }
-//     }
-//     for (i = 0; i < water_data.length; i++) {
-//         if (water_data[i].year) {
-//             if (index === water_data[i].year) {
-//                 water.select(".text_remove_water").remove();
-//                 water.data(function (d) { return pie(water_data[i].pers); })
-//                     .enter()
-//                 water.select("path")
-//                     .attr("d", arc)
-//                 water.append("text")
-//                     .attr("class", "text_remove_water")
-//                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-//                     .attr("dy", ".35em")
-//                     .attr("text-anchor", "middle")
-//                     .text(function (d) { return d.data.name; });
-//                 //console.log(water.data())
-//             }
-//         }
-//     }
-//     for (i = 0; i < sun_data.length; i++) {
-//         if (sun_data[i].year) {
-//             if (index === sun_data[i].year) {
-//                 //console.log(pie(sun_data[i].pers))
-//                 sun.select(".text_remove_sun").remove();
-//                 sun.data(function (d) { return pie(sun_data[i].pers); })
-//                     .enter()
-//                 sun.select("path")
-//                     .attr("d", arc)
-//                 sun.append("text")
-//                     .attr("class", "text_remove_sun")
-//                     .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
-//                     .attr("dy", ".35em")
-//                     .attr("text-anchor", "middle")
-//                     .text(function (d) { return d.data.name; });
-//                 /*console.log("sunchange")
-//                 console.log(sun.data())*/
-//             }
-//         }
-//     }
-//     for (i = 0; i < bar_data.length; i++) {
-//         //console.log(bar_data[i].year)
-//         if (index === bar_data[i].year) {
-//             bar.selectAll("rect").data(bar_data[i].energy)
-//                 .enter()
-//             bar.selectAll("rect")
-//                 .transition().duration(500)
-//                 .attr("y", function (d) { return bar_y(d.percent); })
-//                 .attr("height", function (d) { return height - bar_y(d.percent); })
-//             //console.log(bar.data())
-//         }
-//     }
-//     for (i = 0; i < scale_data.length; i++) {
-//         if (index === scale_data[i].year) {
-//             scale_total = 0;
-//             for (j = 0; j < scale_data[i].energy.length; j++) {
-//                 scale_total = scale_data[i].energy[j].percent + scale_total;
+            return "火力：" + Math.round(scale_stack_data[index].energy[0].percent) + "億度"
+        })
+        scale_stack_text_water.text(function (d) {
 
-//             }
-//             console.log(scale_total);
-//             scale.data(function (d) { return scale_pie(scale_data[i].energy); })
-//                 .enter();
-//             scale.select("path")
-//                 .attr("d", scale_arc);
-//         }
-//     }
+            return "抽蓄水力：" + Math.round(scale_stack_data[index].energy[2].percent) + "億度"
+        })
+        scale_stack_text_nuclear.text(function (d) {
 
-//     for (i = 0; i < cate_data.length; i++) {
-//         if (index == cate_data[i].year) {
-//             cate.data(function (d) { return cate_pie(cate_data[i].energy); })
-//                 .enter();
-//             cate.select("path")
-//                 .attr("d", cate_arc);
-//         }
-//     }
+            return "核能：" + Math.round(scale_stack_data[index].energy[1].percent) + "億度"
+        })
+        scale_stack_text_renewable.text(function (d) {
 
-// }
+            return "再生能源：" + Math.round(scale_stack_data[index].energy[3].percent) + "億度"
+        })
+        var year_now = index+97
+        scale_stack_title.text("民國"+year_now+"年")
+        scale_stack_now_index = index;
+
+        for (i = 0; i < scale_data.length; i++) {
+            if (index+97 === scale_data[i].year) {
+                scale_total = 0;
+                for (j = 0; j < scale_data[i].energy.length; j++) {
+                    scale_total = scale_data[i].energy[j].percent + scale_total;
+    
+                }
+                console.log(scale_total);
+                console.log(scale_pie(scale_data[i].energy));
+                scale.data(function (d) { return scale_pie(scale_data[i].energy); })
+                    .enter();
+                scale.select("path")
+                    .attr("d", scale_arc);
+                scale_text_year.text("民國"+year_now+"年")
+                var select_value = scale_data[index].energy[choose_ener].percent;
+                console.log(select_value)
+                var select_value_per = +((select_value / scale_total) * 100);
+                scale_text.text(Math.round(select_value_per)+"％")
+            }
+        }
+    }
+}

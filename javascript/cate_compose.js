@@ -146,6 +146,4 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             cate_text.text(cate_value_per.toFixed(2) + "%")
 
         })
-
-
 })

@@ -1,5 +1,5 @@
 var cate_line_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    cate_line_width = 600 - cate_line_margin.left - cate_line_margin.right,
+    cate_line_width = 800 - cate_line_margin.left - cate_line_margin.right,
     cate_line_height = 300 - cate_line_margin.top - cate_line_margin.bottom;
 
 var cate_line_svg = d3.select("#cate")
@@ -124,4 +124,82 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr("r", 4)
         .attr("cx", function (d) { return cate_line_x(d.year); })
         .attr("cy", function (d) { return cate_line_y(d.gar / 1000000); });
+
+    var cate_line_move = cate_line_g.append("line")
+        .attr("x1", 0)
+        .attr("y1", 0)
+        .attr("x2", 0)
+        .attr("y2", cate_line_height)
+        .attr("stroke", "steelblue")
+        .attr("stroke-width", 2);
+
+    var cate_touch_rect = cate_line_g.append('rect')
+        .attr('width', cate_line_width) // can't catch mouse events on a g element
+        .attr('height', cate_line_height)
+        .attr('fill', 'none')
+        .attr('pointer-events', 'all')
+        .on("mouseover", function (d) {
+            for(i = 0 ; i < stack_data.length;i++){
+                if(d3.mouse(this)[0] <cate_line_x(97+i)+10&&d3.mouse(this)[0] >cate_line_x(97+i)-10){
+                    stack_bar_change(i)
+                }
+            }
+            date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
+            cate_line_move
+                .attr("x1", d3.mouse(this)[0])
+                .attr("x2", d3.mouse(this)[0])
+        })
+        .on("mousemove", function (d) {
+            for(i = 0 ; i < stack_data.length;i++){
+                if(d3.mouse(this)[0] <cate_line_x(97+i)+10&&d3.mouse(this)[0] >cate_line_x(97+i)-10){
+                    stack_bar_change(i)
+                }
+            }
+            date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
+            if (date_x > 3) {
+            } else {
+            }
+            
+            cate_line_move
+                .attr("x1", d3.mouse(this)[0])
+                .attr("x2", d3.mouse(this)[0])
+        })
 })
+
+function stack_bar_change(index) {
+    if (index != stack_now_index) {
+        stack_rect.data(stack_data[index].energy).enter()
+
+        stack_rect.select("rect")
+            .attr("rx", 5)
+            .attr("ry", 5)
+            .attr("x", function (d) { return stack_x(d.pre_per); })
+            .attr("y", 100)
+            .attr("height", 50)
+            .attr("width", function (d) { return stack_x(d.percent); })
+            ;
+        stack_text_water.text(function (d) {
+
+            return "水力：" + Math.round(stack_data[index].energy[2].percent / 1000000) + "百萬度"
+        })
+        stack_text_wind.text(function (d) {
+
+            return "風力：" + Math.round(stack_data[index].energy[0].percent / 1000000) + "百萬度"
+        })
+        stack_text_solar.text(function (d) {
+
+            return "太陽能：" + Math.round(stack_data[index].energy[1].percent / 1000000) + "百萬度"
+        })
+        stack_text_gar.text(function (d) {
+
+            return "垃圾沼氣：" + Math.round(stack_data[index].energy[4].percent / 1000000) + "百萬度"
+        })
+        stack_text_bio.text(function (d) {
+
+            return "生質能：" + Math.round(stack_data[index].energy[3].percent / 1000000) + "百萬度"
+        })
+        var year_stack =index +97 
+        stack_title.text("民國"+year_stack+"年")
+        stack_now_index = index;
+    }
+}

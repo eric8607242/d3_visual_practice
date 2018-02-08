@@ -41,12 +41,17 @@ body{
     width: 1550px;
     text-align:center;
 }
-
+#tit1{
+    position:relative;
+    width: 1550px;
+    text-align:center;
+    color: gray;
+}
 #time{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    transform:translateX(15%);
+    transform:translateX(0%);
     text-align:center;
     
     
@@ -61,20 +66,20 @@ body{
 }
 #block{
     position:relative;
-    height: 0px;
+    height: 80px;
 }
 #cate{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    transform:translateX(20%);
+    transform:translateX(5%);
     text-align:center;
 }
 #scale{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    transform:translateX(20%);
+    transform:translateX(5%);
     text-align:center;
 }
 #scale_text{

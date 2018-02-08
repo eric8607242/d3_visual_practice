@@ -52,6 +52,8 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
             check_circle_choose(select_cir)
             chart_change(select_cir_year);
 
+            console.log(select_cir_year);
+
         });
 })
 function check_circle_choose(select_cir) {
@@ -127,44 +129,44 @@ function chart_change(index) {
         }
     }
 
-    for (i = 0; i < scale_data.length; i++) {
-        if (index === scale_data[i].year) {
-            scale_total = 0;
-            for (j = 0; j < scale_data[i].energy.length; j++) {
-                scale_total = scale_data[i].energy[j].percent + scale_total;
+    // for (i = 0; i < scale_data.length; i++) {
+    //     if (index === scale_data[i].year) {
+    //         scale_total = 0;
+    //         for (j = 0; j < scale_data[i].energy.length; j++) {
+    //             scale_total = scale_data[i].energy[j].percent + scale_total;
 
-            }
-            console.log(scale_total);
-            console.log(scale_pie(scale_data[i].energy));
-            scale.data(function (d) { return scale_pie(scale_data[i].energy); })
-                .enter();
-            scale.select("path")
-                .attr("d", scale_arc);
-        }
-    }
+    //         }
+    //         console.log(scale_total);
+    //         console.log(scale_pie(scale_data[i].energy));
+    //         scale.data(function (d) { return scale_pie(scale_data[i].energy); })
+    //             .enter();
+    //         scale.select("path")
+    //             .attr("d", scale_arc);
+    //     }
+    // }
 
-    for (i = 0; i < cate_data.length; i++) {
-        if (index == cate_data[i].year) {
-            cate_total = 0;
-            for (j = 0; j < cate_data[i].energy.length; j++) {
-                if (cate_data[i].energy[j].name == "bio") {
-                    cate_total = cate_total + cate_data[i].energy[j].percent / 50;
-                } else if (cate_data[i].energy[j].name == "solar") {
-                    if (index == 97 || index == 98 || index == 99){
-                        cate_total = cate_total + cate_data[i].energy[j].percent / 10;
-                    }else{
-                        cate_total = cate_total + cate_data[i].energy[j].percent;
-                    }
+    // for (i = 0; i < cate_data.length; i++) {
+    //     if (index == cate_data[i].year) {
+    //         cate_total = 0;
+    //         for (j = 0; j < cate_data[i].energy.length; j++) {
+    //             if (cate_data[i].energy[j].name == "bio") {
+    //                 cate_total = cate_total + cate_data[i].energy[j].percent / 50;
+    //             } else if (cate_data[i].energy[j].name == "solar") {
+    //                 if (index == 97 || index == 98 || index == 99){
+    //                     cate_total = cate_total + cate_data[i].energy[j].percent / 10;
+    //                 }else{
+    //                     cate_total = cate_total + cate_data[i].energy[j].percent;
+    //                 }
                     
-                } else {
-                    cate_total = cate_total + cate_data[i].energy[j].percent;
-                }
-            }
-            cate.data(function (d) { return cate_pie(cate_data[i].energy); })
-                .enter();
-            cate.select("path")
-                .attr("d", cate_arc);
-        }
-    }
+    //             } else {
+    //                 cate_total = cate_total + cate_data[i].energy[j].percent;
+    //             }
+    //         }
+    //         cate.data(function (d) { return cate_pie(cate_data[i].energy); })
+    //             .enter();
+    //         cate.select("path")
+    //             .attr("d", cate_arc);
+    //     }
+    // }
 
 }
