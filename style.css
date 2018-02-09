@@ -66,7 +66,11 @@ body{
 }
 #block{
     position:relative;
-    height: 80px;
+    height: 150px;
+}
+#co_text{
+    font-size: 5px;
+    color: gray;
 }
 #cate{
     position:relative;

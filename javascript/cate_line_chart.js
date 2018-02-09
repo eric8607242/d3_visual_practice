@@ -6,7 +6,7 @@ var cate_line_svg = d3.select("#cate")
     .append("svg")
     .attr("width", cate_line_width + cate_line_margin.left + cate_line_margin.right)
     .attr("height", cate_line_height + cate_line_margin.top + cate_line_margin.bottom)
-    .attr("transform", "translate(0,-100)");
+    .attr("transform", "translate(0,0)");
 
 var cate_line_g = cate_line_svg.append("g").attr("transform", "translate(" + cate_line_margin.left + "," + cate_line_margin.top + ")");
 
@@ -37,6 +37,8 @@ var gar_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
     .y(function (d) { return cate_line_y(d.gar / 1000000); });
+
+var energy_type_data;
 d3.csv("./data/energy_type.csv", function (d) {
     d.year = +d.year;
     d.wind = +d.wind;
@@ -46,6 +48,7 @@ d3.csv("./data/energy_type.csv", function (d) {
     d.gar = +d.gar;
     return d;
 }, function (error, data) {
+    energy_type_data = data;
     cate_line_x.domain(d3.extent(data, function (d) { return d.year; }));
     cate_line_y.domain([0, d3.max(data, function (d) {
         return Math.max(d.water, d.solar, d.wind, d.bio, d.gar) / 1000000;

@@ -28,7 +28,7 @@ var scale_stack_text_water;
 var scale_stack_text_renewable;
 var scale_stack_text_bio;
 var scale_stack_title;
-var choose_ener = 5;
+var choose_ener = 3;
 
 d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     pre_percent = 0;

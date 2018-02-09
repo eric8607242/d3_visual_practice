@@ -21,7 +21,7 @@ var time_line = time_g.append("line")
 
 var choose_circle = 0;
 var time_circle_append;
-var select_cir_year = 98;
+
 d3.csv("./data/his_ele_cate.csv", function (d) {
     d.year = +d.year;
     return d;

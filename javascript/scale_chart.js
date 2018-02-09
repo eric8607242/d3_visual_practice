@@ -41,6 +41,7 @@ var scale_text_year;
 var scale_text;
 var scale_donut;
 var scale_text_name;
+var select_cir_year = 97;
 d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -72,15 +73,16 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     }
 
     scale = scale_svg.selectAll(".scalearc")
-        .data(function (d) { return scale_pie(data[1].energy); })
+        .data(function (d) { return scale_pie(data[0].energy); })
         .enter().append("g")
         .attr("class", "scalearc");
 
     scale_circle = scale.append("circle")
         .attr("cx", "0")
         .attr("cy", "0")
+        .attr("opacity", 0.2)
         .attr("r", scale_radius * 0.54)
-        .attr("fill", "white");
+        .attr("fill", "#568D4B");
 
     scale_text = scale.append("text")
         .attr("transform", "translate(0,0)")
@@ -88,21 +90,21 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .attr("font-size", "3.5em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("")
+        .text("4%")
     scale_text_year = scale.append("text")
         .attr("transform", "translate(0,0)")
-        .attr("dy", "0em")
+        .attr("dy", "-2.0em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("滑上以顯示更多")
+        .text("民國97年")
     scale_text_name = scale.append("text")
         .attr("transform", "translate(0,0)")
-        .attr("dy", "0em")
+        .attr("dy", "-1.0em")
         .attr("font-size", "1.0em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("")
+        .text("再生能源發電比例達")
 
     var polyline = scale.append('polyline')
         .attr('points', calculatePoints)
@@ -122,6 +124,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
+
             scale_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
