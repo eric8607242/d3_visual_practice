@@ -67,6 +67,18 @@ d3.csv("./data/energy_type.csv", function (d) {
         .select(".domain")
         .remove();
 
+    cate_line_g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("dy", "0.7em")
+        .attr("font-size", "90%")
+        .attr("text-anchor", "end")
+        .text("單位(百萬度)");
+    cate_line_g.append("text")
+        .attr("transform", "translate(-10,2)")
+        .attr("dy", "27.5em")
+        .attr("font-size", "60%")
+        .attr("text-anchor", "end")
+        .text("年");
     cate_line_g.append("path")
         .datum(data)
         .attr("fill", "none")
@@ -142,8 +154,8 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr('fill', 'none')
         .attr('pointer-events', 'all')
         .on("mouseover", function (d) {
-            for(i = 0 ; i < stack_data.length;i++){
-                if(d3.mouse(this)[0] <cate_line_x(97+i)+10&&d3.mouse(this)[0] >cate_line_x(97+i)-10){
+            for (i = 0; i < stack_data.length; i++) {
+                if (d3.mouse(this)[0] < cate_line_x(97 + i) + 10 && d3.mouse(this)[0] > cate_line_x(97 + i) - 10) {
                     stack_bar_change(i)
                 }
             }
@@ -153,8 +165,8 @@ d3.csv("./data/energy_type.csv", function (d) {
                 .attr("x2", d3.mouse(this)[0])
         })
         .on("mousemove", function (d) {
-            for(i = 0 ; i < stack_data.length;i++){
-                if(d3.mouse(this)[0] <cate_line_x(97+i)+10&&d3.mouse(this)[0] >cate_line_x(97+i)-10){
+            for (i = 0; i < stack_data.length; i++) {
+                if (d3.mouse(this)[0] < cate_line_x(97 + i) + 10 && d3.mouse(this)[0] > cate_line_x(97 + i) - 10) {
                     stack_bar_change(i)
                 }
             }
@@ -162,7 +174,7 @@ d3.csv("./data/energy_type.csv", function (d) {
             if (date_x > 3) {
             } else {
             }
-            
+
             cate_line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
@@ -201,8 +213,8 @@ function stack_bar_change(index) {
 
             return "生質能：" + Math.round(stack_data[index].energy[3].percent / 1000000) + "百萬度"
         })
-        var year_stack =index +97 
-        stack_title.text("民國"+year_stack+"年")
+        var year_stack = index + 97
+        stack_title.text("民國" + year_stack + "年")
         stack_now_index = index;
     }
 }

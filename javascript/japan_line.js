@@ -79,7 +79,18 @@ d3.csv("./data/日本各項電力.csv", function (d) {
         .call(d3.axisBottom(x))
         .select(".domain");
 
-
+    japan_line_g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("dy", "0.7em")
+        .attr("font-size", "90%")
+        .attr("text-anchor", "end")
+        .text("單位(千億度)");
+    japan_line_g.append("text")
+        .attr("transform", "translate(-10,2)")
+        .attr("dy", "27.5em")
+        .attr("font-size", "60%")
+        .attr("text-anchor", "end")
+        .text("年");
     japan_line_g.append("g")
         .attr("class", "y axis")
         .call(d3.axisLeft(y))
@@ -211,7 +222,7 @@ d3.csv("./data/日本各項電力.csv", function (d) {
 
 function scale_japan_change(index) {
     if (scale_stack_now_index != index) {
-        var year_now = index + 97   
+        var year_now = index + 97
         scale_stack_now_index = index;
         console.log(japan_scale_data)
         for (i = 0; i < japan_scale_data.length; i++) {
