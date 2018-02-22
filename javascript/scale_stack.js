@@ -153,8 +153,8 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
                     // console.log("------------------")
-                    if (select_name == "fire") { choose_ener = 2; return scale_color.range()[0]; }
-                    else if (select_name == "nuclear") { choose_ener = 1; return scale_color.range()[1] }
+                    if (select_name == "fire") { choose_ener = 1; return scale_color.range()[0]; }
+                    else if (select_name == "nuclear") { choose_ener = 2; return scale_color.range()[1] }
                     else if (select_name == "water") { choose_ener = 0; return scale_color.range()[2] }
                     else if (select_name == "renewable") { choose_ener = 3; return scale_color.range()[3] }
                 })

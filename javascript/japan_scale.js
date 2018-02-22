@@ -44,6 +44,7 @@ var japan_scale_text_name;
 var select_cir_year = 97;
 var japan_polyline;
 var japan_pol_text;
+var japan_choose = 3;
 d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -133,10 +134,10 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
                     // console.log("------------------")
-                    if (select_name == "fire") { choose_ener = 1; return japan_scale_color.range()[1]; }
-                    else if (select_name == "nuclear") { choose_ener = 2; return japan_scale_color.range()[0] }
-                    else if (select_name == "water") { choose_ener = 0; return japan_scale_color.range()[2] }
-                    else if (select_name == "renewable") { choose_ener = 3; return japan_scale_color.range()[3] }
+                    if (select_name == "fire") { japan_choose = 1; return japan_scale_color.range()[1]; }
+                    else if (select_name == "nuclear") { japan_choose = 2; return japan_scale_color.range()[0] }
+                    else if (select_name == "water") { japan_choose = 0; return japan_scale_color.range()[2] }
+                    else if (select_name == "renewable") { japan_choose = 3; return japan_scale_color.range()[3] }
                 })
 
             var temp_japan_scale_arc = d3.arc()

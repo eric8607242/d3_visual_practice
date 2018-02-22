@@ -224,7 +224,6 @@ function scale_japan_change(index) {
     if (scale_stack_now_index != index) {
         var year_now = index + 97
         scale_stack_now_index = index;
-        console.log(japan_scale_data)
         for (i = 0; i < japan_scale_data.length; i++) {
             if (index + 97 === japan_scale_data[i].year) {
                 japan_scale_total = 0;
@@ -232,14 +231,12 @@ function scale_japan_change(index) {
                     japan_scale_total = japan_scale_data[i].energy[j].percent + japan_scale_total;
 
                 }
-                console.log(japan_scale_total);
-                console.log(japan_scale_pie(japan_scale_data[i].energy));
                 japan_scale.data(function (d) { return japan_scale_pie(japan_scale_data[i].energy); })
                     .enter();
                 japan_scale.select("path")
                     .attr("d", japan_scale_arc);
                 japan_scale_text_year.text("民國" + year_now + "年")
-                var select_value = japan_scale_data[index].energy[choose_ener].percent;
+                var select_value = japan_scale_data[index].energy[japan_choose].percent;
                 console.log(select_value)
                 var select_value_per = +((select_value / japan_scale_total) * 100);
                 japan_scale_text.text(Math.round(select_value_per) + "％")
