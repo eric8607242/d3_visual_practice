@@ -4,8 +4,9 @@ var margin = { top: 20, right: 80, bottom: 30, left: 50 },
 
 
 
-var line_svg = d3.select("#scale")
+var line_svg = d3.select("#cate")
     .append("svg")
+    .attr("class", "linesvg")
     .attr("width", line_width + margin.left + margin.right)
     .attr("height", line_height + margin.top + margin.bottom)
     .attr("transform", "translate(0,-100)");
@@ -26,16 +27,17 @@ var nuclear_line = d3.line()
     .y(function (d) { return y(d.nuclear); });
 
 var scale_water_line = d3.line()
-    .x(function (d) { console.log(x(d.year)); return x(d.year); })
-    .y(function (d) { console.log(y(d.water)); return y(d.water); });
-
-var bisectDate = d3.bisector(function (d) { return d.year; }).left;
+    .x(function (d) { return x(d.year); })
+    .y(function (d) { return y(d.water); });
 
 var renewable_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return x(d.year); })
     .y(function (d) { return y(d.renewable); });
 
+
+
+var bisectDate = d3.bisector(function (d) { return d.year; }).left;
 
 var cir_move = line_g.append("circle")
     .attr("cx", 100)
@@ -63,6 +65,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     d.renewable = +d.renewable;
     return d;
 }, function (error, data) {
+    console.log(data)
 
     x.domain(d3.extent(data, function (d) { return d.year; }));
     y.domain([0, d3.max(data, function (d) {
@@ -70,13 +73,15 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     })]);
 
 
-    line_g.append("g")
+    var line_bottom = line_g.append("g")
+        .attr("class", "x axis")
         .attr("transform", "translate(0," + line_height + ")")
         .call(d3.axisBottom(x))
         .select(".domain");
 
 
     line_g.append("g")
+        .attr("class", "y axis")
         .call(d3.axisLeft(y))
         .append("text")
         .attr("transform", "rotate(-90)")
@@ -86,7 +91,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     line_g.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("class", "line")
+        .attr("class", "nuclear_line")
         .attr("stroke", "#354872")
         .attr("stroke-width", 2.5)
         .attr("d", nuclear_line);
@@ -94,7 +99,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     var fire = line_g.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("class", "line")
+        .attr("class", "fire_line")
         .attr("stroke", "#A51C1E")
         .attr("stroke-width", 2.5)
         .attr("d", fire_line);
@@ -102,7 +107,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     line_g.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("class", "line")
+        .attr("class", "water_line")
         .attr("stroke", "#EBAD30")
         .attr("stroke-width", 2.5)
         .attr("d", scale_water_line);
@@ -110,17 +115,19 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     line_g.append("path")
         .datum(data)
         .attr("fill", "none")
-        .attr("class", "line")
+        .attr("class", "renewable_line")
         .attr("stroke", "#568D4B")
         .attr("stroke-width", 2.5)
         .attr("d", renewable_line);
 
 
     circle = line_g.selectAll("line-circle")
+        .attr("class", "circle_line")
         .data(data)
         .enter();
 
     temp = circle.append("circle")
+        .attr("class", "water_cir")
         .attr("r", 4)
         .attr("cx", function (d) { return x(d.year); })
         .attr("cy", function (d) { return y(d.water); });
@@ -155,8 +162,8 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .attr('pointer-events', 'all')
         .on("mouseover", function (d) {
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
-            for(i = 0 ; i < scale_stack_data.length;i++){
-                if(d3.mouse(this)[0] <x(97+i)+20&&d3.mouse(this)[0] >x(97+i)-20){
+            for (i = 0; i < scale_stack_data.length; i++) {
+                if (d3.mouse(this)[0] < x(97 + i) + 20 && d3.mouse(this)[0] > x(97 + i) - 20) {
                     scale_stack_change(i)
                 }
             }
@@ -167,12 +174,11 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .on("mousemove", function (d) {
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
             console.log(data[date_x].year);
-            for(i = 0 ; i < scale_stack_data.length;i++){
-                if(d3.mouse(this)[0] <x(97+i)+20&&d3.mouse(this)[0] >x(97+i)-20){
+            for (i = 0; i < scale_stack_data.length; i++) {
+                if (d3.mouse(this)[0] < x(97 + i) + 20 && d3.mouse(this)[0] > x(97 + i) - 20) {
                     scale_stack_change(i)
                 }
             }
-           
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
@@ -188,6 +194,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
             line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
+
             //console.log(data[date_x].year)
             //chart_change(data[date_x].year);
         }
@@ -199,8 +206,125 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         line_move
             .attr("opacity", 0.5)
     }
-})
 
+})
+function change_to_japan() {
+
+    d3.csv("./data/日本各項電力.csv", function (d) {
+        d.year = +d.year;
+        d.fire = +d.fire;
+        d.nuclear = +d.nuclear;
+        d.water = +d.water;
+        d.renewable = +d.renewable;
+        return d;
+    }, function (error, data) {
+        console.log(data);
+        x.domain(d3.extent(data, function (d) { return d.year; }));
+        y.domain([0, d3.max(data, function (d) {
+            return Math.max(d.fire, d.nuclear, d.water, d.renewable);
+        })]);
+        console.log("-----------------------------")
+        var select_svg = d3.select(".linesvg").transition();
+        select_svg.select(".x.axis") // change the x axis
+            .duration(750)
+            .call(d3.axisBottom(x));
+        select_svg.select(".y.axis") // change the y axis
+            .duration(750)
+            .call(d3.axisLeft(y));
+        select_svg.select(".nuclear_line").duration(750).attr("d", nuclear_line(data));
+        select_svg.select(".fire_line").duration(750).attr("d", fire_line(data));
+        select_svg.select(".water_line").duration(750).attr("d", scale_water_line(data));
+        select_svg.select(".renewable_line").duration(750).attr("d", renewable_line(data));
+
+        line_g.selectAll("circle").remove()
+        circle = line_g.selectAll("line-circle")
+            .attr("class", "circle_line")
+            .data(data)
+            .enter();
+
+        temp = circle.append("circle")
+            .attr("class", "water_cir")
+            .attr("r", 4)
+            .attr("cx", function (d) { return x(d.year); })
+            .attr("cy", function (d) { return y(d.water); });
+
+        circle.append("circle")
+            .attr("r", 4)
+            .attr("cx", function (d) { return x(d.year); })
+            .attr("cy", function (d) { return y(d.fire); });
+
+        circle.append("circle")
+            .attr("r", 4)
+            .attr("cx", function (d) { return x(d.year); })
+            .attr("cy", function (d) { return y(d.nuclear); });
+
+        circle.append("circle")
+            .attr("r", 4)
+            .attr("cx", function (d) { return x(d.year); })
+            .attr("cy", function (d) { return y(d.renewable); })
+
+
+    })
+}
+
+function change_to_tai() {
+    
+        d3.csv("./data/his_ele_cate.csv", function (d) {
+            d.year = +d.year;
+            d.fire = +d.fire;
+            d.nuclear = +d.nuclear;
+            d.water = +d.water;
+            d.renewable = +d.renewable;
+            return d;
+        }, function (error, data) {
+            console.log(data);
+            x.domain(d3.extent(data, function (d) { return d.year; }));
+            y.domain([0, d3.max(data, function (d) {
+                return Math.max(d.fire, d.nuclear, d.water, d.renewable);
+            })]);
+            console.log("-----------------------------")
+            var select_svg = d3.select(".linesvg").transition();
+            select_svg.select(".x.axis") // change the x axis
+                .duration(750)
+                .call(d3.axisBottom(x));
+            select_svg.select(".y.axis") // change the y axis
+                .duration(750)
+                .call(d3.axisLeft(y));
+            select_svg.select(".nuclear_line").duration(750).attr("d", nuclear_line(data));
+            select_svg.select(".fire_line").duration(750).attr("d", fire_line(data));
+            select_svg.select(".water_line").duration(750).attr("d", scale_water_line(data));
+            select_svg.select(".renewable_line").duration(750).attr("d", renewable_line(data));
+    
+            line_g.selectAll("circle").remove()
+            circle = line_g.selectAll("line-circle")
+                .attr("class", "circle_line")
+                .data(data)
+                .enter();
+    
+            temp = circle.append("circle")
+                .attr("class", "water_cir")
+                .attr("r", 4)
+                .attr("cx", function (d) { return x(d.year); })
+                .attr("cy", function (d) { return y(d.water); });
+    
+            circle.append("circle")
+                .attr("r", 4)
+                .attr("cx", function (d) { return x(d.year); })
+                .attr("cy", function (d) { return y(d.fire); });
+    
+            circle.append("circle")
+                .attr("r", 4)
+                .attr("cx", function (d) { return x(d.year); })
+                .attr("cy", function (d) { return y(d.nuclear); });
+    
+            circle.append("circle")
+                .attr("r", 4)
+                .attr("cx", function (d) { return x(d.year); })
+                .attr("cy", function (d) { return y(d.renewable); })
+    
+    
+        })
+    }
 function scale_stack_change(index) {
     if (scale_stack_now_index != index) {
         scale_stack_rect.data(scale_stack_data[index].energy).enter()
@@ -228,16 +352,16 @@ function scale_stack_change(index) {
 
             return "再生能源：" + Math.round(scale_stack_data[index].energy[3].percent) + "億度"
         })
-        var year_now = index+97
-        scale_stack_title.text("民國"+year_now+"年")
+        var year_now = index + 97
+        scale_stack_title.text("民國" + year_now + "年")
         scale_stack_now_index = index;
 
         for (i = 0; i < scale_data.length; i++) {
-            if (index+97 === scale_data[i].year) {
+            if (index + 97 === scale_data[i].year) {
                 scale_total = 0;
                 for (j = 0; j < scale_data[i].energy.length; j++) {
                     scale_total = scale_data[i].energy[j].percent + scale_total;
-    
+
                 }
                 console.log(scale_total);
                 console.log(scale_pie(scale_data[i].energy));
@@ -245,12 +369,13 @@ function scale_stack_change(index) {
                     .enter();
                 scale.select("path")
                     .attr("d", scale_arc);
-                scale_text_year.text("民國"+year_now+"年")
+                scale_text_year.text("民國" + year_now + "年")
                 var select_value = scale_data[index].energy[choose_ener].percent;
                 console.log(select_value)
                 var select_value_per = +((select_value / scale_total) * 100);
-                scale_text.text(Math.round(select_value_per)+"％")
+                scale_text.text(Math.round(select_value_per) + "％")
             }
         }
+
     }
 }

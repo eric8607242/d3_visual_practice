@@ -3,7 +3,7 @@ var scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
     scale_height = 500 - scale_margin.top - scale_margin.bottom,
     scale_radius = Math.min(scale_width, scale_height) / 2;
 
-var scale_svg = d3.select("#scale")
+var scale_svg = d3.select("#cate")
     .append("svg")
     .attr("width", scale_width + scale_margin.left + scale_margin.right)
     .attr("height", scale_height + scale_margin.top + scale_margin.bottom)

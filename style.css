@@ -76,7 +76,7 @@ body{
     position:relative;
     width:fit-content;
     border-radius: 10px;
-    transform:translateX(5%);
+    transform:translateX(0%);
     text-align:center;
 }
 #scale{

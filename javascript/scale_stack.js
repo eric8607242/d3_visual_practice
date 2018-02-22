@@ -2,7 +2,7 @@ var scale_stack_margin = { top: 20, right: 80, bottom: 30, left: 50 },
     scale_stack_width = 1200 - scale_stack_margin.left - scale_stack_margin.right,
     scale_stack_height = 200 - scale_stack_margin.top - scale_stack_margin.bottom;
 
-var scale_stack_svg = d3.select("#scale")
+var scale_stack_svg = d3.select("#cate")
     .append("svg")
     .attr("width", scale_stack_width + scale_stack_margin.left + scale_stack_margin.right)
     .attr("height", scale_stack_height + scale_stack_margin.top + scale_stack_margin.bottom)

@@ -2,7 +2,7 @@ var time_margin = { top: 20, right: 80, bottom: 30, left: 50 },
     time_width = 1200 - time_margin.left - time_margin.right,
     time_height = 100 - time_margin.top - time_margin.bottom;
 
-var time_svg = d3.select("#time")
+var time_svg = d3.select("#cate")
     .append("svg")
     .attr("width", time_width + time_margin.left + time_margin.right)
     .attr("height", time_height + time_margin.top + time_margin.bottom)
