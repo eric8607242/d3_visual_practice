@@ -68,8 +68,15 @@ body{
     position:relative;
     height: 150px;
 }
+#separ_line{
+    position:relative;
+    height: 3px;
+    width: 40%;
+    left: 30%;
+    background-color: lightgray;
+}
 #co_text{
-    font-size: 5px;
+    font-size: 10px;
     color: gray;
 }
 #cate{
