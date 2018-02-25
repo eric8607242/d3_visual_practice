@@ -67,15 +67,10 @@ d3.csv("./data/water.csv", function (d, i, columns) {
             max = tota_arr[i].values[1].total;
         }
     }
-    //console.log(tota_arr[1].values[1]);
-    console.log(max);
-    console.log(tota_arr);
 
-    renew_y.domain(tota_arr[0].values.map(function (d) { console.log(d.name); return d.name }));
+    renew_y.domain(tota_arr[0].values.map(function (d) { return d.name }));
     renew_x.domain([0, max]);
 
-    //renew_x.domain(tota_arr[0].values.map(function (d) { return d.name }));
-    //renew_y.domain([0, max]);
     renew_color.domain(tota_arr[0].values.map(function (d) { return d.name }));
     renew = renew_bar_svg.selectAll("rect")
         .data(tota_arr[0].values)
@@ -98,7 +93,7 @@ d3.csv("./data/water.csv", function (d, i, columns) {
 
     renew.append("rect")
         .attr("x", function (d) { return /*renew_x(d.name)*/0; })
-        .attr("y", function (d) { console.log(d.name); return renew_y(d.name) + 10; })
+        .attr("y", function (d) {  return renew_y(d.name) + 10; })
         .attr("width",/*"30"*/function (d) { return renew_x(d.total); })
         .attr("height", function (d) { return /*renew_height-renew_y(d.total)*/30; })
         .attr("fill", function (d) { return renew_color(d.name) });

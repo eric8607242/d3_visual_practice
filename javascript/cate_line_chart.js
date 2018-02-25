@@ -1,3 +1,6 @@
+var cate_line_propor = 1000000;//將y軸的數字縮小
+
+
 var cate_line_margin = { top: 20, right: 80, bottom: 30, left: 50 },
     cate_line_width = 800 - cate_line_margin.left - cate_line_margin.right,
     cate_line_height = 300 - cate_line_margin.top - cate_line_margin.bottom;
@@ -14,29 +17,24 @@ var cate_line_x = d3.scaleTime().range([0, cate_line_width]),
     cate_line_y = d3.scaleLinear().range([cate_line_height, 0]);
 
 var wind_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.wind / 1000000); });
+    .y(function (d) { return cate_line_y(d.wind / cate_line_propor); });
 
 var solar_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.solar / 1000000); });
+    .y(function (d) { return cate_line_y(d.solar / cate_line_propor); });
 
 var water_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.water / 1000000); });
+    .y(function (d) { return cate_line_y(d.water / cate_line_propor); });
 
 var bio_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.bio / 1000000 + 30); });
+    .y(function (d) { return cate_line_y(d.bio / cate_line_propor + 30); });
 
 var gar_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return cate_line_x(d.year); })
-    .y(function (d) { return cate_line_y(d.gar / 1000000); });
+    .y(function (d) { return cate_line_y(d.gar / cate_line_propor); });
 
 var energy_type_data;
 d3.csv("./data/energy_type.csv", function (d) {
@@ -51,21 +49,14 @@ d3.csv("./data/energy_type.csv", function (d) {
     energy_type_data = data;
     cate_line_x.domain(d3.extent(data, function (d) { return d.year; }));
     cate_line_y.domain([0, d3.max(data, function (d) {
-        return Math.max(d.water, d.solar, d.wind, d.bio, d.gar) / 1000000;
+        return Math.max(d.water, d.solar, d.wind, d.bio, d.gar) / cate_line_propor;
     })])
 
-    cate_line_g.append("g")
-        .attr("transform", "translate(0," + cate_line_height + ")")
-        .call(d3.axisBottom(cate_line_x))
-        .select(".domain");
+
+    create_x_axis(cate_line_g, cate_line_x, cate_line_height);
+    create_y_axis(cate_line_g, cate_line_y);
 
 
-    cate_line_g.append("g")
-        .call(d3.axisLeft(cate_line_y))
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .select(".domain")
-        .remove();
 
     cate_line_g.append("text")
         .attr("transform", "rotate(-90)")
@@ -79,66 +70,28 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text("年");
-    cate_line_g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("class", "cate_line")
-        .attr("stroke", "#FF5511")
-        .attr("stroke-width", 2.5)
-        .attr("d", wind_line);
-    cate_line_g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("class", "cate_line")
-        .attr("stroke", "#5599FF")
-        .attr("stroke-width", 2.5)
-        .attr("d", water_line);
-    cate_line_g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("class", "cate_line")
-        .attr("stroke", "#FFFF33")
-        .attr("stroke-width", 2.5)
-        .attr("d", solar_line);
-    cate_line_g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("class", "cate_line")
-        .attr("stroke", "#00AA00")
-        .attr("stroke-width", 2.5)
-        .attr("d", bio_line);
-    cate_line_g.append("path")
-        .datum(data)
-        .attr("fill", "none")
-        .attr("class", "cate_line")
-        .attr("stroke", "#AAFFEE")
-        .attr("stroke-width", 2.5)
-        .attr("d", gar_line);
+
+
+    create_chart_line(cate_line_g, wind_line, "#FF5511", data);
+    create_chart_line(cate_line_g, water_line, "#5599FF", data);
+    create_chart_line(cate_line_g, solar_line, "#FFFF33", data);
+    create_chart_line(cate_line_g, bio_line, "#00AA00", data);
+    create_chart_line(cate_line_g, gar_line, "#AAFFEE", data);
+
 
     cate_circle = cate_line_g.selectAll("cate-line-circle")
         .data(data)
         .enter();
-    cate_circle.append("circle")
-        .attr("r", 4)
-        .attr("cx", function (d) { return cate_line_x(d.year); })
-        .attr("cy", function (d) { return cate_line_y(d.solar / 1000000); });
 
-    cate_circle.append("circle")
-        .attr("r", 4)
-        .attr("cx", function (d) { return cate_line_x(d.year); })
-        .attr("cy", function (d) { return cate_line_y(d.water / 1000000); });
-    cate_circle.append("circle")
-        .attr("r", 4)
-        .attr("cx", function (d) { return cate_line_x(d.year); })
-        .attr("cy", function (d) { return cate_line_y(d.wind / 1000000); });
-    cate_circle.append("circle")
-        .attr("r", 4)
-        .attr("cx", function (d) { return cate_line_x(d.year); })
-        .attr("cy", function (d) { return cate_line_y(d.bio / 1000000); });
-    cate_circle.append("circle")
-        .attr("r", 4)
-        .attr("cx", function (d) { return cate_line_x(d.year); })
-        .attr("cy", function (d) { return cate_line_y(d.gar / 1000000); });
+    create_circle(cate_circle, gar_line.x(), gar_line.y(), 4)
+    create_circle(cate_circle, bio_line.x(), bio_line.y(), 4)
+    create_circle(cate_circle, wind_line.x(), wind_line.y(), 4)
+    create_circle(cate_circle, water_line.x(), water_line.y(), 4)
+    create_circle(cate_circle, solar_line.x(), solar_line.y(), 4)
+
+
+
+
 
     var cate_line_move = cate_line_g.append("line")
         .attr("x1", 0)
@@ -160,9 +113,7 @@ d3.csv("./data/energy_type.csv", function (d) {
                 }
             }
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
-            cate_line_move
-                .attr("x1", d3.mouse(this)[0])
-                .attr("x2", d3.mouse(this)[0])
+            line_move(cate_line_move, d3.mouse(this)[0]);
         })
         .on("mousemove", function (d) {
             for (i = 0; i < stack_data.length; i++) {
@@ -174,11 +125,11 @@ d3.csv("./data/energy_type.csv", function (d) {
             if (date_x > 3) {
             } else {
             }
+            line_move(cate_line_move, d3.mouse(this)[0]);
+        }
+        )
 
-            cate_line_move
-                .attr("x1", d3.mouse(this)[0])
-                .attr("x2", d3.mouse(this)[0])
-        })
+
 })
 
 function stack_bar_change(index) {
@@ -217,4 +168,41 @@ function stack_bar_change(index) {
         stack_title.text("民國" + year_stack + "年")
         stack_now_index = index;
     }
+}
+
+function create_x_axis(create_g, create_x, create_height) {
+    create_g.append("g")
+        .attr("transform", "translate(0," + create_height + ")")
+        .call(d3.axisBottom(create_x))
+        .select(".domain");
+
+}
+function create_y_axis(create_g, create_y) {
+    create_g.append("g")
+        .call(d3.axisLeft(create_y))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .select(".domain")
+        .remove();
+}
+function create_chart_line(create_g, create_line, create_color, create_data) {
+    create_g.append("path")
+        .datum(create_data)
+        .attr("fill", "none")
+        .attr("class", "cate_line")
+        .attr("stroke", create_color)
+        .attr("stroke-width", 2.5)
+        .attr("d", create_line);
+}
+function create_circle(create_g, create_cx, create_cy, create_r) {
+    create_g.append("circle")
+        .attr("r", create_r)
+        .attr("cx", create_cx)
+        .attr("cy", create_cy);
+}
+
+function line_move(line_g, line_mouse) {
+    line_g
+        .attr("x1", line_mouse)
+        .attr("x2", line_mouse)
 }

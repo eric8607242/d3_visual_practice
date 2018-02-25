@@ -45,6 +45,14 @@ var select_cir_year = 97;
 var japan_polyline;
 var japan_pol_text;
 var japan_choose = 3;
+function japan_scale_defaultsetting(){
+    return{
+        circle_color:"#568D4B",
+        text_content:"8%",
+        text_year_content:"民國97年",
+        text_name_content:"再生能源發電比例達"
+    };
+}
 d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -57,15 +65,13 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
     };
 
 }, function (error, data) {
-    console.log(data);
     japan_scale_data = data;
+    var config = japan_scale_defaultsetting();
     if (error) throw error;
-    // console.log(data[1].energy.length);
     for (i = 0; i < data[1].energy.length; i++) {
         japan_scale_total = japan_scale_total + data[1].energy[i].percent;
     }
     japan_scale_color.domain(data[1].energy.map(function (d) { return d.name; }));
-    // console.log(data);
     var temp;
     for (i = 0; i < data.length; i++) {
 
@@ -78,7 +84,7 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
     }
 
     japan_scale = japan_scale_svg.selectAll(".japan_scalearc")
-        .data(function (d) { console.log(japan_scale_pie(data[0].energy)); return japan_scale_pie(data[0].energy); })
+        .data(function (d) { return japan_scale_pie(data[0].energy); })
         .enter().append("g")
         .attr("class", "japan_scalearc");
 
@@ -87,7 +93,7 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
         .attr("cy", "0")
         .attr("opacity", 0.2)
         .attr("r", japan_scale_radius * 0.49)
-        .attr("fill", "#568D4B");
+        .attr("fill", config.circle_color);
 
     japan_scale_text = japan_scale.append("text")
         .attr("transform", "translate(0,0)")
@@ -95,24 +101,24 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
         .attr("font-size", "3.3em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("8%")
+        .text(config.text_content)
     japan_scale_text_year = japan_scale.append("text")
         .attr("transform", "translate(0,0)")
         .attr("dy", "-2.0em")
         .attr("font-size", "1.3em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("民國97年")
+        .text(config.text_year_content)
     japan_scale_text_name = japan_scale.append("text")
         .attr("transform", "translate(0,0)")
         .attr("dy", "-1.0em")
         .attr("font-size", "0.8em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("再生能源發電比例達")
+        .text(config.text_name_content)
 
     japan_polyline = japan_scale.append('polyline')
-        .attr('points', japan_calculatePoints)
+        .attr('points', calculatePoints)
         .attr("fill", "none")
         .attr("stroke", "black")
         .attr("stroke-width", "2px");
@@ -129,11 +135,12 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
         })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+            var select_value_per = calculate_percent(select_value, japan_scale_total)
 
             japan_scale_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    // console.log("------------------")
                     if (select_name == "fire") { japan_choose = 1; return japan_scale_color.range()[1]; }
                     else if (select_name == "nuclear") { japan_choose = 2; return japan_scale_color.range()[0] }
                     else if (select_name == "water") { japan_choose = 0; return japan_scale_color.range()[2] }
@@ -153,73 +160,29 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
                         return 0.6;
                     }
                 })
+
             d3.select(this)
                 .attr("d", temp_japan_scale_arc)
                 .style("opacity", 1)
 
+            text_update(japan_scale_text_name, select_scale_name(select_name) + "發電比例達")
+            text_update(japan_scale_text_year, "民國" + select_cir_year + "年")
+            text_update(japan_scale_text, Math.round(select_value_per) + "%")
 
-            var select_value = d3.select(this).data()[0].value;
-            var select_value_per = +((select_value / japan_scale_total) * 100);
-            japan_scale_text_name.attr("dy", "-1.0em");
-            japan_scale_text_year.attr("dy", "-2.0em");
-            if (select_name == "fire") {
-                japan_scale_text_name.text("火力發電比例達")
-            }
-            else if (select_name == "nuclear") { japan_scale_text_name.text("核能發電比例達") }
-            else if (select_name == "water") { japan_scale_text_name.text("抽蓄水力發電比例達") }
-            else if (select_name == "renewable") { japan_scale_text_name.text("再生能源發電比例達") }
-            japan_scale_text_year.text("民國" + select_cir_year + "年");
-            japan_scale_text.text(Math.round(select_value_per) + "%")
 
 
         })
-        .on("mouseout", function (d) {
-            //japan_scale_circle.attr("opacity", 0)
-        });
+
     japan_pol_text = japan_scale.append("text")
-        .attr("class","poly")
-        //.attr("transform", function (d) { return "translate(" + japan_scale_text_arc.centroid(d) + ")"; })
+        .attr("class", "poly")
         .attr("font-size", "15px")
-        //.attr("text-anchor", "middle")
-        .attr('transform', japan_labelTransform)
+        .attr('transform', labelTransform)
         .style('text-anchor', function (d) {
             // if slice centre is on the left, anchor text to start, otherwise anchor to end
-            return (japan_midAngle(d)) < Math.PI ? 'start' : 'end';
+            return (midAngle(d)) < Math.PI ? 'start' : 'end';
         })
         .text(function (d) {
-            if (d.data.name == "renewable") {
-                return "再生能源"
-            } else if (d.data.name == "nuclear") {
-                return "核能"
-            } else if (d.data.name == "fire") {
-                return "火力"
-            } else {
-                return "抽蓄水力"
-            }
+            return select_scale_name(d.data.name);
         });
 })
 
-function japan_calculatePoints(d) {
-    // see label transform function for explanations of these three lines.
-    // console.log("pos:---");
-    //
-    var pos = japan_scale_text_arc.centroid(d);
-    // console.log(pos);
-    // console.log(japan_midAngle(d));
-    // console.log(Math.PI);
-    pos[0] = japan_scale_radius * 0.7 * (japan_midAngle(d) < (Math.PI) ? 1 : -1);
-    console.log(pos)
-    return [japan_scale_arc.centroid(d), japan_scale_text_arc.centroid(d), pos]
-}
-
-function japan_labelTransform(d) {
-    // effectively computes the centre of the slice.
-    // see https://github.com/d3/d3-shape/blob/master/README.md#arc_centroid
-    var pos = japan_scale_text_arc.centroid(d);
-
-    // changes the point to be on left or right depending on where label is.
-    pos[0] = japan_scale_radius * 0.75 * (japan_midAngle(d) < Math.PI ? 1 : -1);
-    return 'translate(' + pos + ')';
-}
-
-function japan_midAngle(d) { return d.startAngle + (d.endAngle - d.startAngle) / 2; } 

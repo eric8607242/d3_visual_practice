@@ -59,8 +59,6 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
         year_total_percent = 0;
     }
 
-    //console.log(data.map(function (d) { return d.energy.name }))
-    console.log(data[8])
     stack_x.domain([0, max_percent])
     stack_y.domain([0, max_percent])
 

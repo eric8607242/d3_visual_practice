@@ -14,31 +14,25 @@ var japan_cate_line_x = d3.scaleTime().range([0, japan_cate_line_width]),
     japan_cate_line_y = d3.scaleLinear().range([japan_cate_line_height, 0]);
 
 var japan_wind_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return japan_cate_line_x(d.year); })
     .y(function (d) { return japan_cate_line_y(d.wind); });
 
 var japan_solar_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return japan_cate_line_x(d.year); })
     .y(function (d) { return japan_cate_line_y(d.solar); });
 
 var japan_water_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return japan_cate_line_x(d.year); })
     .y(function (d) { return japan_cate_line_y(d.water); });
 
 var japan_bio_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return japan_cate_line_x(d.year); })
     .y(function (d) { return japan_cate_line_y(d.bio + 30); });
 
 var japan_gar_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return japan_cate_line_x(d.year); })
     .y(function (d) { return japan_cate_line_y(d.gar); });
 var japan_hot_line = d3.line()
-    //.curve(d3.curveBasis)
     .x(function (d) { return japan_cate_line_x(d.year); })
     .y(function (d) { return japan_cate_line_y(d.hot); });
 
@@ -53,7 +47,6 @@ d3.csv("./data/日本再生能源.csv", function (d) {
     d.hot = +d.hot;
     return d;
 }, function (error, data) {
-    console.log(data);
     japan_cate_line_x.domain(d3.extent(data, function (d) { return d.year; }));
     japan_cate_line_y.domain([0, d3.max(data, function (d) {
         return Math.max( d.solar, d.wind, d.bio, d.gar);

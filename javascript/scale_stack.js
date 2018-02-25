@@ -60,9 +60,6 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         }
         year_total_percent = 0;
     }
-
-    //console.log(data.map(function (d) { return d.energy.name }))
-    console.log(data[8])
     scale_stack_x.domain([0, max_percent])
     scale_stack_y.domain([0, max_percent])
 
@@ -148,11 +145,9 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .attr("width", function (d) { return scale_stack_x(d.percent) - 2; })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].name;
-            console.log(select_name)
             scale_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
-                    // console.log("------------------")
                     if (select_name == "fire") { choose_ener = 1; return scale_color.range()[0]; }
                     else if (select_name == "nuclear") { choose_ener = 2; return scale_color.range()[1] }
                     else if (select_name == "water") { choose_ener = 0; return scale_color.range()[2] }
@@ -175,7 +170,6 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
             d3.select(this)
                 .style("opacity", 1)
 
-            console.log(d3.select(this).data()[0].percent)
             var select_value = d3.select(this).data()[0].percent;
             var select_value_per = +((select_value / scale_total) * 100);
             scale_text_name.attr("dy", "-1.0em");

@@ -5,7 +5,7 @@ var margin = { top: 20, right: 50, bottom: 30, left: 50 },
     radius = Math.min(donut_width, donut_height) / 2;
 
 var arc = d3.arc()
-    .outerRadius(function(d){
+    .outerRadius(function (d) {
         if (d.data.name == "台電") {
             return radius * 0.85;
         } else {
@@ -27,24 +27,18 @@ var pie = d3.pie()
 var sun_svg = d3.select("#cate").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
-    //.attr("transform", "translate(" + donut_width / 2 + ",0)")
-    //.style("background-color","#FFFACD")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var water_svg = d3.select("#cate").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
-    //.attr("transform", "translate(" + donut_width / 2 + ",0)")
-    //.style("background-color","#F0F8FF")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
 var wind_svg = d3.select("#cate").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
-    //.attr("transform", "translate(" + donut_width / 2 + ",0)")
-    //.style("background-color","	#F0FFF0")
     .append("g")
     .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
 
@@ -72,6 +66,9 @@ var wind_label_text = wind_svg.append("text")
     .style("fill", "black")
     .text("風力發電")
 
+var mouseenter_arc = d3.arc()
+    .outerRadius(radius * 0.85)
+    .innerRadius(radius * 0.55);
 
 var sun;
 var water;
@@ -106,21 +103,18 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .attr("r", radius * 0.54)
         .attr("fill", "#FFDD55")
     var sun_text = sun.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "0.8em")
         .attr("font-size", "1.8em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("0.098百萬度")
     var sun_text_type = sun.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-0.8em")
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("台電發電量達")
     var sun_text_year = sun.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
@@ -131,35 +125,35 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .style("fill", function (d) { return sun_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+
             sun_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
                     if (select_name === "台電") { return sun_color.range()[0]; }
                     else { return sun_color.range()[1] }
                 })
-            var temp_arc = d3.arc()
-                .outerRadius(radius * 0.85)
-                .innerRadius(radius * 0.55);
+
 
             sun_donut.attr("d", arc)
             d3.select(this)
-                .attr("d", temp_arc)
+                .attr("d", mouseenter_arc)
 
-            var select_value = d3.select(this).data()[0].value;
-            sun_text_year
-                .attr("dy", "-1.8em")
-                .text("民國" + select_cir_year + "年")
-            sun_text_type.text(select_name + "發電量達")
-            sun_text.text(select_value + "百萬度")
+            
+
+            text_update(sun_text_year, "民國" + select_cir_year + "年")
+            text_update(sun_text_type, select_name + "發電量達")
+            text_update(sun_text, select_value + "百萬度")
+
+
         })
-        .on("mouseout", function (d) {
-        });
+
     sun.append("text")
         .attr("class", "text_remove_sun")
         .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
-        .text(function (d) { console.log(d); return d.data.name; });
+        .text(function (d) { return d.data.name; });
 
 
 })
@@ -190,21 +184,18 @@ d3.csv("./data/water.csv", function (d, i, columns) {
         .attr("r", radius * 0.54)
         .attr("fill", "#87CEFA")
     var water_text = water.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "0.8em")
         .attr("font-size", "1.8em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("3411百萬度")
     var water_text_type = water.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-0.8em")
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("台電發電量達")
     var water_text_year = water.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
@@ -216,32 +207,33 @@ d3.csv("./data/water.csv", function (d, i, columns) {
         .style("fill", function (d) { return water_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+
             water_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
                     if (select_name === "台電") { return water_color.range()[0]; }
                     else { return water_color.range()[1] }
                 })
-            var temp_arc = d3.arc()
-                .outerRadius(radius * 0.85)
-                .innerRadius(radius * 0.55);
+
 
             water_donut.attr("d", arc)
             d3.select(this)
-                .attr("d", temp_arc)
-            var select_value = d3.select(this).data()[0].value;
-            water_text_year.attr("dy", "-1.8em").text("民國" + select_cir_year + "年")
-            water_text_type.text(select_name + "發電量達")
-            water_text.text(Math.round(select_value) + "百萬度")
+                .attr("d", mouseenter_arc)
+            
+
+            text_update(water_text_year, "民國" + select_cir_year + "年")
+            text_update(water_text_type, select_name + "發電量達")
+            text_update(water_text, Math.round(select_value) + "百萬度")
+
         })
-        .on("mouseout", function (d) {
-        });
+
     water.append("text")
         .attr("class", "text_remove_water")
         .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
-        .text(function (d) { console.log(d); return d.data.name; });
+        .text(function (d) { return d.data.name; });
 
 
 
@@ -273,21 +265,18 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .attr("opacity", 0.2)
         .attr("fill", "#32CD32")
     var wind_text = wind.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "0.8em")
         .attr("font-size", "180%")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("273百萬度")
     var wind_text_type = wind.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-0.8em")
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("台電發電量")
     var wind_text_year = wind.append("text")
-        //.attr("transform", "translate(" + radius / 2 + donut_width / 2 + ",0)")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
@@ -300,30 +289,33 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .style("fill", function (d) { return wind_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+            
             wind_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
                     if (select_name == "台電") { return wind_color.range()[0]; }
                     else { return wind_color.range()[1] }
                 })
-            var temp_arc = d3.arc()
-                .outerRadius(radius * 0.85)
-                .innerRadius(radius * 0.55);
 
             wind_donut.attr("d", arc)
             d3.select(this)
-                .attr("d", temp_arc)
-            var select_value = d3.select(this).data()[0].value;
-            wind_text_year.attr("dy", "-1.8em").text("民國" + select_cir_year + "年")
-            wind_text_type.text(select_name + "發電量達")
-            wind_text.text(Math.round(select_value) + "百萬度")
+                .attr("d", mouseenter_arc)
+            
+
+            text_update(wind_text_year, "民國" + select_cir_year + "年")
+            text_update(wind_text_type, select_name + "發電量達")
+            text_update(wind_text, Math.round(select_value) + "百萬度")
+
         })
-        .on("mouseout", function (d) {
-        });
     wind.append("text")
         .attr("class", "text_remove_wind")
         .attr("transform", function (d) { return "translate(" + arc.centroid(d) + ")"; })
         .attr("dy", ".35em")
         .attr("text-anchor", "middle")
-        .text(function (d) { console.log(d); return d.data.name; });
+        .text(function (d) { return d.data.name; });
 })
+
+function text_update(text_var, text_content) {
+    text_var.text(text_content);
+}

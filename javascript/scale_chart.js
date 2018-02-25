@@ -7,7 +7,6 @@ var scale_svg = d3.select("#cate")
     .append("svg")
     .attr("width", scale_width + scale_margin.left + scale_margin.right)
     .attr("height", scale_height + scale_margin.top + scale_margin.bottom)
-    //.attr("transform", "translate（1000,0)")
     .append("g").attr("transform", "translate(" + scale_width * 1.1 / 2 + "," + scale_height / 2 + ")");
 
 var scale_color = d3.scaleOrdinal()
@@ -16,7 +15,6 @@ var scale_color = d3.scaleOrdinal()
 
 var scale_arc = d3.arc()
     .outerRadius(function (d) {
-        console.log(d.data.name);
         if (d.data.name == "renewable") {
             return scale_radius * 0.85;
         } else {
@@ -42,6 +40,16 @@ var scale_text;
 var scale_donut;
 var scale_text_name;
 var select_cir_year = 97;
+
+function scale_defaultsetting(){
+    return{
+        circle_color:"#568D4B",
+        text_content:"4%",
+        text_year_content:"民國97年",
+        text_name_content:"再生能源發電比例達"
+    };
+}
+
 d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -55,13 +63,14 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
 
 }, function (error, data) {
     scale_data = data;
+
+    var config = scale_defaultsetting();
+
     if (error) throw error;
-    // console.log(data[1].energy.length);
     for (i = 0; i < data[1].energy.length; i++) {
         scale_total = scale_total + data[1].energy[i].percent;
     }
     scale_color.domain(data[1].energy.map(function (d) { return d.name; }));
-    // console.log(data);
     var temp;
     for (i = 0; i < data.length; i++) {
         temp = data[i].energy[0].name;
@@ -82,7 +91,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .attr("cy", "0")
         .attr("opacity", 0.2)
         .attr("r", scale_radius * 0.54)
-        .attr("fill", "#568D4B");
+        .attr("fill", config.circle_color);
 
     scale_text = scale.append("text")
         .attr("transform", "translate(0,0)")
@@ -90,21 +99,21 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .attr("font-size", "3.5em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("4%")
+        .text(config.text_content)
     scale_text_year = scale.append("text")
         .attr("transform", "translate(0,0)")
         .attr("dy", "-2.0em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("民國97年")
+        .text(config.text_year_content)
     scale_text_name = scale.append("text")
         .attr("transform", "translate(0,0)")
         .attr("dy", "-1.0em")
         .attr("font-size", "1.0em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("再生能源發電比例達")
+        .text(config.text_name_content)
 
     var polyline = scale.append('polyline')
         .attr('points', calculatePoints)
@@ -124,16 +133,12 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+            var select_value_per = calculate_percent(select_value, scale_total)
 
             scale_circle
                 .attr("opacity", 0.2)
-                .style("fill", function (d) {
-                    // console.log("------------------")
-                    if (select_name == "fire") {choose_ener = 2; return scale_color.range()[0]; }
-                    else if (select_name == "nuclear") { choose_ener = 1;return scale_color.range()[1] }
-                    else if (select_name == "water") { choose_ener = 0;return scale_color.range()[2] }
-                    else if (select_name == "renewable") {choose_ener = 3; return scale_color.range()[3] }
-                })
+                .style("fill", set_scale_color(select_name))
 
             var temp_scale_arc = d3.arc()
                 .outerRadius(scale_radius * 0.85)
@@ -152,72 +157,57 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                 .attr("d", temp_scale_arc)
                 .style("opacity", 1)
 
+            scale_text_name.text(select_scale_name(select_name) + "發電比例達");
 
-            var select_value = d3.select(this).data()[0].value;
-            var select_value_per = +((select_value / scale_total) * 100);
-            scale_text_name.attr("dy", "-1.0em");
-            scale_text_year.attr("dy", "-2.0em");
-            if (select_name == "fire") {
-                scale_text_name.text("火力發電比例達")
-            }
-            else if (select_name == "nuclear") { scale_text_name.text("核能發電比例達") }
-            else if (select_name == "water") { scale_text_name.text("抽蓄水力發電比例達") }
-            else if (select_name == "renewable") { scale_text_name.text("再生能源發電比例達") }
             scale_text_year.text("民國" + select_cir_year + "年");
             scale_text.text(Math.round(select_value_per) + "%")
             scale_stack_rect.select("rect")
                 .style("opacity", function (d) {
-                    if (d.name == select_name||d.name == "renewable" ) {
+                    if (d.name == select_name || d.name == "renewable") {
                         return 1;
                     } else {
                         return 0.6;
                     }
                 })
-
         })
-        .on("mouseout", function (d) {
-            //scale_circle.attr("opacity", 0)
-        });
+
     scale.append("text")
-        //.attr("transform", function (d) { return "translate(" + scale_text_arc.centroid(d) + ")"; })
         .attr("font-size", "15px")
-        //.attr("text-anchor", "middle")
         .attr('transform', labelTransform)
         .style('text-anchor', function (d) {
-            // if slice centre is on the left, anchor text to start, otherwise anchor to end
             return (midAngle(d)) < Math.PI ? 'start' : 'end';
         })
         .text(function (d) {
-            if (d.data.name == "renewable") {
-                return "再生能源"
-            } else if (d.data.name == "nuclear") {
-                return "核能"
-            } else if (d.data.name == "fire") {
-                return "火力"
-            } else {
-                return "抽蓄水力"
-            }
+            return select_scale_name(d.data.name);
         });
 })
 
+function select_scale_name(select_name) {
+    if (select_name == "fire") {
+        return "火力";
+    }
+    else if (select_name == "nuclear") { return "核能"; }
+    else if (select_name == "water") { return "抽蓄水力"; }
+    else if (select_name == "renewable") { return "再生能源" }
+}
+function set_scale_color(scale_name) {
+    if (scale_name == "fire") { choose_ener = 2; return scale_color.range()[0]; }
+    else if (scale_name == "nuclear") { choose_ener = 1; return scale_color.range()[1] }
+    else if (scale_name == "water") { choose_ener = 0; return scale_color.range()[2] }
+    else if (scale_name == "renewable") { choose_ener = 3; return scale_color.range()[3] }
+}
+function calculate_percent(select_value, total_value) {
+    return +((select_value / total_value) * 100)
+}
 function calculatePoints(d) {
-    // see label transform function for explanations of these three lines.
-    // console.log("pos:---");
-    // console.log(d.data.name);
     var pos = scale_text_arc.centroid(d);
-    // console.log(pos);
-    // console.log(midAngle(d));
-    // console.log(Math.PI);
     pos[0] = scale_radius * 0.7 * (midAngle(d) < Math.PI ? 1 : -1);
     return [scale_arc.centroid(d), scale_text_arc.centroid(d), pos]
 }
 
 function labelTransform(d) {
-    // effectively computes the centre of the slice.
-    // see https://github.com/d3/d3-shape/blob/master/README.md#arc_centroid
     var pos = scale_text_arc.centroid(d);
 
-    // changes the point to be on left or right depending on where label is.
     pos[0] = scale_radius * 0.75 * (midAngle(d) < Math.PI ? 1 : -1);
     return 'translate(' + pos + ')';
 }
