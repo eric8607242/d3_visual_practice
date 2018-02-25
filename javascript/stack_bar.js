@@ -28,6 +28,7 @@ var stack_text_solar;
 var stack_text_gar;
 var stack_text_bio;
 var stack_title;
+var stack_text_total;
 d3.csv("./data/energy_type.csv", function (d, i, columns) {
     pre_percent = 0;
     pre_total = 0;
@@ -131,6 +132,23 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
 
             return "生質能：" + Math.round(data[0].energy[3].percent / 1000000) + "百萬度"
         })
+
+    var total_renew = 0;
+    for (i = 0; i < data[0].energy.length; i++) {
+        total_renew = total_renew + Math.round(data[0].energy[i].percent / 1000000);
+    }
+    stack_text_total = stack_svg.append("text")
+        .attr("transform", "translate(1015,0)")
+        .attr("dy", "12.0em")
+        .attr("font-size", "0.9em")
+        .attr("font-weight", "bold")
+        .style("text-anchor", "middle")
+        .style("fill", "black")
+        .text(function (d) {
+
+            return "再生能源：" + total_renew / 100 + "億度"
+        })
+
     stack_rect = stack_svg.append("g")
         .selectAll("g")
         .attr("class", "stack")

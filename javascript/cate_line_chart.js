@@ -37,6 +37,7 @@ var gar_line = d3.line()
     .y(function (d) { return cate_line_y(d.gar / cate_line_propor); });
 
 var energy_type_data;
+var cate_line_move;
 d3.csv("./data/energy_type.csv", function (d) {
     d.year = +d.year;
     d.wind = +d.wind;
@@ -93,7 +94,7 @@ d3.csv("./data/energy_type.csv", function (d) {
 
 
 
-    var cate_line_move = cate_line_g.append("line")
+    cate_line_move = cate_line_g.append("line")
         .attr("x1", 0)
         .attr("y1", 0)
         .attr("x2", 0)
@@ -114,6 +115,7 @@ d3.csv("./data/energy_type.csv", function (d) {
             }
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
             line_move(cate_line_move, d3.mouse(this)[0]);
+            line_move(co_line_move, d3.mouse(this)[0]);
         })
         .on("mousemove", function (d) {
             for (i = 0; i < stack_data.length; i++) {
@@ -121,11 +123,21 @@ d3.csv("./data/energy_type.csv", function (d) {
                     stack_bar_change(i)
                 }
             }
+            for (i = 0; i < stack_data.length; i++) {
+                if (d3.mouse(this)[0] < co_line_x(97 + i) + 10 && d3.mouse(this)[0] > co_line_x(97 + i) - 10) {
+                    var year = 97 + i
+                    park = co_data[i].co * 100000 / 25.894;
+                    co_text_year.text("民國" + year + "年")
+                    co_text_save.text(co_data[i].co.toFixed(2) + "十萬公噸")
+                    co_text_tree_1.text(park.toFixed(2) + "座")
+                }
+            }
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
             if (date_x > 3) {
             } else {
             }
             line_move(cate_line_move, d3.mouse(this)[0]);
+            line_move(co_line_move, d3.mouse(this)[0]);
         }
         )
 
@@ -163,6 +175,14 @@ function stack_bar_change(index) {
         stack_text_bio.text(function (d) {
 
             return "生質能：" + Math.round(stack_data[index].energy[3].percent / 1000000) + "百萬度"
+        })
+        var total_renew = 0;
+        for (i = 0; i < stack_data[index].energy.length; i++) {
+            total_renew = total_renew + Math.round(stack_data[index].energy[i].percent / 1000000);
+        }
+        stack_text_total.text(function (d) {
+
+            return "再生能源：" + total_renew / 100 + "億度"
         })
         var year_stack = index + 97
         stack_title.text("民國" + year_stack + "年")

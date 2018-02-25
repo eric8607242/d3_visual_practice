@@ -20,7 +20,11 @@ var co_line = d3.line()
     //.curve(d3.curveBasis)
     .x(function (d) { return co_line_x(d.year); })
     .y(function (d) { return co_line_y(d.co); });
-
+var co_line_move;
+var co_data;
+var co_text_year;
+var co_text_save;
+var co_text_tree_1;
 d3.csv("./data/energy_type.csv", function (d) {
     d.year = +d.year;
     if (d.year == 97) {
@@ -46,6 +50,7 @@ d3.csv("./data/energy_type.csv", function (d) {
     return d;
 }, function (error, data) {
     console.log(data)
+    co_data = data;
     co_line_x.domain(d3.extent(data, function (d) { return d.year; }));
     co_line_y.domain([0, d3.max(data, function (d) {
         return Math.max(d.co);
@@ -138,7 +143,7 @@ d3.csv("./data/energy_type.csv", function (d) {
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("大安森林公園")
-    var co_line_move = co_line_g.append("line")
+    co_line_move = co_line_g.append("line")
         .attr("x1", 0)
         .attr("y1", 0)
         .attr("x2", 0)
@@ -152,6 +157,11 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr('pointer-events', 'all')
         .on("mouseover", function (d) {
             for (i = 0; i < stack_data.length; i++) {
+                if (d3.mouse(this)[0] < cate_line_x(97 + i) + 10 && d3.mouse(this)[0] > cate_line_x(97 + i) - 10) {
+                    stack_bar_change(i)
+                }
+            }
+            for (i = 0; i < stack_data.length; i++) {
                 if (d3.mouse(this)[0] < co_line_x(97 + i) + 10 && d3.mouse(this)[0] > co_line_x(97 + i) - 10) {
 
                 }
@@ -160,8 +170,15 @@ d3.csv("./data/energy_type.csv", function (d) {
             co_line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
+            line_move(cate_line_move, d3.mouse(this)[0]);
+
         })
         .on("mousemove", function (d) {
+            for (i = 0; i < stack_data.length; i++) {
+                if (d3.mouse(this)[0] < cate_line_x(97 + i) + 10 && d3.mouse(this)[0] > cate_line_x(97 + i) - 10) {
+                    stack_bar_change(i)
+                }
+            }
             for (i = 0; i < stack_data.length; i++) {
                 if (d3.mouse(this)[0] < co_line_x(97 + i) + 10 && d3.mouse(this)[0] > co_line_x(97 + i) - 10) {
                     var year = 97 + i
@@ -178,7 +195,7 @@ d3.csv("./data/energy_type.csv", function (d) {
             if (date_x > 3) {
             } else {
             }
-
+            line_move(cate_line_move, d3.mouse(this)[0]);
             co_line_move
                 .attr("x1", d3.mouse(this)[0])
                 .attr("x2", d3.mouse(this)[0])
