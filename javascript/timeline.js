@@ -17,7 +17,9 @@ var time_line = time_g.append("line")
     .attr("x2", time_width)
     .attr("y2", time_height / 1.5)
     .attr("stroke", "steelblue")
-    .attr("stroke-width", 3);
+    .attr("stroke-width", 3).on("mouseenter", function (d) {
+        d3.select(this).style("cursor", "pointer");
+    });;
 
 var choose_circle = 0;
 var time_circle_append;
@@ -47,6 +49,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .attr("cy", time_height / 1.5)
         .attr("cx", function (d) { return time_x(d.year); })
         .on("mouseenter", function (d) {
+            d3.select(this).style("cursor", "pointer");
             var select_cir = d3.select(this)
             select_cir_year = d3.select(this).data()[0].year;
             check_circle_choose(select_cir)
@@ -83,7 +86,10 @@ function chart_change(index) {
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
                     .text(function (d) { return d.data.name; });
-                }
+                text_update(wind_text_year, "民國" + index+ "年")
+                text_update(wind_text_type, "台電發電量達")
+                text_update(wind_text, Math.round(wind_data[i].pers["0"].percent)  + "百萬度")
+            }
         }
     }
     for (i = 0; i < water_data.length; i++) {
@@ -100,6 +106,11 @@ function chart_change(index) {
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
                     .text(function (d) { return d.data.name; });
+
+
+                text_update(water_text_year, "民國" + index + "年")
+                text_update(water_text_type, "台電發電量達")
+                text_update(water_text, Math.round(water_data[i].pers["0"].percent) + "百萬度")
             }
         }
     }
@@ -117,6 +128,10 @@ function chart_change(index) {
                     .attr("dy", ".35em")
                     .attr("text-anchor", "middle")
                     .text(function (d) { return d.data.name; });
+
+                text_update(sun_text_year, "民國" + index + "年")
+                text_update(sun_text_type, "台電發電量達")
+                text_update(sun_text, Math.round(sun_data[i].pers["0"].percent) + "百萬度")
             }
         }
     }

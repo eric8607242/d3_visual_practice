@@ -76,8 +76,9 @@ var wind;
 var sun_data;
 var water_data;
 var wind_data;
-
-
+var sun_text_year;
+var sun_text;
+var sun_text_type;
 d3.csv("./data/sun.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -102,19 +103,19 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .attr("opacity", 0.2)
         .attr("r", radius * 0.54)
         .attr("fill", "#FFDD55")
-    var sun_text = sun.append("text")
+    sun_text = sun.append("text")
         .attr("dy", "0.8em")
         .attr("font-size", "1.8em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("0.098百萬度")
-    var sun_text_type = sun.append("text")
+    sun_text_type = sun.append("text")
         .attr("dy", "-0.8em")
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("台電發電量達")
-    var sun_text_year = sun.append("text")
+    sun_text_year = sun.append("text")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
@@ -139,7 +140,7 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
             d3.select(this)
                 .attr("d", mouseenter_arc)
 
-            
+
 
             text_update(sun_text_year, "民國" + select_cir_year + "年")
             text_update(sun_text_type, select_name + "發電量達")
@@ -157,7 +158,9 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
 
 
 })
-
+var water_text;
+var water_text_type;
+var water_text_year;
 d3.csv("./data/water.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -183,19 +186,19 @@ d3.csv("./data/water.csv", function (d, i, columns) {
         .attr("opacity", 0.2)
         .attr("r", radius * 0.54)
         .attr("fill", "#87CEFA")
-    var water_text = water.append("text")
+    water_text = water.append("text")
         .attr("dy", "0.8em")
         .attr("font-size", "1.8em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("3411百萬度")
-    var water_text_type = water.append("text")
+    water_text_type = water.append("text")
         .attr("dy", "-0.8em")
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("台電發電量達")
-    var water_text_year = water.append("text")
+    water_text_year = water.append("text")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
@@ -220,7 +223,7 @@ d3.csv("./data/water.csv", function (d, i, columns) {
             water_donut.attr("d", arc)
             d3.select(this)
                 .attr("d", mouseenter_arc)
-            
+
 
             text_update(water_text_year, "民國" + select_cir_year + "年")
             text_update(water_text_type, select_name + "發電量達")
@@ -238,6 +241,9 @@ d3.csv("./data/water.csv", function (d, i, columns) {
 
 
 })
+var wind_text;
+var wind_text_type;
+var wind_text_year;
 d3.csv("./data/wind.csv", function (d, i, columns) {
     return {
         year: +d.year,
@@ -264,19 +270,19 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .attr("r", radius * 0.54)
         .attr("opacity", 0.2)
         .attr("fill", "#32CD32")
-    var wind_text = wind.append("text")
+    wind_text = wind.append("text")
         .attr("dy", "0.8em")
         .attr("font-size", "180%")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("273百萬度")
-    var wind_text_type = wind.append("text")
+    wind_text_type = wind.append("text")
         .attr("dy", "-0.8em")
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("台電發電量")
-    var wind_text_year = wind.append("text")
+    wind_text_year = wind.append("text")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
         .style("text-anchor", "middle")
@@ -290,7 +296,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
             var select_value = d3.select(this).data()[0].value;
-            
+
             wind_circle
                 .attr("opacity", 0.2)
                 .style("fill", function (d) {
@@ -301,7 +307,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
             wind_donut.attr("d", arc)
             d3.select(this)
                 .attr("d", mouseenter_arc)
-            
+
 
             text_update(wind_text_year, "民國" + select_cir_year + "年")
             text_update(wind_text_type, select_name + "發電量達")
