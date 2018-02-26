@@ -48,18 +48,10 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     };
 }, function (error, data) {
     scale_stack_data = data;
-    var max_percent = 0;
-    var year_total_percent = 0;
-    for (i = 0; i < data.length; i++) {
+    var max_percent = find_max_value(data);
 
-        for (j = 0; j < data[i].energy.length; j++) {
-            year_total_percent = year_total_percent + data[i].energy[j].percent;
-        }
-        if (year_total_percent > max_percent) {
-            max_percent = year_total_percent;
-        }
-        year_total_percent = 0;
-    }
+
+
     scale_stack_x.domain([0, max_percent])
     scale_stack_y.domain([0, max_percent])
 
@@ -82,46 +74,12 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .style("stroke", "black")
         .style("stroke-width", "5px")
 
-    scale_stack_text_fire = scale_stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
-        .attr("dy", "2.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
+    scale_stack_text_fire = create_stack_text(scale_stack_svg, "2.0em", "火力：" + Math.round(data[0].energy[0].percent) + "億度")
+    scale_stack_text_nuclear = create_stack_text(scale_stack_svg, "4.0em", "核能：" + Math.round(data[0].energy[1].percent) + "億度")
+    scale_stack_text_water = create_stack_text(scale_stack_svg, "6.0em", "抽蓄水力：" + Math.round(data[0].energy[2].percent) + "億度")
+    scale_stack_text_renewable = create_stack_text(scale_stack_svg, "8.0em", "再生能源：" + Math.round(data[0].energy[3].percent) + "億度")
 
-            return "火力：" + Math.round(data[0].energy[0].percent) + "億度"
-        })
-    scale_stack_text_nuclear = scale_stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
-        .attr("dy", "4.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
 
-            return "核能：" + Math.round(data[0].energy[1].percent) + "億度"
-        })
-    scale_stack_text_water = scale_stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
-        .attr("dy", "6.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "抽蓄水力：" + Math.round(data[0].energy[2].percent) + "億度"
-        })
-    scale_stack_text_renewable = scale_stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
-        .attr("dy", "8.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "再生能源：" + Math.round(data[0].energy[3].percent) + "億度"
-        })
     scale_stack_rect = scale_stack_svg.append("g")
         .selectAll("g")
         .attr("class", "scale_stack")
@@ -147,16 +105,7 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
             var select_name = d3.select(this).data()[0].name;
             scale_circle
                 .attr("opacity", 0.2)
-                .style("fill", function (d) {
-                    if (select_name == "fire") { choose_ener = 1; return scale_color.range()[0]; }
-                    else if (select_name == "nuclear") { choose_ener = 2; return scale_color.range()[1] }
-                    else if (select_name == "water") { choose_ener = 0; return scale_color.range()[2] }
-                    else if (select_name == "renewable") { choose_ener = 3; return scale_color.range()[3] }
-                })
-
-            var temp_scale_arc = d3.arc()
-                .outerRadius(scale_radius * 0.85)
-                .innerRadius(scale_radius * 0.55);
+                .style("fill", set_scale_color(select_name))
 
             scale_donut
                 .attr("d", scale_arc)
@@ -171,15 +120,11 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                 .style("opacity", 1)
 
             var select_value = d3.select(this).data()[0].percent;
-            var select_value_per = +((select_value / scale_total) * 100);
-            scale_text_name.attr("dy", "-1.0em");
-            scale_text_year.attr("dy", "-2.0em");
-            if (select_name == "fire") {
-                scale_text_name.text("火力發電比例達")
-            }
-            else if (select_name == "nuclear") { scale_text_name.text("核能發電比例達") }
-            else if (select_name == "water") { scale_text_name.text("抽蓄水力發電比例達") }
-            else if (select_name == "renewable") { scale_text_name.text("再生能源發電比例達") }
+            var select_value_per = calculate_percent(select_value, scale_total);
+
+            select_scale_name(select_name)
+            scale_text_name.text(select_scale_name(select_name) + "發電比例達");
+
             var year_now = scale_stack_now_index + 97
             scale_text_year.text("民國" + year_now + "年");
             scale_text.text(Math.round(select_value_per) + "%")
@@ -225,3 +170,28 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
             }
         });
 })
+function create_stack_text(create_svg, create_dy, create_content) {
+    create_text = create_svg.append("text")
+        .attr("transform", "translate(1015,0)")
+        .attr("dy", create_dy)
+        .attr("font-size", "0.9em")
+        .style("text-anchor", "middle")
+        .style("fill", "black")
+        .text(create_content)
+    return create_text;
+}
+function find_max_value(data) {
+    var year_total_percent = 0;
+    var max_percent = 0;
+    for (i = 0; i < data.length; i++) {
+
+        for (j = 0; j < data[i].energy.length; j++) {
+            year_total_percent = year_total_percent + data[i].energy[j].percent;
+        }
+        if (year_total_percent > max_percent) {
+            max_percent = year_total_percent;
+        }
+        year_total_percent = 0;
+    }
+    return max_percent;
+}

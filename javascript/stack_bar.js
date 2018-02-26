@@ -16,7 +16,7 @@ var stack_y = d3.scaleLinear()
     .rangeRound([0, stack_height]);
 
 var stack_z = d3.scaleOrdinal()
-    .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
+.range([ "#1D65A6", "#72A2C0", "#00743F","#192E5B","#F2A104"]);
 var pre_percent = 0;
 var pre_total = 0;
 var stack_data;
