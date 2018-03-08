@@ -79,51 +79,6 @@ function japan_mouse_enent(data, mouse) {
     line_move(japan_line_move, mouse)
 }
 
-function line_chart_create(create_g, data,config) {
-    
-    x.domain(d3.extent(data, function (d) { return d.year; }));
-    y.domain([0, d3.max(data, function (d) {
-        return Math.max(d.fire, d.nuclear, d.water, d.renewable);
-    })]);
-
-    create_x_axis(create_g, x, line_height);
-    create_y_axis(create_g, y);
-
-
-    create_g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("dy", "0.7em")
-        .attr("font-size", "90%")
-        .attr("text-anchor", "end")
-        .text(config.axis_y_unit);
-    create_g.append("text")
-        .attr("transform", "translate(-10,2)")
-        .attr("dy", "27.5em")
-        .attr("font-size", "60%")
-        .attr("text-anchor", "end")
-        .text(config.axis_x_unit);
-
-    create_chart_line(create_g, nuclear_line, config.nuclear_color, data);
-    create_chart_line(create_g, fire_line, config.fire_color, data);
-    create_chart_line(create_g, scale_water_line, config.scale_water_color, data);
-    create_chart_line(create_g, renewable_line, config.renewable_color, data);
-
-
-
-    circle = create_g.selectAll("line-circle")
-        .attr("class", "circle_line")
-        .data(data)
-        .enter();
-
-    create_circle(circle, scale_water_line.x(), scale_water_line.y(), config.circle_r);
-    create_circle(circle, fire_line.x(), fire_line.y(), config.circle_r);
-    create_circle(circle, nuclear_line.x(), nuclear_line.y(), config.circle_r);
-    create_circle(circle, renewable_line.x(), renewable_line.y(), config.circle_r);
-
-
-
-}
-
 
 function scale_japan_change(index) {
     if (scale_stack_now_index != index) {

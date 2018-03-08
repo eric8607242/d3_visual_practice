@@ -4,7 +4,7 @@ var margin = { top: 20, right: 50, bottom: 30, left: 50 },
     donut_height = 400 - margin.top - margin.bottom,
     radius = Math.min(donut_width, donut_height) / 2;
 
-var arc = d3.arc()
+var init_arc = d3.arc()
     .outerRadius(function (d) {
         if (d.data.name == "台電") {
             return radius * 0.85;
@@ -14,6 +14,9 @@ var arc = d3.arc()
     })
     .innerRadius(radius * 0.55);
 
+var arc = d3.arc()
+    .outerRadius(radius * 0.8)
+    .innerRadius(radius * 0.55);
 var water_color = d3.scaleOrdinal()
     .range(["#87CEFA", "#4169E1"]);
 var wind_color = d3.scaleOrdinal()
@@ -122,7 +125,7 @@ d3.csv("./data/sun.csv", function (d, i, columns) {
         .style("fill", "black")
         .text("民國97年")
     var sun_donut = sun.append("path")
-        .attr("d", arc)
+        .attr("d", init_arc)
         .style("fill", function (d) { return sun_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
@@ -206,7 +209,7 @@ d3.csv("./data/water.csv", function (d, i, columns) {
         .text("民國97年")
 
     var water_donut = water.append("path")
-        .attr("d", arc)
+        .attr("d", init_arc)
         .style("fill", function (d) { return water_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;
@@ -291,7 +294,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
 
 
     var wind_donut = wind.append("path")
-        .attr("d", arc)
+        .attr("d", init_arc)
         .style("fill", function (d) { return wind_color(d.data.name) })
         .on("mouseenter", function (data) {
             var select_name = d3.select(this).data()[0].data.name;

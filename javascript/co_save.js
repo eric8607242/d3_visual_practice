@@ -60,6 +60,18 @@ d3.csv("./data/energy_type.csv", function (d) {
     create_x_axis(co_line_g, co_line_x, co_line_height)
     create_y_axis(co_line_g, co_line_y)
 
+    co_line_g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("dy", "0.7em")
+        .attr("font-size", "90%")
+        .attr("text-anchor", "end")
+        .text("單位(十萬公噸)");
+    co_line_g.append("text")
+        .attr("transform", "translate(-10,2)")
+        .attr("dy", "27.5em")
+        .attr("font-size", "60%")
+        .attr("text-anchor", "end")
+        .text("年");
 
     co_line_g.append("path")
         .datum(data)
@@ -130,7 +142,7 @@ d3.csv("./data/energy_type.csv", function (d) {
             date_x = bisectDate(data, x.invert(d3.mouse(this)[0]), 0);
 
             line_move(co_line_move, d3.mouse(this)[0]);
-            line_move( stackarea_line_move, d3.mouse(this)[0]);
+            line_move(stackarea_line_move, d3.mouse(this)[0]);
 
         })
         .on("mousemove", function (d) {
@@ -153,7 +165,7 @@ d3.csv("./data/energy_type.csv", function (d) {
             date_x = co_bisectDate(data, co_line_x.invert(d3.mouse(this)[0]), 0);
 
             line_move(co_line_move, d3.mouse(this)[0]);
-            line_move( stackarea_line_move, d3.mouse(this)[0])
+            line_move(stackarea_line_move, d3.mouse(this)[0])
         })
 })
 

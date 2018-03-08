@@ -62,8 +62,8 @@ function line_defaultsetting() {
         circle_r: 4,
         axis_y_unit: "單位(億度)",
         axis_x_unit: "年",
-        check_range:20,
-        init_year:97
+        check_range: 20,
+        init_year: 97
 
     };
 }
@@ -80,7 +80,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     return d;
 }, function (error, data) {
     var config = line_defaultsetting();
-    line_chart_create(line_g, data,config);
+    line_chart_create(line_g, data, config);
 
     var touch_rect = line_g.append('rect')
         .attr('width', line_width) // can't catch mouse events on a g element
@@ -88,16 +88,16 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
         .attr('fill', 'none')
         .attr('pointer-events', 'all')
         .on("mouseover", function (d) {
-            mouse_event(data,d3.mouse(this)[0])
+            mouse_event(data, d3.mouse(this)[0])
         })
         .on("mousemove", function (d) {
-            mouse_event(data,d3.mouse(this)[0])
+            mouse_event(data, d3.mouse(this)[0])
         })
 
 
 })
 
-function mouse_event(data,mouse){
+function mouse_event(data, mouse) {
     date_x = bisectDate(data, x.invert(mouse), 0);
     for (i = 0; i < scale_stack_data.length; i++) {
         if (mouse < x(97 + i) + 20 && mouse > x(97 + i) - 20) {
@@ -157,4 +157,49 @@ function scale_stack_change(index) {
         }
 
     }
+}
+
+function line_chart_create(create_g, data, config) {
+
+    x.domain(d3.extent(data, function (d) { return d.year; }));
+    y.domain([0, d3.max(data, function (d) {
+        return Math.max(d.fire, d.nuclear, d.water, d.renewable);
+    })]);
+
+    create_x_axis(create_g, x, line_height);
+    create_y_axis(create_g, y);
+
+
+    create_g.append("text")
+        .attr("transform", "rotate(-90)")
+        .attr("dy", "0.7em")
+        .attr("font-size", "90%")
+        .attr("text-anchor", "end")
+        .text(config.axis_y_unit);
+    create_g.append("text")
+        .attr("transform", "translate(-10,2)")
+        .attr("dy", "27.5em")
+        .attr("font-size", "60%")
+        .attr("text-anchor", "end")
+        .text(config.axis_x_unit);
+
+    create_chart_line(create_g, nuclear_line, config.nuclear_color, data);
+    create_chart_line(create_g, fire_line, config.fire_color, data);
+    create_chart_line(create_g, scale_water_line, config.scale_water_color, data);
+    create_chart_line(create_g, renewable_line, config.renewable_color, data);
+
+
+
+    circle = create_g.selectAll("line-circle")
+        .attr("class", "circle_line")
+        .data(data)
+        .enter();
+
+    create_circle(circle, scale_water_line.x(), scale_water_line.y(), config.circle_r);
+    create_circle(circle, fire_line.x(), fire_line.y(), config.circle_r);
+    create_circle(circle, nuclear_line.x(), nuclear_line.y(), config.circle_r);
+    create_circle(circle, renewable_line.x(), renewable_line.y(), config.circle_r);
+
+
+
 }

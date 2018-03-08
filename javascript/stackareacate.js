@@ -16,10 +16,10 @@ var color = d3.scaleOrdinal()
     .range(["#1D65A6", "#72A2C0", "#00743F", "#192E5B", "#F2A104"]);
 
 var xAxis = d3.axisBottom()
-    .scale(x);
+    .scale(stackarea_x);
 
 var yAxis = d3.axisLeft()
-    .scale(y)
+    .scale(stackarea_y)
     .tickFormat(formatBillion);
 
 var area = d3.area()
@@ -133,18 +133,18 @@ d3.csv('./data/energy_type.csv', function (error, data) {
             line_move(stackarea_line_move, d3.mouse(this)[0]);
             line_move(co_line_move, d3.mouse(this)[0]);
         });
-    browser.append('text')
-        .datum(function (d) { return d; })
-        .attr('transform', function (d) { return 'translate(' + stackarea_x(data[8].year) + ',' + stackarea_y(d[8][1]) + ')'; })
-        .attr('x', -6)
-        .attr('dy', '.35em')
-        .style("text-anchor", "start")
-        .text(function (d) {
-            if (d.key != "bio") {
-                return d.key;
-            }
-        })
-        .attr('fill-opacity', 1);
+    // browser.append('text')
+    //     .datum(function (d) { return d; })
+    //     .attr('transform', function (d) { return 'translate(' + stackarea_x(data[8].year) + ',' + stackarea_y(d[8][1]) + ')'; })
+    //     .attr('x', -6)
+    //     .attr('dy', '.35em')
+    //     .style("text-anchor", "start")
+    //     .text(function (d) {
+    //         if (d.key != "bio") {
+    //             return d.key;
+    //         }
+    //     })
+    //     .attr('fill-opacity', 1);
 
     stackarea_svg.append('g')
         .attr('class', 'x axis')
