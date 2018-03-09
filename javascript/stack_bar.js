@@ -4,10 +4,10 @@ var stack_margin = { top: 20, right: 80, bottom: 30, left: 50 },
 
 function stack_get_screen_width() {
     console.log(innerWidth)
-    if (innerWidth < 1200) {
+    if (innerWidth < 1000) {
         return innerWidth;
     }
-    return 1200;
+    return 1000;
 }
 
 
@@ -20,7 +20,7 @@ var stack_svg = d3.select("#stack_bar")
 
 
 var stack_x = d3.scaleLinear()
-    .rangeRound([0, stack_width - 150]);
+    .rangeRound([0, stack_width]);
 
 var stack_y = d3.scaleLinear()
     .rangeRound([0, stack_height]);
@@ -80,85 +80,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("民國97年")
-    var stack_info = stack_svg.append("rect")
-        .attr("rx", 10)
-        .attr("ry", 10)
-        .attr("x",  stack_width *0.85)
-        .attr("y", 10)
-        .attr("width",  scale_stack_width *0.2)
-        .attr("height", 190)
-        .attr("opacity", 0.3)
-        .attr("fill", "lightgray")
-        .style("stroke", "black")
-        .style("stroke-width", "5px")
-
-    stack_text_water = stack_svg.append("text")
-        .attr("transform", "translate("+stack_width *0.95+",0)")
-        .attr("dy", "2.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "水力：" + Math.round(data[0].energy[2].percent / 1000000) + "百萬度"
-        })
-    stack_text_wind = stack_svg.append("text")
-        .attr("transform", "translate("+stack_width *0.95+",0)")
-        .attr("dy", "4.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "風力：" + Math.round(data[0].energy[0].percent / 1000000) + "百萬度"
-        })
-    stack_text_solar = stack_svg.append("text")
-        .attr("transform", "translate("+stack_width *0.95+",0)")
-        .attr("dy", "6.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "太陽能：" + Math.round(data[0].energy[1].percent / 1000000) + "百萬度"
-        })
-    stack_text_gar = stack_svg.append("text")
-        .attr("transform", "translate("+stack_width *0.95+",0)")
-        .attr("dy", "8.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "垃圾沼氣：" + Math.round(data[0].energy[4].percent / 1000000) + "百萬度"
-        })
-    stack_text_bio = stack_svg.append("text")
-        .attr("transform", "translate("+stack_width *0.95+",0)")
-        .attr("dy", "10.0em")
-        .attr("font-size", "0.9em")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "生質能：" + Math.round(data[0].energy[3].percent / 1000000) + "百萬度"
-        })
-
-    var total_renew = 0;
-    for (i = 0; i < data[0].energy.length; i++) {
-        total_renew = total_renew + Math.round(data[0].energy[i].percent / 1000000);
-    }
-    stack_text_total = stack_svg.append("text")
-        .attr("transform", "translate("+stack_width *0.95+",0)")
-        .attr("dy", "12.0em")
-        .attr("font-size", "0.9em")
-        .attr("font-weight", "bold")
-        .style("text-anchor", "middle")
-        .style("fill", "black")
-        .text(function (d) {
-
-            return "再生能源：" + total_renew / 100 + "億度"
-        })
-
+   
     stack_rect = stack_svg.append("g")
         .selectAll("g")
         .attr("class", "stack")
