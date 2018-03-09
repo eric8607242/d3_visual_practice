@@ -1,9 +1,9 @@
 
-var japan_line_svg = d3.select("#cate")
+var japan_line_svg = d3.select("#japan_line")
     .append("svg")
     .attr("width", line_width + margin.left + margin.right)
     .attr("height", line_height + margin.top + margin.bottom)
-    .attr("transform", "translate(0,-100)");
+    .attr("transform", "translate(0,0)");
 
 var japan_line_g = japan_line_svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
 

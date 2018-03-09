@@ -1,8 +1,16 @@
 var time_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    time_width = 1200 - time_margin.left - time_margin.right,
+    time_width = time_get_screen_width() - time_margin.left - time_margin.right,
     time_height = 100 - time_margin.top - time_margin.bottom;
 
-var time_svg = d3.select("#cate")
+    function time_get_screen_width(){
+        console.log(innerWidth)
+        if(innerWidth<1200){
+           return innerWidth;
+        }
+        return 1200;
+    }
+    
+var time_svg = d3.select("#timeline")
     .append("svg")
     .attr("width", time_width + time_margin.left + time_margin.right)
     .attr("height", time_height + time_margin.top + time_margin.bottom)

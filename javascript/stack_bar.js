@@ -1,13 +1,23 @@
 var stack_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    stack_width = 1200 - stack_margin.left - stack_margin.right,
+    stack_width = stack_get_screen_width() - stack_margin.left - stack_margin.right,
     stack_height = 200 - stack_margin.top - stack_margin.bottom;
 
-var stack_svg = d3.select("#cate")
+function stack_get_screen_width() {
+    console.log(innerWidth)
+    if (innerWidth < 1200) {
+        return innerWidth;
+    }
+    return 1200;
+}
+
+
+var stack_svg = d3.select("#stack_bar")
     .append("svg")
     .attr("width", stack_width + stack_margin.left + stack_margin.right)
     .attr("height", stack_height + stack_margin.top + stack_margin.bottom)
     //.attr("transform", "translate（1000,0)")
-    .append("g")
+    .append("g").attr("transform", "translate(" + stack_margin.left + ",0)");
+
 
 var stack_x = d3.scaleLinear()
     .rangeRound([0, stack_width - 150]);
@@ -16,7 +26,7 @@ var stack_y = d3.scaleLinear()
     .rangeRound([0, stack_height]);
 
 var stack_z = d3.scaleOrdinal()
-.range([ "#1D65A6", "#72A2C0", "#00743F","#192E5B","#F2A104"]);
+    .range(["#1D65A6", "#72A2C0", "#00743F", "#192E5B", "#F2A104"]);
 var pre_percent = 0;
 var pre_total = 0;
 var stack_data;
@@ -73,17 +83,17 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
     var stack_info = stack_svg.append("rect")
         .attr("rx", 10)
         .attr("ry", 10)
-        .attr("x", stack_width - 130)
+        .attr("x",  stack_width *0.85)
         .attr("y", 10)
-        .attr("width", 150)
-        .attr("height", 180)
+        .attr("width",  scale_stack_width *0.2)
+        .attr("height", 190)
         .attr("opacity", 0.3)
         .attr("fill", "lightgray")
         .style("stroke", "black")
         .style("stroke-width", "5px")
 
     stack_text_water = stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
+        .attr("transform", "translate("+stack_width *0.95+",0)")
         .attr("dy", "2.0em")
         .attr("font-size", "0.9em")
         .style("text-anchor", "middle")
@@ -93,7 +103,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             return "水力：" + Math.round(data[0].energy[2].percent / 1000000) + "百萬度"
         })
     stack_text_wind = stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
+        .attr("transform", "translate("+stack_width *0.95+",0)")
         .attr("dy", "4.0em")
         .attr("font-size", "0.9em")
         .style("text-anchor", "middle")
@@ -103,7 +113,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             return "風力：" + Math.round(data[0].energy[0].percent / 1000000) + "百萬度"
         })
     stack_text_solar = stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
+        .attr("transform", "translate("+stack_width *0.95+",0)")
         .attr("dy", "6.0em")
         .attr("font-size", "0.9em")
         .style("text-anchor", "middle")
@@ -113,7 +123,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             return "太陽能：" + Math.round(data[0].energy[1].percent / 1000000) + "百萬度"
         })
     stack_text_gar = stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
+        .attr("transform", "translate("+stack_width *0.95+",0)")
         .attr("dy", "8.0em")
         .attr("font-size", "0.9em")
         .style("text-anchor", "middle")
@@ -123,7 +133,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             return "垃圾沼氣：" + Math.round(data[0].energy[4].percent / 1000000) + "百萬度"
         })
     stack_text_bio = stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
+        .attr("transform", "translate("+stack_width *0.95+",0)")
         .attr("dy", "10.0em")
         .attr("font-size", "0.9em")
         .style("text-anchor", "middle")
@@ -138,7 +148,7 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
         total_renew = total_renew + Math.round(data[0].energy[i].percent / 1000000);
     }
     stack_text_total = stack_svg.append("text")
-        .attr("transform", "translate(1015,0)")
+        .attr("transform", "translate("+stack_width *0.95+",0)")
         .attr("dy", "12.0em")
         .attr("font-size", "0.9em")
         .attr("font-weight", "bold")
@@ -181,13 +191,13 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
     stack_intro.append("rect")
         .attr("rx", 5)
         .attr("ry", 5)
-        .attr("x", 800)
+        .attr("x", stack_width*0.75)
         .attr("y", function (d, i) { return i * 16; })
         .attr("height", 15)
         .attr("width", 15)
         ;
     stack_intro.append("text")
-        .attr("x", 820)
+        .attr("x", stack_width*0.75+20)
         .attr("y", function (d, i) { return i * 16; })
         .attr("dy", ".85em")
         .attr("fill", "black")

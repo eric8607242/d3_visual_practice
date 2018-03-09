@@ -1,13 +1,23 @@
 var scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    scale_width = 500 - scale_margin.left - scale_margin.right,
-    scale_height = 500 - scale_margin.top - scale_margin.bottom,
+    scale_width = scale_get_screen_width() - scale_margin.left - scale_margin.right,
+    scale_height = scale_get_screen_width() - scale_margin.top - scale_margin.bottom,
     scale_radius = Math.min(scale_width, scale_height) / 2;
 
-var scale_svg = d3.select("#cate")
+
+function scale_get_screen_width() {
+    console.log(innerWidth)
+    if (innerWidth < 500) {
+        return innerWidth;
+    }
+    return 500;
+}
+var scale_transform_x = (scale_width/2)+scale_margin.left
+
+var scale_svg = d3.select("#scale_chart")
     .append("svg")
     .attr("width", scale_width + scale_margin.left + scale_margin.right)
     .attr("height", scale_height + scale_margin.top + scale_margin.bottom)
-    .append("g").attr("transform", "translate(" + scale_width * 1.1 / 2 + "," + scale_height / 2 + ")");
+    .append("g").attr("transform", "translate(" + scale_transform_x + "," + scale_height / 2 + ")");
 
 var scale_color = d3.scaleOrdinal()
     .range(["#A51C1E", "#354872", "#EBAD30", "	#568D4B"]);
@@ -41,12 +51,12 @@ var scale_donut;
 var scale_text_name;
 var select_cir_year = 97;
 
-function scale_defaultsetting(){
-    return{
-        circle_color:"#568D4B",
-        text_content:"4%",
-        text_year_content:"民國97年",
-        text_name_content:"再生能源發電比例達"
+function scale_defaultsetting() {
+    return {
+        circle_color: "#568D4B",
+        text_content: "4%",
+        text_year_content: "民國97年",
+        text_name_content: "再生能源發電比例達"
     };
 }
 

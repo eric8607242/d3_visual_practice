@@ -1,8 +1,18 @@
 var tsvData = null;
 
 var stackarea_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    stackarea_width = 800 - stackarea_margin.left - stackarea_margin.right,
+    stackarea_width = stackarea_line_get_screen_width() - stackarea_margin.left - stackarea_margin.right,
     stackarea_height = 300 - stackarea_margin.top - stackarea_margin.bottom;
+
+function stackarea_line_get_screen_width() {
+    console.log(innerWidth)
+    if (innerWidth < 800) {
+        return innerWidth;
+    }
+    return 800;
+}
+
+
 var formatNumber = d3.format(".1f"),
     formatBillion = function (x) { return formatNumber(x / 1e9); };
 
@@ -31,7 +41,7 @@ var area = d3.area()
 
 var stack = d3.stack()
 
-var stackarea_svg = d3.select('#cate').append('svg')
+var stackarea_svg = d3.select('#stackareacate').append('svg')
     .attr('width', stackarea_width + stackarea_margin.left + stackarea_margin.right)
     .attr('height', stackarea_height + stackarea_margin.top + stackarea_margin.bottom)
     .append('g')

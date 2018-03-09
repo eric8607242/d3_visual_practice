@@ -1,14 +1,24 @@
 var japan_scale_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    japan_scale_width = 500 - japan_scale_margin.left - japan_scale_margin.right,
-    japan_scale_height = 500 - japan_scale_margin.top - japan_scale_margin.bottom,
+    japan_scale_width = japan_scale_get_screen_width() - japan_scale_margin.left - japan_scale_margin.right,
+    japan_scale_height = japan_scale_get_screen_width() - japan_scale_margin.top - japan_scale_margin.bottom,
     japan_scale_radius = Math.min(japan_scale_width, japan_scale_height) / 2;
 
-var japan_scale_svg = d3.select("#cate")
+
+function japan_scale_get_screen_width() {
+    console.log(innerWidth)
+    if (innerWidth < 500) {
+        return innerWidth;
+    }
+    return 500;
+}
+var japan_scale_transform_x = (scale_width / 2) + scale_margin.left
+
+var japan_scale_svg = d3.select("#japan_scale")
     .append("svg")
     .attr("width", japan_scale_width + japan_scale_margin.left + japan_scale_margin.right)
     .attr("height", japan_scale_height + japan_scale_margin.top + japan_scale_margin.bottom)
     //.attr("transform", "translate（1000,0)")
-    .append("g").attr("transform", "translate(" + japan_scale_width * 1.1 / 2 + "," + japan_scale_height / 2 + ")");
+    .append("g").attr("transform", "translate(" + japan_scale_transform_x + "," + japan_scale_height / 2 + ")");
 
 var japan_scale_color = d3.scaleOrdinal()
     .range(["#354872", "#A51C1E", "#EBAD30", "	#568D4B"]);
@@ -45,12 +55,12 @@ var select_cir_year = 97;
 var japan_polyline;
 var japan_pol_text;
 var japan_choose = 3;
-function japan_scale_defaultsetting(){
-    return{
-        circle_color:"#568D4B",
-        text_content:"8%",
-        text_year_content:"民國97年",
-        text_name_content:"再生能源發電比例達"
+function japan_scale_defaultsetting() {
+    return {
+        circle_color: "#568D4B",
+        text_content: "8%",
+        text_year_content: "民國97年",
+        text_name_content: "再生能源發電比例達"
     };
 }
 d3.csv("./data/日本各項電力.csv", function (d, i, columns) {

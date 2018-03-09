@@ -1,8 +1,17 @@
 
 var margin = { top: 20, right: 50, bottom: 30, left: 50 },
-    donut_width = 470 - margin.left - margin.right,
-    donut_height = 400 - margin.top - margin.bottom,
+    donut_width = donut_get_screen_width() - margin.left - margin.right,
+    donut_height = donut_get_screen_width() - margin.top - margin.bottom,
     radius = Math.min(donut_width, donut_height) / 2;
+
+function donut_get_screen_width() {
+    console.log(innerWidth)
+    if (innerWidth < 470) {
+        return innerWidth;
+    }
+    return 470;
+}
+
 
 var init_arc = d3.arc()
     .outerRadius(function (d) {
@@ -27,23 +36,26 @@ var pie = d3.pie()
     .sort(null)
     .value(function (d) { return d.percent });
 
-var sun_svg = d3.select("#cate").append("svg")
-    .attr("width", donut_width)
-    .attr("height", donut_height)
-    .append("g")
-    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
+    var donut_transform_x = (donut_width/2)
 
-var water_svg = d3.select("#cate").append("svg")
+    
+var sun_svg = d3.select("#donut_chart").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
     .append("g")
-    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
+    .attr("transform", "translate(" + donut_transform_x + "," + donut_height / 2 + ")");
 
-var wind_svg = d3.select("#cate").append("svg")
+var water_svg = d3.select("#donut_chart").append("svg")
     .attr("width", donut_width)
     .attr("height", donut_height)
     .append("g")
-    .attr("transform", "translate(" + donut_width / 2 + "," + donut_height / 2 + ")");
+    .attr("transform", "translate(" + donut_transform_x + "," + donut_height / 2 + ")");
+
+var wind_svg = d3.select("#donut_chart").append("svg")
+    .attr("width", donut_width)
+    .attr("height", donut_height)
+    .append("g")
+    .attr("transform", "translate(" + donut_transform_x + "," + donut_height / 2 + ")");
 
 var sun_label_text = sun_svg.append("text")
     .attr("transform", "translate(0,0)")

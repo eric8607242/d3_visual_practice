@@ -1,8 +1,17 @@
 var co_line_margin = { top: 20, right: 80, bottom: 30, left: 50 },
-    co_line_width = 800 - co_line_margin.left - co_line_margin.right,
+    co_line_width = co_get_screen_width() - co_line_margin.left - co_line_margin.right,
     co_line_height = 300 - co_line_margin.top - co_line_margin.bottom;
 
-var co_line_svg = d3.select("#cate")
+function co_get_screen_width() {
+    console.log(innerWidth)
+    if (innerWidth < 800) {
+        return innerWidth;
+    }
+    return 800;
+}
+
+
+var co_line_svg = d3.select("#co_save")
     .append("svg")
     .attr("width", co_line_width + co_line_margin.left + co_line_margin.right)
     .attr("height", co_line_height + co_line_margin.top + co_line_margin.bottom)
@@ -89,14 +98,14 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr("r", 4)
         .attr("cx", function (d) { return co_line_x(d.year); })
         .attr("cy", function (d) { return co_line_y(d.co); });
-
+    
 
     var co_info = co_line_g.append("rect")
         .attr("rx", 10)
         .attr("ry", 10)
-        .attr("x", co_line_width - 110)
+        .attr("x", co_line_width *0.8)
         .attr("y", 80)
-        .attr("width", 130)
+        .attr("width", co_line_width *0.2)
         .attr("height", 150)
         .attr("opacity", 0.3)
         .attr("fill", "lightgray")
