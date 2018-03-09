@@ -4,7 +4,7 @@ var margin = { top: 20, right: 80, bottom: 30, left: 50 },
 
 function line_get_screen_width(){
     console.log(innerWidth)
-    if(innerWidth<600){
+    if(innerWidth<800){
         if(innerWidth <350 && innerWidth >270){document.body.style.fontSize = "8px";}
         else if(innerWidth >350){
             document.body.style.fontSize = "12px";
@@ -14,7 +14,7 @@ function line_get_screen_width(){
        return innerWidth;
     }
     document.body.style.fontSize = "18px";
-    return 600;
+    return 800;
 }
 
 
