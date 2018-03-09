@@ -189,7 +189,7 @@ function line_chart_create(create_g, data, config) {
         .select(".domain");
 
     create_g.append("g")
-        .call(d3.axisLeft(create_y))
+        .call(d3.axisLeft(y))
         .append("text")
         .attr("transform", "rotate(-90)")
         .select(".domain")
