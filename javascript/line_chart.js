@@ -2,16 +2,16 @@ var margin = { top: 20, right: 80, bottom: 30, left: 50 },
     line_width = line_get_screen_width() - margin.left - margin.right,
     line_height = 400 - margin.top - margin.bottom;
 
-function line_get_screen_width(){
+function line_get_screen_width() {
     console.log(innerWidth)
-    if(innerWidth<800){
-        if(innerWidth <350 && innerWidth >270){document.body.style.fontSize = "8px";}
-        else if(innerWidth >350){
+    if (innerWidth < 800) {
+        if (innerWidth < 350 && innerWidth > 270) { document.body.style.fontSize = "8px"; }
+        else if (innerWidth > 350) {
             document.body.style.fontSize = "12px";
-        }else{
+        } else {
             document.body.style.fontSize = "4.5px";
         }
-       return innerWidth;
+        return innerWidth;
     }
     document.body.style.fontSize = "18px";
     return 800;
@@ -183,7 +183,17 @@ function line_chart_create(create_g, data, config) {
 
     // create_x_axis(create_g, x, line_height);
     // create_y_axis(create_g, y);
+    create_g.append("g")
+        .attr("transform", "translate(0," + line_height + ")")
+        .call(d3.axisBottom(x))
+        .select(".domain");
 
+    create_g.append("g")
+        .call(d3.axisLeft(create_y))
+        .append("text")
+        .attr("transform", "rotate(-90)")
+        .select(".domain")
+        .remove();
 
     create_g.append("text")
         .attr("transform", "rotate(-90)")
