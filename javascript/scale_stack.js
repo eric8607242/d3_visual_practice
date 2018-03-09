@@ -4,10 +4,10 @@ var scale_stack_margin = { top: 20, right: 80, bottom: 30, left: 50 },
 
 function scale_stack_get_screen_width() {
     console.log(innerWidth)
-    if (innerWidth < 1200) {
+    if (innerWidth < 1000) {
         return innerWidth;
     }
-    return 1200;
+    return 1000;
 }
 
 var scale_stack_svg = d3.select("#scale_stack")
@@ -18,7 +18,7 @@ var scale_stack_svg = d3.select("#scale_stack")
     .append("g").attr("transform", "translate(" + scale_stack_margin.left + ",0)");
 
 var scale_stack_x = d3.scaleLinear()
-    .rangeRound([0, scale_stack_width * 0.85]);
+    .rangeRound([0, scale_stack_width]);
 
 var scale_stack_y = d3.scaleLinear()
     .rangeRound([0, scale_stack_height]);
@@ -75,22 +75,22 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text("民國97年")
-    var scale_stack_info = scale_stack_svg.append("rect")
-        .attr("rx", 10)
-        .attr("ry", 10)
-        .attr("x", scale_stack_width * 0.875)
-        .attr("y", 10)
-        .attr("width", stack_rect_info_width())
-        .attr("height", 180)
-        .attr("opacity", 0.3)
-        .attr("fill", "lightgray")
-        .style("stroke", "black")
-        .style("stroke-width", "5px")
+    // var scale_stack_info = scale_stack_svg.append("rect")
+    //     .attr("rx", 10)
+    //     .attr("ry", 10)
+    //     .attr("x", scale_stack_width * 0.875)
+    //     .attr("y", 10)
+    //     .attr("width", stack_rect_info_width())
+    //     .attr("height", 180)
+    //     .attr("opacity", 0.3)
+    //     .attr("fill", "lightgray")
+    //     .style("stroke", "black")
+    //     .style("stroke-width", "5px")
 
-    scale_stack_text_fire = create_stack_text(scale_stack_svg, "2.0em", scale_stack_width * 0.95, "火力：" + Math.round(data[0].energy[0].percent) + "億度")
-    scale_stack_text_nuclear = create_stack_text(scale_stack_svg, "4.0em", scale_stack_width * 0.95, "核能：" + Math.round(data[0].energy[1].percent) + "億度")
-    scale_stack_text_water = create_stack_text(scale_stack_svg, "6.0em", scale_stack_width * 0.95, "抽蓄水力：" + Math.round(data[0].energy[2].percent) + "億度")
-    scale_stack_text_renewable = create_stack_text(scale_stack_svg, "8.0em", scale_stack_width * 0.95, "再生能源：" + Math.round(data[0].energy[3].percent) + "億度")
+    // scale_stack_text_fire = create_stack_text(scale_stack_svg, "2.0em", scale_stack_width * 0.95, "火力：" + Math.round(data[0].energy[0].percent) + "億度")
+    // scale_stack_text_nuclear = create_stack_text(scale_stack_svg, "4.0em", scale_stack_width * 0.95, "核能：" + Math.round(data[0].energy[1].percent) + "億度")
+    // scale_stack_text_water = create_stack_text(scale_stack_svg, "6.0em", scale_stack_width * 0.95, "抽蓄水力：" + Math.round(data[0].energy[2].percent) + "億度")
+    // scale_stack_text_renewable = create_stack_text(scale_stack_svg, "8.0em", scale_stack_width * 0.95, "再生能源：" + Math.round(data[0].energy[3].percent) + "億度")
 
 
     scale_stack_rect = scale_stack_svg.append("g")
@@ -187,7 +187,7 @@ function create_stack_text(create_svg, create_dy, create_width, create_content) 
     create_text = create_svg.append("text")
         .attr("transform", "translate(" + create_width + ",0)")
         .attr("dy", create_dy)
-        .attr("font-size", "0.9em")
+        .attr("font-size", "16px")
         .style("text-anchor", "middle")
         .style("fill", "black")
         .text(create_content)
