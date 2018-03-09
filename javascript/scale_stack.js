@@ -18,7 +18,7 @@ var scale_stack_svg = d3.select("#scale_stack")
     .append("g").attr("transform", "translate(" + scale_stack_margin.left + ",0)");
 
 var scale_stack_x = d3.scaleLinear()
-    .rangeRound([0, scale_stack_width*0.85]);
+    .rangeRound([0, scale_stack_width * 0.85]);
 
 var scale_stack_y = d3.scaleLinear()
     .rangeRound([0, scale_stack_height]);
@@ -62,7 +62,12 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
 
     scale_stack_x.domain([0, max_percent])
     scale_stack_y.domain([0, max_percent])
-
+    function stack_rect_info_width() {
+        if(innerWidth<1200){
+            return innerWidth*160/1200;
+        }
+        return 160;
+    }
     scale_stack_title = scale_stack_svg.append("text")
         .attr("transform", "translate(60,0)")
         .attr("dy", "2.0em")
@@ -73,19 +78,19 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     var scale_stack_info = scale_stack_svg.append("rect")
         .attr("rx", 10)
         .attr("ry", 10)
-        .attr("x", scale_stack_width *0.875)
+        .attr("x", scale_stack_width * 0.875)
         .attr("y", 10)
-        .attr("width", scale_stack_width *0.15)
+        .attr("width", stack_rect_info_width())
         .attr("height", 180)
         .attr("opacity", 0.3)
         .attr("fill", "lightgray")
         .style("stroke", "black")
         .style("stroke-width", "5px")
 
-    scale_stack_text_fire = create_stack_text(scale_stack_svg, "2.0em",scale_stack_width *0.95, "火力：" + Math.round(data[0].energy[0].percent) + "億度")
-    scale_stack_text_nuclear = create_stack_text(scale_stack_svg, "4.0em",scale_stack_width *0.95, "核能：" + Math.round(data[0].energy[1].percent) + "億度")
-    scale_stack_text_water = create_stack_text(scale_stack_svg, "6.0em",scale_stack_width *0.95, "抽蓄水力：" + Math.round(data[0].energy[2].percent) + "億度")
-    scale_stack_text_renewable = create_stack_text(scale_stack_svg, "8.0em",scale_stack_width *0.95, "再生能源：" + Math.round(data[0].energy[3].percent) + "億度")
+    scale_stack_text_fire = create_stack_text(scale_stack_svg, "2.0em", scale_stack_width * 0.95, "火力：" + Math.round(data[0].energy[0].percent) + "億度")
+    scale_stack_text_nuclear = create_stack_text(scale_stack_svg, "4.0em", scale_stack_width * 0.95, "核能：" + Math.round(data[0].energy[1].percent) + "億度")
+    scale_stack_text_water = create_stack_text(scale_stack_svg, "6.0em", scale_stack_width * 0.95, "抽蓄水力：" + Math.round(data[0].energy[2].percent) + "億度")
+    scale_stack_text_renewable = create_stack_text(scale_stack_svg, "8.0em", scale_stack_width * 0.95, "再生能源：" + Math.round(data[0].energy[3].percent) + "億度")
 
 
     scale_stack_rect = scale_stack_svg.append("g")
@@ -157,13 +162,13 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
     scale_stack_intro.append("rect")
         .attr("rx", 5)
         .attr("ry", 5)
-        .attr("x", scale_stack_width *0.75)
+        .attr("x", scale_stack_width * 0.75)
         .attr("y", function (d, i) { return i * 16; })
         .attr("height", 15)
         .attr("width", 15)
         ;
     scale_stack_intro.append("text")
-        .attr("x",  scale_stack_width *0.75+20)
+        .attr("x", scale_stack_width * 0.75 + 20)
         .attr("y", function (d, i) { return i * 16; })
         .attr("dy", ".85em")
         .attr("fill", "black")
@@ -178,9 +183,9 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
             }
         });
 })
-function create_stack_text(create_svg, create_dy,create_width, create_content) {
+function create_stack_text(create_svg, create_dy, create_width, create_content) {
     create_text = create_svg.append("text")
-        .attr("transform", "translate("+create_width+",0)")
+        .attr("transform", "translate(" + create_width + ",0)")
         .attr("dy", create_dy)
         .attr("font-size", "0.9em")
         .style("text-anchor", "middle")
