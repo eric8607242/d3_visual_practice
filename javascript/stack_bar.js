@@ -100,6 +100,10 @@ d3.csv("./data/energy_type.csv", function (d, i, columns) {
             stack_bar.style("opacity", 0.7)
             d3.select(this)
                 .style("opacity", 1)
+        }).on("click", function (data) {
+            stack_bar.style("opacity", 0.7)
+            d3.select(this)
+                .style("opacity", 1)
         });
     ;
 

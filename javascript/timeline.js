@@ -62,6 +62,12 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
             select_cir_year = d3.select(this).data()[0].year;
             check_circle_choose(select_cir)
             chart_change(select_cir_year);
+        }).on("click", function (d) {
+            d3.select(this).style("cursor", "pointer");
+            var select_cir = d3.select(this)
+            select_cir_year = d3.select(this).data()[0].year;
+            check_circle_choose(select_cir)
+            chart_change(select_cir_year);
         });
 })
 function check_circle_choose(select_cir) {

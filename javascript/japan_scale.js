@@ -181,6 +181,44 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
 
 
 
+        }).on("click", function (data) {
+            var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+            var select_value_per = calculate_percent(select_value, japan_scale_total)
+
+            japan_scale_circle
+                .attr("opacity", 0.2)
+                .style("fill", function (d) {
+                    if (select_name == "fire") { japan_choose = 1; return japan_scale_color.range()[1]; }
+                    else if (select_name == "nuclear") { japan_choose = 2; return japan_scale_color.range()[0] }
+                    else if (select_name == "water") { japan_choose = 0; return japan_scale_color.range()[2] }
+                    else if (select_name == "renewable") { japan_choose = 3; return japan_scale_color.range()[3] }
+                })
+
+            var temp_japan_scale_arc = d3.arc()
+                .outerRadius(japan_scale_radius * 0.8)
+                .innerRadius(japan_scale_radius * 0.5);
+
+            japan_scale_donut
+                .attr("d", japan_scale_arc)
+                .style("opacity", function (d) {
+                    if (d.data.name == "renewable" || d.data.name == "water") {
+                        return 1;
+                    } else {
+                        return 0.6;
+                    }
+                })
+
+            d3.select(this)
+                .attr("d", temp_japan_scale_arc)
+                .style("opacity", 1)
+
+            text_update(japan_scale_text_name, select_scale_name(select_name) + "發電比例達")
+            text_update(japan_scale_text_year, "民國" + select_cir_year + "年")
+            text_update(japan_scale_text, Math.round(select_value_per) + "%")
+
+
+
         })
 
     japan_pol_text = japan_scale.append("text")

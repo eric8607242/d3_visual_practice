@@ -179,6 +179,44 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                         return 0.6;
                     }
                 })
+        }) .on("click", function (data) {
+            var select_name = d3.select(this).data()[0].data.name;
+            var select_value = d3.select(this).data()[0].value;
+            var select_value_per = calculate_percent(select_value, scale_total)
+
+            scale_circle
+                .attr("opacity", 0.2)
+                .style("fill", set_scale_color(select_name))
+
+            var temp_scale_arc = d3.arc()
+                .outerRadius(scale_radius * 0.85)
+                .innerRadius(scale_radius * 0.55);
+
+            scale_donut
+                .attr("d", scale_arc)
+                .style("opacity", function (d) {
+                    if (d.data.name == "renewable" || d.data.name == "water") {
+                        return 1;
+                    } else {
+                        return 0.6;
+                    }
+                })
+            d3.select(this)
+                .attr("d", temp_scale_arc)
+                .style("opacity", 1)
+
+            scale_text_name.text(select_scale_name(select_name) + "發電比例達");
+
+            scale_text_year.text("民國" + select_cir_year + "年");
+            scale_text.text(Math.round(select_value_per) + "%")
+            scale_stack_rect.select("rect")
+                .style("opacity", function (d) {
+                    if (d.name == select_name || d.name == "renewable") {
+                        return 1;
+                    } else {
+                        return 0.6;
+                    }
+                })
         })
 
     scale.append("text")

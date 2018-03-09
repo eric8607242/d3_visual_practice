@@ -150,6 +150,42 @@ d3.csv("./data/his_ele_cate.csv", function (d, i, columns) {
                     }
                 })
 
+        }).on("click", function (data) {
+            var select_name = d3.select(this).data()[0].name;
+            scale_circle
+                .attr("opacity", 0.2)
+                .style("fill", set_scale_color(select_name))
+
+            scale_donut
+                .attr("d", scale_arc)
+                .style("opacity", function (d) {
+                    if (d.data.name == "renewable" || d.data.name == select_name) {
+                        return 1;
+                    } else {
+                        return 0.6;
+                    }
+                })
+            d3.select(this)
+                .style("opacity", 1)
+
+            var select_value = d3.select(this).data()[0].percent;
+            var select_value_per = calculate_percent(select_value, scale_total);
+
+            select_scale_name(select_name)
+            scale_text_name.text(select_scale_name(select_name) + "發電比例達");
+
+            var year_now = scale_stack_now_index + 97
+            scale_text_year.text("民國" + year_now + "年");
+            scale_text.text(Math.round(select_value_per) + "%")
+            scale_stack_rect.select("rect")
+                .style("opacity", function (d) {
+                    if (d.name == select_name || d.name == "renewable") {
+                        return 1;
+                    } else {
+                        return 0.6;
+                    }
+                })
+
         });
 
     var scale_stack_intro = scale_stack_svg.append("g")
