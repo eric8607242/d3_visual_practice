@@ -181,8 +181,8 @@ function line_chart_create(create_g, data, config) {
         return Math.max(d.fire, d.nuclear, d.water, d.renewable);
     })]);
 
-    create_x_axis(create_g, x, line_height);
-    create_y_axis(create_g, y);
+    // create_x_axis(create_g, x, line_height);
+    // create_y_axis(create_g, y);
 
 
     create_g.append("text")
