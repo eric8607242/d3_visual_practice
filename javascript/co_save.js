@@ -99,37 +99,6 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr("cx", function (d) { return co_line_x(d.year); })
         .attr("cy", function (d) { return co_line_y(d.co); });
     
-
-    var co_info = co_line_g.append("rect")
-        .attr("rx", 10)
-        .attr("ry", 10)
-        .attr("x", co_line_width *0.8)
-        .attr("y", 80)
-        .attr("width", co_line_width *0.2)
-        .attr("height", 150)
-        .attr("opacity", 0.3)
-        .attr("fill", "lightgray")
-        .style("stroke", "black")
-        .style("stroke-width", "5px")
-    function create_text(create_g, create_dy, create_size, create_trans, create_content) {
-        return_text = create_g.append("text")
-            .attr("transform", create_trans)
-            .attr("dy", create_dy)
-            .attr("font-size", create_size)
-            .style("text-anchor", "middle")
-            .style("fill", "black")
-            .text(create_content);
-        return return_text
-    }
-    co_text_year = create_text(co_line_g, "2em", "1.2em", "translate(625,70)", "民國97年")
-    co_text_save_1 = create_text(co_line_g, "2em", ".85em", "translate(625,100)", "節省的CO2達")
-    co_text_save = create_text(co_line_g, "2em", "1em", "translate(625,115)", data[0].co.toFixed(2) + "十萬公噸")
-    co_text_tree = create_text(co_line_g, "2em", "0.8em", "translate(625,140)", "造林效益相當於")
-
-    var park = data[0].co * 100000 / 25.894;
-    co_text_tree_1 = create_text(co_line_g, "2em", "1.1em", "translate(625,155)", park.toFixed(2) + "座")
-    co_text_tree_2 = create_text(co_line_g, "2em", "0.8em", "translate(625,180)", "大安森林公園")
-
     co_line_move = co_line_g.append("line")
         .attr("x1", 0)
         .attr("y1", 0)
