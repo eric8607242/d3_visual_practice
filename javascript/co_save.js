@@ -76,8 +76,8 @@ d3.csv("./data/energy_type.csv", function (d) {
         .attr("text-anchor", "end")
         .text("單位(十萬公噸)");
     co_line_g.append("text")
-        .attr("transform", "translate(-10,2)")
-        .attr("dy", "27.5em")
+        .attr("transform", "translate(-10,265)")
+        .attr("dy", "0")
         .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text("年");
@@ -86,7 +86,7 @@ d3.csv("./data/energy_type.csv", function (d) {
         .datum(data)
         .attr("fill", "none")
         .attr("class", "co_line")
-        .attr("stroke", "#FF5511")
+        .attr("stroke", "#ce0000")
         .attr("stroke-width", 2.5)
         .attr("d", co_line);
 
@@ -97,15 +97,16 @@ d3.csv("./data/energy_type.csv", function (d) {
     co_circle.append("circle")
         .attr("r", 4)
         .attr("cx", function (d) { return co_line_x(d.year); })
-        .attr("cy", function (d) { return co_line_y(d.co); });
+        .attr("cy", function (d) { return co_line_y(d.co); })
+        .attr("fill","	#ce0000");
     
     co_line_move = co_line_g.append("line")
         .attr("x1", 0)
         .attr("y1", 0)
         .attr("x2", 0)
         .attr("y2", co_line_height)
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2);
+        .attr("stroke", "black")
+        .attr("stroke-width", 1);
     var co_touch_rect = co_line_g.append('rect')
         .attr('width', co_line_width) // can't catch mouse events on a g element
         .attr('height', co_line_height)

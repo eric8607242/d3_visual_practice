@@ -67,8 +67,8 @@ d3.csv('./data/energy_type.csv', function (error, data) {
         .attr("text-anchor", "end")
         .text("單位(億度)");
     stackarea_svg.append("text")
-        .attr("transform", "translate(-10,2)")
-        .attr("dy", "27.5em")
+        .attr("transform", "translate(-10,265)")
+        .attr("dy", "0")
         .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text("年");
@@ -100,8 +100,8 @@ d3.csv('./data/energy_type.csv', function (error, data) {
         .attr("y1", 0)
         .attr("x2", 0)
         .attr("y2", stackarea_height)
-        .attr("stroke", "steelblue")
-        .attr("stroke-width", 2);
+        .attr("stroke", "black")
+        .attr("stroke-width", 1);
 
     var stackarea_touch_rect = stackarea_svg.append('rect')
         .attr('width', stackarea_width) // can't catch mouse events on a g element

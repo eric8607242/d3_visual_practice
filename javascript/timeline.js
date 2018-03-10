@@ -24,7 +24,8 @@ var time_line = time_g.append("line")
     .attr("y1", time_height / 1.5)
     .attr("x2", time_width)
     .attr("y2", time_height / 1.5)
-    .attr("stroke", "steelblue")
+    .attr("stroke", "black")
+    .attr("opacity",0.3)
     .attr("stroke-width", 3).on("mouseenter", function (d) {
         d3.select(this).style("cursor", "pointer");
     });;
@@ -55,6 +56,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     time_circle_append = time_circle.append("circle")
         .attr("r", 10)
         .attr("cy", time_height / 1.5)
+        .attr("fill","#3c3c3c")
         .attr("cx", function (d) { return time_x(d.year); })
         .on("mouseenter", function (d) {
             d3.select(this).style("cursor", "pointer");
@@ -74,12 +76,13 @@ function check_circle_choose(select_cir) {
     if (choose_circle == 0) {
         choose_circle = select_cir.data()[0].year;
         select_cir
-            .attr("r", 20)
+            .attr("r", 15)
+            .attr("opacity",1)
     } else if (choose_circle != 0 && choose_circle != select_cir) {
         choose_circle = select_cir.data()[0].year;
         time_circle_append.attr("r", 10)
         select_cir
-            .attr("r", 20)
+            .attr("r", 15)
     }
 }
 

@@ -19,8 +19,8 @@ var japan_line_move = japan_line_g.append("line")
     .attr("y1", 0)
     .attr("x2", 0)
     .attr("y2", line_height)
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 2);
+    .attr("stroke", "black")
+    .attr("stroke-width", 1);
 
 
 var circle;

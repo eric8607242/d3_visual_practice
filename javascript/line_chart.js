@@ -65,8 +65,9 @@ var line_move_line = line_g.append("line")
     .attr("y1", 0)
     .attr("x2", 0)
     .attr("y2", line_height)
-    .attr("stroke", "steelblue")
-    .attr("stroke-width", 2);
+    .attr("stroke", "black")
+    .attr("fill","black")
+    .attr("stroke-width", 1);
 
 function line_defaultsetting() {
     return {
@@ -202,8 +203,8 @@ function line_chart_create(create_g, data, config) {
         .attr("text-anchor", "end")
         .text(config.axis_y_unit);
     create_g.append("text")
-        .attr("transform", "translate(-10,2)")
-        .attr("dy", "27.5em")
+        .attr("transform", "translate(-10,365)")
+        .attr("dy", 0)
         .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text(config.axis_x_unit);
@@ -220,10 +221,10 @@ function line_chart_create(create_g, data, config) {
         .data(data)
         .enter();
 
-    create_circle(circle, scale_water_line.x(), scale_water_line.y(), config.circle_r);
-    create_circle(circle, fire_line.x(), fire_line.y(), config.circle_r);
-    create_circle(circle, nuclear_line.x(), nuclear_line.y(), config.circle_r);
-    create_circle(circle, renewable_line.x(), renewable_line.y(), config.circle_r);
+    create_circle(circle, scale_water_line.x(), scale_water_line.y(), config.circle_r,config.scale_water_color);
+    create_circle(circle, fire_line.x(), fire_line.y(), config.circle_r, config.fire_color);
+    create_circle(circle, nuclear_line.x(), nuclear_line.y(), config.circle_r,config.nuclear_color);
+    create_circle(circle, renewable_line.x(), renewable_line.y(), config.circle_r,config.renewable_color);
 
 
 
@@ -300,11 +301,12 @@ function create_chart_line(create_g, create_line, create_color, create_data) {
         .attr("stroke-width", 2.5)
         .attr("d", create_line);
 }
-function create_circle(create_g, create_cx, create_cy, create_r) {
+function create_circle(create_g, create_cx, create_cy, create_r,create_fill) {
     create_g.append("circle")
         .attr("r", create_r)
         .attr("cx", create_cx)
-        .attr("cy", create_cy);
+        .attr("cy", create_cy)
+        .attr("fill",create_fill);
 }
 
 function line_move(line_g, line_mouse) {
