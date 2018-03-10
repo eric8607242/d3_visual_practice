@@ -23,7 +23,7 @@ var japan_line_move = japan_line_g.append("line")
     .attr("stroke-width", 1);
 
 
-var circle;
+var japan_circle;
 var temp;
 
 function japan_line_defaultsetting() {
@@ -51,7 +51,7 @@ d3.csv("./data/日本各項電力.csv", function (d) {
     return d;
 }, function (error, data) {
     var config = japan_line_defaultsetting();
-    line_chart_create(japan_line_g, data,config);
+    line_chart_create(japan_line_g, data,config,japan_circle);
 
     var touch_rect = japan_line_g.append('rect')
         .attr('width', line_width) // can't catch mouse events on a g element

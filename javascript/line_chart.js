@@ -83,7 +83,7 @@ function line_defaultsetting() {
 
     };
 }
-var circle;
+var line_circle;
 var temp;
 
 
@@ -96,7 +96,7 @@ d3.csv("./data/his_ele_cate.csv", function (d) {
     return d;
 }, function (error, data) {
     var line_config = line_defaultsetting();
-    line_chart_create(line_g, data, line_config);
+    line_chart_create(line_g, data, line_config,line_circle);
 
     var touch_rect = line_g.append('rect')
         .attr('width', line_width) // can't catch mouse events on a g element
@@ -175,7 +175,7 @@ function scale_stack_change(index) {
     }
 }
 
-function line_chart_create(create_g, data, config) {
+function line_chart_create(create_g, data, config,circle) {
 
     x.domain(d3.extent(data, function (d) { return d.year; }));
     y.domain([0, d3.max(data, function (d) {
