@@ -61,11 +61,11 @@ d3.csv('./data/energy_type.csv', function (error, data) {
         return d3.sum(vals);
     });
     stackarea_svg.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("dy", "0.7em")
-        .attr("font-size", "90%")
+        .attr("transform", "translate(30,10)")
+        .attr("dy", "0em")
+        .attr("font-size", "70%")
         .attr("text-anchor", "end")
-        .text("單位(億度)");
+        .text("億度");
     stackarea_svg.append("text")
         .attr("transform", "translate(-10,265)")
         .attr("dy", "0")

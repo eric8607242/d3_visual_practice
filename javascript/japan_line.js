@@ -33,7 +33,7 @@ function japan_line_defaultsetting() {
         scale_water_color: "#EBAD30",
         renewable_color: "#568D4B",
         circle_r: 4,
-        axis_y_unit: "單位(千億度)",
+        axis_y_unit: "千億度",
         axis_x_unit: "年",
         check_range: 20,
         init_year: 97

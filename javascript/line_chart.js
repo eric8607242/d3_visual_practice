@@ -76,7 +76,7 @@ function line_defaultsetting() {
         scale_water_color: "#EBAD30",
         renewable_color: "#568D4B",
         circle_r: 4,
-        axis_y_unit: "單位(億度)",
+        axis_y_unit: "億度",
         axis_x_unit: "年",
         check_range: 20,
         init_year: 97
@@ -197,9 +197,9 @@ function line_chart_create(create_g, data, config,circle) {
         .remove();
 
     create_g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("dy", "0.7em")
-        .attr("font-size", "90%")
+        .attr("transform", "translate(37,10  )")
+        .attr("dy", "0")
+        .attr("font-size", "70%")
         .attr("text-anchor", "end")
         .text(config.axis_y_unit);
     create_g.append("text")

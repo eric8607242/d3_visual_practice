@@ -70,11 +70,11 @@ d3.csv("./data/energy_type.csv", function (d) {
     create_y_axis(co_line_g, co_line_y)
 
     co_line_g.append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("dy", "0.7em")
-        .attr("font-size", "90%")
+        .attr("transform", "translate(40,10)")
+        .attr("dy", "0em")
+        .attr("font-size", "70%")
         .attr("text-anchor", "end")
-        .text("單位(十萬公噸)");
+        .text("十萬噸");
     co_line_g.append("text")
         .attr("transform", "translate(-10,265)")
         .attr("dy", "0")
