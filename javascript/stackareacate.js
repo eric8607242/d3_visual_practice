@@ -61,9 +61,9 @@ d3.csv('./data/energy_type.csv', function (error, data) {
         return d3.sum(vals);
     });
     stackarea_svg.append("text")
-        .attr("transform", "translate(30,10)")
+        .attr("transform", "translate(-25,255)")
         .attr("dy", "0em")
-        .attr("font-size", "70%")
+        .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text("億度");
     stackarea_svg.append("text")

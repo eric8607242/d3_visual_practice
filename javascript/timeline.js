@@ -148,7 +148,7 @@ function chart_change(index) {
 
                 text_update(sun_text_year, "民國" + index + "年")
                 text_update(sun_text_type, "台電發電量達")
-                text_update(sun_text, Math.round(sun_data[i].pers["0"].percent) + "百萬度")
+                text_update(sun_text, sun_data[i].pers["0"].percent+ "百萬度")
             }
         }
     }

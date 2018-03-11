@@ -197,9 +197,9 @@ function line_chart_create(create_g, data, config,circle) {
         .remove();
 
     create_g.append("text")
-        .attr("transform", "translate(37,10  )")
+        .attr("transform", "translate(-15,354)")
         .attr("dy", "0")
-        .attr("font-size", "70%")
+        .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text(config.axis_y_unit);
     create_g.append("text")

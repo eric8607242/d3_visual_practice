@@ -70,9 +70,9 @@ d3.csv("./data/energy_type.csv", function (d) {
     create_y_axis(co_line_g, co_line_y)
 
     co_line_g.append("text")
-        .attr("transform", "translate(40,10)")
+        .attr("transform", "translate(-17,255)")
         .attr("dy", "0em")
-        .attr("font-size", "70%")
+        .attr("font-size", "60%")
         .attr("text-anchor", "end")
         .text("十萬噸");
     co_line_g.append("text")
