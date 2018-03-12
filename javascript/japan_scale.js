@@ -58,7 +58,7 @@ var japan_choose = 3;
 function japan_scale_defaultsetting() {
     return {
         circle_color: "#568D4B",
-        text_content: "8%",
+        text_content: "7%",
         text_year_content: "民國97年",
         text_name_content: "再生能源發電比例達"
     };
@@ -78,10 +78,10 @@ d3.csv("./data/日本各項電力.csv", function (d, i, columns) {
     japan_scale_data = data;
     var config = japan_scale_defaultsetting();
     if (error) throw error;
-    for (i = 0; i < data[1].energy.length; i++) {
-        japan_scale_total = japan_scale_total + data[1].energy[i].percent;
+    for (i = 0; i < data[0].energy.length; i++) {
+        japan_scale_total = japan_scale_total + data[0].energy[i].percent;
     }
-    japan_scale_color.domain(data[1].energy.map(function (d) { return d.name; }));
+    japan_scale_color.domain(data[0].energy.map(function (d) { return d.name; }));
     var temp;
     for (i = 0; i < data.length; i++) {
 

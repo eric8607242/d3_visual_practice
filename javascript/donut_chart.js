@@ -341,7 +341,7 @@ d3.csv("./data/wind.csv", function (d, i, columns) {
         .attr("font-size", "1em")
         .style("text-anchor", "middle")
         .style("fill", "black")
-        .text("台電發電量")
+        .text("台電發電量達")
     wind_text_year = wind.append("text")
         .attr("dy", "-1.8em")
         .attr("font-size", "1.5em")
